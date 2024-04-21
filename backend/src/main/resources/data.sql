@@ -1,0 +1,62 @@
+INSERT INTO spot (spot_id, name, description, city, address, google_maps_url, website_url, working_hours, always_open, phone_number, email, instagram,
+tiktok, facebook, outdoor_seating,wifi_available, parking, pets_allowed, has_special_dietary_option_vegetarian,has_special_dietary_option_vegan, has_special_dietary_option_gluten_free,has_fitness_menu, has_takeout, has_posna_food, spot_type, reviews_count)
+VALUES
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'Name1', 'Ovo je opis jednog restorana koji se zove Name i neki broji, i stvarno ne znam, dodjite top je.Ovo je opis jednog restorana koji se zove Name i neki broji, i stvarno ne znam, dodjite top je.', 'city1', 'address1', 'gm1', 'w1', '24-2',1,'04545745','email','odnsdf','dasdas','dsad dsada',1,1,1,1,1,1,1,1,1,1, 'BAR', 0),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'Name2', 'Ovo je opis jednog restorana koji se zove Name i neki broji, i stvarno ne znam, dodjite top je.Ovo je opis jednog restorana koji se zove Name i neki broji, i stvarno ne znam, dodjite top je.', 'city12', 'address21', 'g2m1', 'w12', '23-2',1,'04245745','em2ail','od2nsdf','d2asdas','ds2ad dsada2',1,1,1,1,1,1,1,1,1,1, 'POSLASTIČARNICA', 0),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'Name3', 'Ovo je opis jednog restorana koji se zove Name i neki broji, i stvarno ne znam, dodjite top je.Ovo je opis jednog restorana koji se zove Name i neki broji, i stvarno ne znam, dodjite top je.', 'city3', 'address3', 'gm3', 'w3', '12-3',1,'04545745','email3','odnsdf3','dasdas3','dsad dsada3',1,1,1,1,1,1,1,1,1,1, 'RESTORAN', 0),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'Name4', 'Ovo je opis jednog restorana koji se zove Name i neki broji, i stvarno ne znam, dodjite top je.Ovo je opis jednog restorana koji se zove Name i neki broji, i stvarno ne znam, dodjite top je.', 'city4', 'address4', 'gm4', 'w4', '09-5',1,'04545745','email4','odnsdf4','dasdas4','dsad dsada4',1,1,1,1,1,1,1,1,1,1, 'KAFIĆ', 0);
+
+INSERT INTO spot_ambiance_types (spot_spot_id, ambiance_types)
+VALUES
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'ELEGANTNO'),
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'BIZNIS'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'ROMANTIČNO'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'MODERNO'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'PORODIČNO'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'MINIMALISTIČKI'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'OPUŠTAJUĆE'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'TIHO');
+
+INSERT INTO spot_music_types (spot_spot_id, music_types)
+VALUES
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'POP'),
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'TREP'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'REP'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'FOLK'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'NARODNJACI'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'REP'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'DISKO'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'OPERA');
+
+INSERT INTO spot_cuisine_types (spot_spot_id, cuisine_types)
+VALUES
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'ROŠTILJ'),
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'PEČENO'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'POHOVANO'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'DOMAĆE'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'MORSKA_HRANA'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'DIMNJENO'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'KUVANO'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'NA_PARI');
+
+INSERT INTO spot_available_activities (spot_spot_id, available_activities)
+VALUES
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'BILIJAR'),
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'PIKADO'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'DRUŠTVENE_IGRE'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'DEČIJA_IGRAONICA'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'KARAOKE'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'UŽIVO_ZABAVA'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'KUGLANJE'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'BILIJAR');
+
+INSERT INTO spot_specialties (spot_spot_id, specialties)
+VALUES
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'SARMA'),
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'PECENJE'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'ROSTILJ'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'KUPUS'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'PAELLA'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'SUSHI'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'TAPAS'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'COFFEE_SPECIALTIES');

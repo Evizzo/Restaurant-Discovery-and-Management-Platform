@@ -1,0 +1,49 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${clientIdGoogle}
+            clientSecret: ${clientSecretGoogle}
+            scope:
+              - openid
+              - email
+              - profile
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: { Gmail Address }
+    password: { Gmail App Password }
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/gdin
+    username: ${DBNAME}
+#    password: ${DBPASS}
+    password: P@ssword123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+#logging:
+#  level:
+#    root: DEBUG
+#    org.springframework.web: DEBUG
+#    org.hibernate: TRACE
+#    org.springframework.security: DEBUG
