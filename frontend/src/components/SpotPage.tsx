@@ -1,58 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { addReviewToSpot, retrieveSpotById } from "../api/ApiService.ts";
+import { addReviewToSpot, retrieveSpotById, Spot } from "../api/ApiService.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import StarRating from './StarRating.tsx';
+import { useAuth } from "../api/AuthContex";
 
 interface SpotPageProps {}
-
-export interface Spot {
-  spotId: string;
-  name: string;
-  description: string;
-  city: string;
-  address: string;
-  googleMapsUrl: string;
-  websiteUrl: string;
-  workingHours: string;
-  alwaysOpen: boolean;
-  phoneNumber: string;
-  email: string;
-  instagram: string;
-  tiktok: string;
-  facebook: string;
-  outdoorSeating: boolean;
-  wifiAvailable: boolean;
-  parking: boolean;
-  petsAllowed: boolean;
-  hasSpecialDietaryOptionVegetarian: boolean;
-  hasSpecialDietaryOptionVegan: boolean;
-  hasSpecialDietaryOptionGlutenFree: boolean;
-  hasFitnessMenu: boolean;
-  hasTakeout: boolean;
-  hasPosnaFood: boolean;
-  reviewsCount: number;
-  spotType: string;
-  musicTypes: string[];
-  ambianceTypes: string[];
-  cuisineTypes: string[];
-  availableActivities: string[];
-  specialties: string[];
-  reviews: any[];
-}
 
 const SpotPage: React.FC<SpotPageProps> = () => {
   const { spotId } = useParams<{ spotId?: string }>();
   const [spot, setSpot] = useState<Spot | null>(null);
+  const authContext = useAuth();
   const [reviewForm, setReviewForm] = useState({
     totalRating: 0,
     hygieneRating: 0,
     comment: ""
   });
+  
   useEffect(() => {
     const fetchSpot = async () => {
       try {
@@ -111,7 +80,9 @@ const SpotPage: React.FC<SpotPageProps> = () => {
       console.error("Greška pri slanju recenzije:", error);
     }
   };
-
+  const handleRatingChange = (rating: any, field: any) => {
+    setReviewForm({ ...reviewForm, [field]: rating });
+  };
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col items-center justify-center px-5 py-10">
       <div className="max-w-4xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8">
@@ -191,33 +162,17 @@ const SpotPage: React.FC<SpotPageProps> = () => {
           <a href={spot.facebook} className="text-4xl mx-2"><FontAwesomeIcon icon={faFacebook} /></a>
           <a href={spot.tiktok} className="text-4xl mx-2"><FontAwesomeIcon icon={faTiktok} /></a>
         </div>
-        <form onSubmit={(e) => { e.preventDefault(); submitReview(); }}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="totalRating">
-              Total Rating
-            </label>
-            <input
-              type="number"
-              id="totalRating"
-              name="totalRating"
-              value={reviewForm.totalRating}
-              onChange={handleReviewFormChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="hygieneRating">
-              Hygiene Rating
-            </label>
-            <input
-              type="number"
-              id="hygieneRating"
-              name="hygieneRating"
-              value={reviewForm.hygieneRating}
-              onChange={handleReviewFormChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
+        {authContext.isAuthenticated && <form onSubmit={(e) => { e.preventDefault(); submitReview(); }}>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="totalRating">
+            Ocenite:
+          </label>
+          <StarRating
+            maxStars={5}
+            initialRating={reviewForm.totalRating}
+            onChange={(rating: any) => handleRatingChange(rating, 'totalRating')}
+          />
+        </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="comment">
               Comment
@@ -236,26 +191,26 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             >
             Ostavite recenziju
           </button>
-        </form>
-        <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
+        </form>}
+        <h2 className="text-2xl font-semibold mb-4">Ocene i komentari</h2>
         {spot.reviews.map((review, index) => (
           <div key={index} className="mb-4">
             <div className="flex items-center mb-2">
-              <span className="text-lg font-semibold mr-2">User {index + 1}:</span>
-              <div className="flex items-center">
-                <span className="mr-1">Hygiene Rating:</span>
-                {[...Array(review.hygieneRating)].map((_, i) => (
-                  <FontAwesomeIcon key={i} icon={faStar} className="text-yellow-500" />
-                ))}
-              </div>
-              <div className="flex items-center ml-4">
-                <span className="mr-1">Total Rating:</span>
-                {[...Array(review.totalRating)].map((_, i) => (
-                  <FontAwesomeIcon key={i} icon={faStar} className="text-yellow-500" />
-                ))}
+              <img src={review.reviewer.pictureUrl} alt="Profile" className="w-10 h-10 rounded-full mr-2" />
+              <div>
+                <span className="text-lg font-semibold">{review.reviewer.firstname} {review.reviewer.lastname}</span>
+                <div className="flex items-center">
+                  <span className="mr-1">Ocena:</span>
+                  {[...Array(review.totalRating)].map((_, i) => (
+                    <FontAwesomeIcon key={i} icon={faStar} />
+                  ))}
+                </div>
               </div>
             </div>
-            <p className="text-gray-700">{review.comment}</p>
+            <p className="text-gray-700" style={{ wordWrap: 'break-word' }}>{review.comment}</p>
+            <br></br>
+            <hr></hr>
+            <br></br>
           </div>
         ))}
       </div>

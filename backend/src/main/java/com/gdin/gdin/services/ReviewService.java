@@ -1,6 +1,7 @@
 package com.gdin.gdin.services;
 
 import com.gdin.gdin.dtos.ReviewDto;
+import com.gdin.gdin.dtos.UserDto;
 import com.gdin.gdin.entities.Review;
 import com.gdin.gdin.entities.Spot;
 import com.gdin.gdin.entities.User;
@@ -26,15 +27,18 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final SpotRepository spotRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
     public ReviewDto convertReviewToDto(Review review) {
+        UserDto reviewerDto = userService.convertToDto(review.getReviewer());
+
         return ReviewDto.builder()
                 .id(review.getId())
                 .totalRating(review.getTotalRating())
-                .hygieneRating(review.getHygieneRating())
                 .comment(review.getComment())
                 .isEdited(review.isEdited())
                 .date(review.getDate())
-                .reviewerEmail(review.getReviewer().getEmail())
+                .reviewer(reviewerDto)
+//                .reviewerEmail(review.getReviewer().getEmail())
                 .build();
     }
 

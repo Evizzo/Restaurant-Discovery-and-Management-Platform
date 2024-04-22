@@ -17,12 +17,11 @@ public class ReviewDto {
     private UUID id;
 
     private int totalRating;
-    private int hygieneRating;
     private String comment;
     private LocalDateTime date;
     private boolean isEdited;
-    private String reviewerEmail;
+//    private String reviewerEmail;
 
-//    private User reviewer;
+    private UserDto reviewer;
     private SpotDto spot;
 }
