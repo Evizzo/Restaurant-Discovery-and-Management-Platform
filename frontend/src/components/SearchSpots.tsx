@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { retrieveAllSpots } from "../api/ApiService.ts";
+import { retrieveAllSpots, Spot } from "../api/ApiService.ts";
 import Card from "../layouts/Card.tsx";
-import { Spot } from "./HomePage.tsx";
 
 const SearchSpots: React.FC = () => {
   const [spots, setSpots] = useState<Spot[]>([]);
@@ -28,7 +27,7 @@ const SearchSpots: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
         {spots.map((spot: Spot) => (
           <div key={spot.spotId}>
-            <Card key={spot.spotId} img={"/assets/unnamed.jpg"} nameOfSpot={spot.name} locationOfSpot={spot.city} spotId={spot.spotId}/>
+            <Card key={spot.spotId} img={"../src/assets/unnamed.jpg"} nameOfSpot={spot.name} locationOfSpot={spot.city + ", " + spot.address} spotId={spot.spotId} workingHours={spot.workingHours}/>
           </div>
         ))}
       </div>
