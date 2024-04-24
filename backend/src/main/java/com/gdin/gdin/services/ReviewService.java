@@ -8,6 +8,7 @@ import com.gdin.gdin.entities.User;
 import com.gdin.gdin.repositories.ReviewRepository;
 import com.gdin.gdin.repositories.SpotRepository;
 import com.gdin.gdin.repositories.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -99,5 +100,30 @@ public class ReviewService {
         } else {
             throw new RuntimeException("Spot not found with ID: " + spotId);
         }
+    }
+
+    public void deleteReviewById(UUID id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication != null && authentication.getPrincipal() instanceof DefaultOAuth2User oauth2User) {
+            userEmail = oauth2User.getAttribute("email");
+        }
+
+        Optional<User> optionalUser = userRepository.findByEmail(userEmail);
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+
+        optionalUser.ifPresent(user -> optionalReview.ifPresent(review -> {
+            UUID reviewerId = UUID.fromString(review.getReviewer().getId());
+            UUID userId = UUID.fromString(user.getId());
+            if (reviewerId.equals(userId)) {
+                Spot spot = review.getSpot();
+
+                spotRepository.decrementReviewCount(spot.getSpotId());
+
+                reviewRepository.deleteById(id);
+            } else {
+                throw new RuntimeException("You are not authorized to delete this comment.");
+            }
+        }));
     }
 }

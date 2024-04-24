@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { addReviewToSpot, retrieveSpotById, Spot } from "../api/ApiService.ts";
+import { addReviewToSpot, deleteReview, retrieveSpotById, Spot } from "../api/ApiService.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import StarRating from './StarRating.tsx';
 import { useAuth } from "../api/AuthContex";
 import { useMediaQuery } from "react-responsive";
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 
 interface SpotPageProps {}
 
@@ -70,10 +71,10 @@ const SpotPage: React.FC<SpotPageProps> = () => {
 
   const handleReviewFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setReviewForm({ ...reviewForm, [name]: value });
+    setReviewForm({ ...reviewForm, [name]: value});
     setCharCount(value.length);
   };
-
+  // reviewForm.totalRating
   const submitReview = async () => {
     try {
       await addReviewToSpot(spot.spotId, reviewForm);
@@ -81,18 +82,33 @@ const SpotPage: React.FC<SpotPageProps> = () => {
         setSpot(updatedSpotResponse.data);
         setReviewForm({ totalRating: 0, comment: "" });
         setCharCount(0)
+        setMessage("Uspešno ste postavili recenziju !")
     } catch (error: any) {
       setMessage(error.response.data.message)
     }
   };
+
   const handleRatingChange = (rating: any, field: any) => {
     setReviewForm({ ...reviewForm, [field]: rating });
   };
+
   const toNormalCase = (str: string) => {
     return str.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   };
+
+  const handleDeleteReview = async (reviewId: string) => {
+    try {
+      await deleteReview(reviewId);
+        const updatedSpotResponse = await retrieveSpotById(spot.spotId);
+        setSpot(updatedSpotResponse.data);
+        setMessage("Recenzija je uspešno obrisana.")
+    } catch (error: any) {
+      setMessage(error.response.data.message)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col items-center justify-center px-5 py-10">
       <div className={`${isMobile ? 'max-w-4xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8' : 'max-w-9xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8'}`}>
@@ -216,15 +232,15 @@ const SpotPage: React.FC<SpotPageProps> = () => {
           <div className="flex items-center bg-yellow-100 rounded-lg p-3 mb-4">
             <div className="text-yellow-800">
               <svg className="h-6 w-6 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 8v4m0 4h.01"></path>
               </svg>
             </div>
             <div className="text-yellow-700">
-              <p className="font-bold">Greška:</p>
+              <p className="font-bold">Obaveštenje:</p>
               <p>{message}</p>
             </div>
           </div>
-        )}
+        )}  
         <h2 className="text-2xl font-semibold mb-4">Recenzije</h2>
         {spot.reviews.map((review, index) => (
           <div key={index} className="mb-4">
@@ -235,12 +251,27 @@ const SpotPage: React.FC<SpotPageProps> = () => {
                 <div className="flex items-center">
                   <span className="mr-1">Ocena:</span>
                   {[...Array(review.totalRating)].map((_, i) => (
-                    <FontAwesomeIcon key={i} icon={faStar} />
+                    <FontAwesomeIcon key={i} icon={solidStar} />
+                  ))}
+                  {[...Array(5-review.totalRating)].map((_, i) => (
+                    <FontAwesomeIcon key={i} icon={regularStar} />
                   ))}
                 </div>
               </div>
             </div>
             <p className="text-gray-700" style={{ wordWrap: 'break-word' }}>{review.comment}</p>
+            <br></br>
+            {authContext.isAuthenticated && authContext.email === review.reviewer.email && (
+            <div className="btn-group">
+              {/* <button className="btn btn-sm btn-info" onClick={() => handleEditComment(comment.id)}>
+                Izmeni
+              </button> */}
+              <button className="ml-auto bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={() => handleDeleteReview(review.id)}>
+                Obriši
+              </button>
+            </div>
+          )}
             <br></br>
             <hr></hr>
             <br></br>

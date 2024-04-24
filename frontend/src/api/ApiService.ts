@@ -75,3 +75,7 @@ export const addReviewToSpot = (spotId: string, review: any) => {
 export const getAllReviewsForSpot = (spotId: string) => {
     return apiClient.get(`/review/${spotId}`);
 }
+
+export const deleteReview = (reviewId: string) => {
+    return apiClient.delete(`/review/${reviewId}`);
+};
