@@ -29,7 +29,7 @@ public class Review {
 //    @Max(value = 5, message = "Ocena ne sme da prelazi 5 !")
 //    @Min(value = 1, message = "Ocena ne sme da bude manja od 1 !")
 //    private int hygieneRating;
-    @Size(max = 320, message = "Komentar ne sme da prelazi 320 karaktera !")
+    @Size(max = 720, message = "Komentar ne sme da prelazi 720 araktera !")
     private String comment;
     private LocalDateTime date;
     private boolean isEdited;

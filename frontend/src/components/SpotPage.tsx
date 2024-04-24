@@ -9,6 +9,7 @@ import 'react-image-gallery/styles/css/image-gallery.css';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import StarRating from './StarRating.tsx';
 import { useAuth } from "../api/AuthContex";
+import { useMediaQuery } from "react-responsive";
 
 interface SpotPageProps {}
 
@@ -16,12 +17,14 @@ const SpotPage: React.FC<SpotPageProps> = () => {
   const { spotId } = useParams<{ spotId?: string }>();
   const [spot, setSpot] = useState<Spot | null>(null);
   const authContext = useAuth();
+  const [charCount, setCharCount] = useState(0);
   const [reviewForm, setReviewForm] = useState({
     totalRating: 0,
-    hygieneRating: 0,
     comment: ""
   });
-  
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const [message,setMessage] = useState("")
+
   useEffect(() => {
     const fetchSpot = async () => {
       try {
@@ -68,6 +71,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
   const handleReviewFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setReviewForm({ ...reviewForm, [name]: value });
+    setCharCount(value.length);
   };
 
   const submitReview = async () => {
@@ -75,26 +79,38 @@ const SpotPage: React.FC<SpotPageProps> = () => {
       await addReviewToSpot(spot.spotId, reviewForm);
         const updatedSpotResponse = await retrieveSpotById(spot.spotId);
         setSpot(updatedSpotResponse.data);
-        setReviewForm({ totalRating: 0, hygieneRating: 0, comment: "" });
-    } catch (error) {
-      console.error("Greška pri slanju recenzije:", error);
+        setReviewForm({ totalRating: 0, comment: "" });
+        setCharCount(0)
+    } catch (error: any) {
+      setMessage(error.response.data.message)
     }
   };
   const handleRatingChange = (rating: any, field: any) => {
     setReviewForm({ ...reviewForm, [field]: rating });
   };
+  const toNormalCase = (str: string) => {
+    return str.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col items-center justify-center px-5 py-10">
-      <div className="max-w-4xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8">
-      <div className="mt-8">
-          <ImageGallery items={images} showPlayButton={false} showFullscreenButton={true} />
+      <div className={`${isMobile ? 'max-w-4xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8' : 'max-w-9xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8'}`}>
+        <div className="flex flex-col md:flex-row">
+        <div className={`${isMobile ? 'mt-8' : 'max-w-md mx-auto md:mx-0 md:mr-8 mb-8 md:mb-0'}`}>
+            <ImageGallery items={images} showPlayButton={false} showFullscreenButton={true} />
+          </div>
+          <br></br>
+          <div className="md:flex-grow">
+            <h1 className="font-semibold text-4xl text-gray-800 mb-4">{spot.name} ({spot.reviewsCount})</h1>
+            <p className="text-lg text-gray-700 mb-6">{spot.description}</p>
+          </div>
         </div>
-        <h1 className="font-semibold text-4xl text-gray-800 mb-4">{spot.name} ({spot.reviewsCount})</h1>
-        <p className="text-lg text-gray-700 mb-6">{spot.description}</p>
+        <div className="flex justify-center items-center mt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-gray-800">
-          <div className="border-r border-gray-400 pr-4">
+        <div className={`${isMobile ? '' : 'border-r border-gray-300 pr-4'}`}>
             <p className="text-lg mb-4">
-              <strong>Tip:</strong> {spot.spotType}
+              <strong>Tip:</strong> {toNormalCase(spot.spotType)}
             </p>
             <p className="text-lg mb-4">
               <strong>Lokacija:</strong> {spot.city}, {spot.address}
@@ -106,18 +122,18 @@ const SpotPage: React.FC<SpotPageProps> = () => {
               <strong>Radno vreme:</strong> {spot.workingHours}
             </p>
           </div>
-          <div className="border-r border-gray-400 pr-4">
+          <div className={`${isMobile ? '' : 'border-r border-gray-300 pr-4'}`}>
             <p className="text-lg mb-4">
-              <strong>Tipovi muzike:</strong> {spot.musicTypes.join(", ")}
+              <strong>Tipovi muzike:</strong> {toNormalCase(spot.musicTypes.join(", "))}
             </p>
             <p className="text-lg mb-4">
-              <strong>Tipovi ambijenta:</strong> {spot.ambianceTypes.join(", ")}
+              <strong>Tipovi ambijenta:</strong> {toNormalCase(spot.ambianceTypes.join(", "))}
             </p>
             <p className="text-lg mb-4">
-              <strong>Tipovi kuhinje:</strong> {spot.cuisineTypes.join(", ")}
+              <strong>Tipovi kuhinje:</strong> {toNormalCase(spot.cuisineTypes.join(", "))}
             </p>
             <p className="text-lg mb-4">
-              <strong>Dostupne aktivnosti:</strong> {spot.availableActivities.join(", ")}
+              <strong>Dostupne aktivnosti:</strong> {toNormalCase(spot.availableActivities.join(", "))}
             </p>
             <p className="text-lg mb-4">
               <strong>Specijaliteti:</strong> {spot.specialties.join(", ")}
@@ -156,6 +172,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             </p>
           </div>
         </div>
+        </div>
         <div className="flex justify-center items-center mt-4">
           <a href={spot.websiteUrl} className="text-4xl mx-2"><FontAwesomeIcon icon={faLink} /></a>
           <a href={spot.instagram} className="text-4xl mx-2"><FontAwesomeIcon icon={faInstagram} /></a>
@@ -163,6 +180,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
           <a href={spot.tiktok} className="text-4xl mx-2"><FontAwesomeIcon icon={faTiktok} /></a>
         </div>
         {authContext.isAuthenticated && <form onSubmit={(e) => { e.preventDefault(); submitReview(); }}>
+          <br></br>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="totalRating">
             Ocenite:
@@ -175,7 +193,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
         </div>
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="comment">
-              Comment
+              Komentar:
             </label>
             <textarea
               id="comment"
@@ -184,6 +202,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
               onChange={handleReviewFormChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
+            <div className="text-right mt-1">{charCount}/720</div>
           </div>
           <button
             type="submit"
@@ -192,7 +211,21 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             Ostavite recenziju
           </button>
         </form>}
-        <h2 className="text-2xl font-semibold mb-4">Ocene i komentari</h2>
+        <br></br>
+        {message && (
+          <div className="flex items-center bg-yellow-100 rounded-lg p-3 mb-4">
+            <div className="text-yellow-800">
+              <svg className="h-6 w-6 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div className="text-yellow-700">
+              <p className="font-bold">Greška:</p>
+              <p>{message}</p>
+            </div>
+          </div>
+        )}
+        <h2 className="text-2xl font-semibold mb-4">Recenzije</h2>
         {spot.reviews.map((review, index) => (
           <div key={index} className="mb-4">
             <div className="flex items-center mb-2">

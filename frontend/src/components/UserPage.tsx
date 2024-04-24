@@ -1,14 +1,10 @@
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 import { executeGoogleLogin } from '../api/ApiService';
-import { Button, Form } from 'react-bootstrap';
-import { useAuth } from '../api/AuthContex';
-import { Link } from 'react-router-dom';
 
 function UserPage() {
-  const authContext = useAuth();
 
   interface UserData {
     firstname: string;

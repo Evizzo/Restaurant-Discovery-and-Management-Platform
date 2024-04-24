@@ -23,7 +23,7 @@ const StarRating: React.FC<StarRatingProps> = ({ maxStars, initialRating = 0, on
         <FontAwesomeIcon
           key={index}
           icon={index < rating ? solidStar : regularStar}
-          className="text-gray-800 cursor-pointer" // Change text color to dark gray
+          className="text-gray-800 cursor-pointer"
           onClick={() => handleClick(index)}
         />
       ))}

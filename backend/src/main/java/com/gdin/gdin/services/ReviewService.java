@@ -56,6 +56,13 @@ public class ReviewService {
             User reviewer = optionalUser.get();
             Spot spot = optionalSpot.get();
 
+            boolean hasReviewed = spot.getReviews().stream()
+                    .anyMatch(existingReview -> existingReview.getReviewer().equals(reviewer));
+
+            if (hasReviewed) {
+                throw new RuntimeException("Već ste postavili jednu recenziju !");
+            }
+
             review.setReviewer(reviewer);
             review.setSpot(spot);
             review.setDate(LocalDateTime.now());

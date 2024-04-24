@@ -52,11 +52,11 @@ VALUES
 
 INSERT INTO spot_specialties (spot_spot_id, specialties)
 VALUES
-    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'SARMA'),
-    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'PECENJE'),
-    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'ROSTILJ'),
-    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'KUPUS'),
-    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'PAELLA'),
-    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'SUSHI'),
-    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'TAPAS'),
-    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'COFFEE_SPECIALTIES');
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'Sarma'),
+    (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'Pecenje'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'Rostilj'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'Kupus'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'Paela'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'Sushi'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'Tapas'),
+    (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'Kafa');
