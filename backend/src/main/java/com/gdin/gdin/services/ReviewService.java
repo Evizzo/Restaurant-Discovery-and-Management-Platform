@@ -170,24 +170,24 @@ public class ReviewService {
         String userId = userRepository.findByEmail(userEmail).get().getEmail();
 
         return reviewRepository.findById(reviewId)
-                .map(comment -> {
-                    Set<String> likedByUsers = comment.getLikedByUsers();
-                    Set<String> dislikedByUsers = comment.getDislikedByUsers();
+                .map(review -> {
+                    Set<String> likedByUsers = review.getLikedByUsers();
+                    Set<String> dislikedByUsers = review.getDislikedByUsers();
 
                     if (dislikedByUsers.contains(userId)) {
-                        comment.setDislikes(comment.getDislikes() - 1);
+                        review.setDislikes(review.getDislikes() - 1);
                         dislikedByUsers.remove(userId);
                     } else {
-                        comment.setDislikes(comment.getDislikes() + 1);
+                        review.setDislikes(review.getDislikes() + 1);
                         dislikedByUsers.add(userId);
 
                         if (likedByUsers.contains(userId)) {
-                            comment.setLikes(comment.getLikes() - 1);
+                            review.setLikes(review.getLikes() - 1);
                             likedByUsers.remove(userId);
                         }
                     }
 
-                    return reviewRepository.save(comment);
+                    return reviewRepository.save(review);
                 })
                 .orElseThrow(() -> new RuntimeException("Review not found with ID: " + reviewId));
     }

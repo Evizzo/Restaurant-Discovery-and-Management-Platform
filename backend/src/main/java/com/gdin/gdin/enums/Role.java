@@ -22,6 +22,22 @@ public enum Role {
                     ADMIN_DELETE,
                     ADMIN_CREATE
             )
+    ),
+    SPOT_OWNER(
+            Set.of(
+                    SPOT_OWNER_READ,
+                    SPOT_OWNER_UPDATE,
+                    SPOT_OWNER_DELETE,
+                    SPOT_OWNER_CREATE
+            )
+    ),
+    WORKER(
+            Set.of(
+                    WORKER_READ,
+                    WORKER_UPDATE,
+                    WORKER_DELETE,
+                    WORKER_CREATE
+            )
     );
 
     @Getter

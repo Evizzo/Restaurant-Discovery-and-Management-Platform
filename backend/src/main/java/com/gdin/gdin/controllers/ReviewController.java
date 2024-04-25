@@ -40,12 +40,12 @@ public class ReviewController {
     }
 
     @PutMapping("/{reviewId}/like")
-    public ResponseEntity<Review> likeComment(@PathVariable UUID reviewId) {
+    public ResponseEntity<Review> likeReview(@PathVariable UUID reviewId) {
         return ResponseEntity.ok(reviewService.likeReview(reviewId));
     }
 
     @PutMapping("/{reviewId}/dislike")
-    public ResponseEntity<Review> dislikeComment(@PathVariable UUID reviewId) {
+    public ResponseEntity<Review> dislikeReview(@PathVariable UUID reviewId) {
         return ResponseEntity.ok(reviewService.dislikeReview(reviewId));
     }
 }
