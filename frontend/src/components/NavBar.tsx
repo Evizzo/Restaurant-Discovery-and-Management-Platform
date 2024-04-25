@@ -61,12 +61,12 @@ const Navbar = () => {
             >
               Profil
           </Link>}
-            <Link
-              to="/about"
-              className="hover:text-[#E2B97F] transition-all cursor-pointer"
-            >
-              O nama
-            </Link>
+          <Link
+            to="/about"
+            className="hover:text-[#E2B97F] transition-all cursor-pointer"
+          >
+            O nama
+          </Link>
           </nav>
 
           {!authContext.isAuthenticated && (

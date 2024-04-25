@@ -1,13 +1,13 @@
 package com.gdin.gdin.controllers;
 
 import com.gdin.gdin.dtos.SpotDto;
+import com.gdin.gdin.entities.Spot;
 import com.gdin.gdin.services.SpotService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,4 +29,11 @@ public class SpotController {
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new RuntimeException("Spot not found" + spotId));
     }
+
+    @PreAuthorize("hasAuthority('spot_owner:create')")
+    @PostMapping
+    public ResponseEntity<Spot> addNewSpot(@Valid @RequestBody Spot spot){
+        return ResponseEntity.ok(spotService.saveSpot(spot));
+    }
+
 }

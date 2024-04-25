@@ -38,7 +38,6 @@ public class SpotDto {
     private Boolean hasSpecialDietaryOptionVegan;
     private Boolean hasSpecialDietaryOptionGlutenFree;
     private Boolean hasFitnessMenu;
-    private Boolean hasTakeout;
     private Boolean hasPosnaFood;
     private Boolean hasBreakfast;
     private int reviewsCount;
@@ -49,4 +48,5 @@ public class SpotDto {
     private Set<AvailableActivities> availableActivities;
     private Set<String> specialties;
     private List<ReviewDto> reviews;
+    private UserDto owner;
 }

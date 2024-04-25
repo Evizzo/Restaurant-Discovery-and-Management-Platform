@@ -12,6 +12,7 @@ import AuthProvider from "./api/AuthContex";
 import { ReactNode } from "react";
 import NotFound from "./components/NotFound.tsx";
 import UserPage from "./components/UserPage.tsx";
+import AddSpot from "./components/AddSpot.tsx";
 
 function App(){
   function AuthenticatedRoute({ children }: { children: ReactNode }) {
@@ -39,13 +40,20 @@ function App(){
             <Route path="/events" element={<Events/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/spot/:spotId" element={<SpotPage />} />
-            <Route path="*" element={<NotFound />} />
             
             <Route path="/current-user" element={
               <AuthenticatedRoute>
                 <UserPage />
               </AuthenticatedRoute>
             } />
+
+            <Route path="/add-spot" element={
+              <AuthenticatedRoute>
+                <AddSpot />
+              </AuthenticatedRoute>
+            } />
+
+          <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </BrowserRouter>

@@ -24,7 +24,6 @@ export interface Spot {
     hasSpecialDietaryOptionVegan: boolean;
     hasSpecialDietaryOptionGlutenFree: boolean;
     hasFitnessMenu: boolean;
-    hasTakeout: boolean;
     hasPosnaFood: boolean;
     reviewsCount: number;
     spotType: string;
@@ -92,3 +91,7 @@ export const likeReview = (reviewId: string) => {
 export const dislikeReview = (reviewId: string) => {
     return apiClient.put(`/review/${reviewId}/dislike`);
 };
+
+export const addSpot = (spot: any) => {
+    return apiClient.post(`/spot`, spot);
+}

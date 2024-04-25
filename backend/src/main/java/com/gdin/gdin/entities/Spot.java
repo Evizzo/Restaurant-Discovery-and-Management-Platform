@@ -44,7 +44,6 @@ public class Spot {
     private Boolean hasSpecialDietaryOptionVegan;
     private Boolean hasSpecialDietaryOptionGlutenFree;
     private Boolean hasFitnessMenu;
-    private Boolean hasTakeout;
     private Boolean hasPosnaFood;
     private Boolean hasBreakfast;
     private int reviewsCount;
@@ -74,4 +73,8 @@ public class Spot {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "spot_id")
     private List<Review> reviews;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 }

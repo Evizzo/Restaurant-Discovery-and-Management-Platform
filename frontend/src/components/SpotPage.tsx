@@ -202,9 +202,6 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             <p className="text-lg mb-4">
               Fitnes meni: {spot.hasFitnessMenu ? "Da" : "Ne"}
             </p>
-            {/* <p className="text-lg mb-4">
-              Poneti: {spot.hasTakeout ? "Da" : "Ne"}
-            </p> */}
             <p className="text-lg mb-4">
               Posna hrana: {spot.hasPosnaFood ? "Da" : "Ne"}
             </p>

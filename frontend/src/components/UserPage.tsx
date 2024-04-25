@@ -3,8 +3,12 @@ import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 import { executeGoogleLogin } from '../api/ApiService';
+import { useAuth } from "../api/AuthContex";
+import Button from '../layouts/Button';
+import { Link } from "react-router-dom";
 
 function UserPage() {
+  const authContext = useAuth();
 
   interface UserData {
     firstname: string;
@@ -62,6 +66,11 @@ function UserPage() {
                 <strong>Ime:</strong> {userData.firstname}<br />
                 <strong>Prezime:</strong> {userData.lastname}<br />
                 <strong>Email:</strong> {userData.email}<br />
+                {authContext.role === 'SPOT_OWNER' && (
+                  <Link to="/add-spot">
+                    <Button title="Dodaj objekat"></Button>
+                  </Link>
+                )}
                 {/* <Link to={`/user-profile/${userData.email}`} className="text-blue-500 hover:underline"><strong>Public profile page</strong></Link> */}
               </Card.Text>
               <br />
