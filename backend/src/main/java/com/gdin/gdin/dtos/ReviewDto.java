@@ -1,6 +1,7 @@
 package com.gdin.gdin.dtos;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 import com.gdin.gdin.entities.User;
@@ -24,4 +25,9 @@ public class ReviewDto {
 
     private UserDto reviewer;
     private SpotDto spot;
+
+    private Integer likes;
+    private Integer dislikes;
+    private Set<String> likedByUsers;
+    private Set<String> dislikedByUsers;
 }

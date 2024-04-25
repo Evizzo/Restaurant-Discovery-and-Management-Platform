@@ -64,6 +64,7 @@ public class SpotService {
                 .availableActivities(spot.getAvailableActivities())
                 .specialties(spot.getSpecialties())
                 .reviewsCount(spot.getReviewsCount())
+                .hasBreakfast(spot.getHasBreakfast())
                 .reviews(reviews)
 //                .reviews(spot.getReviews().stream()
 //                        .map(reviewService::convertReviewToDto)

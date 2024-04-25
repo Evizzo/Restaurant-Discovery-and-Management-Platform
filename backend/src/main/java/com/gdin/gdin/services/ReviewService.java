@@ -8,7 +8,6 @@ import com.gdin.gdin.entities.User;
 import com.gdin.gdin.repositories.ReviewRepository;
 import com.gdin.gdin.repositories.SpotRepository;
 import com.gdin.gdin.repositories.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,10 +15,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -39,6 +35,10 @@ public class ReviewService {
                 .isEdited(review.isEdited())
                 .date(review.getDate())
                 .reviewer(reviewerDto)
+                .likes(review.getLikes())
+                .dislikes(review.getDislikes())
+                .likedByUsers(review.getLikedByUsers())
+                .dislikedByUsers(review.getDislikedByUsers())
 //                .reviewerEmail(review.getReviewer().getEmail())
                 .build();
     }
@@ -68,6 +68,8 @@ public class ReviewService {
             review.setSpot(spot);
             review.setDate(LocalDateTime.now());
             review.setEdited(false);
+            review.setLikes(0);
+            review.setDislikes(0);
 
             spotRepository.incrementReviewCount(spotId);
 
@@ -113,8 +115,8 @@ public class ReviewService {
         Optional<Review> optionalReview = reviewRepository.findById(id);
 
         optionalUser.ifPresent(user -> optionalReview.ifPresent(review -> {
-            UUID reviewerId = UUID.fromString(review.getReviewer().getId());
-            UUID userId = UUID.fromString(user.getId());
+            UUID reviewerId = review.getReviewer().getId();
+            UUID userId = user.getId();
             if (reviewerId.equals(userId)) {
                 Spot spot = review.getSpot();
 
@@ -125,5 +127,68 @@ public class ReviewService {
                 throw new RuntimeException("You are not authorized to delete this comment.");
             }
         }));
+    }
+
+    public Review likeReview(UUID reviewId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication != null && authentication.getPrincipal() instanceof DefaultOAuth2User oauth2User) {
+            userEmail = oauth2User.getAttribute("email");
+        }
+
+        String userId = userRepository.findByEmail(userEmail).get().getEmail();
+
+        return reviewRepository.findById(reviewId)
+                .map(review -> {
+                    Set<String> likedByUsers = review.getLikedByUsers();
+                    Set<String> dislikedByUsers = review.getDislikedByUsers();
+
+                    if (likedByUsers.contains(userId)) {
+                        review.setLikes(review.getLikes() - 1);
+                        likedByUsers.remove(userId);
+                    } else {
+                        review.setLikes(review.getLikes() + 1);
+                        likedByUsers.add(userId);
+
+                        if (dislikedByUsers.contains(userId)) {
+                            review.setDislikes(review.getDislikes() - 1);
+                            dislikedByUsers.remove(userId);
+                        }
+                    }
+                    return reviewRepository.save(review);
+                })
+                .orElseThrow(() -> new RuntimeException("Review not found with ID: " + reviewId));
+    }
+
+    public Review dislikeReview(UUID reviewId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication != null && authentication.getPrincipal() instanceof DefaultOAuth2User oauth2User) {
+            userEmail = oauth2User.getAttribute("email");
+        }
+
+        String userId = userRepository.findByEmail(userEmail).get().getEmail();
+
+        return reviewRepository.findById(reviewId)
+                .map(comment -> {
+                    Set<String> likedByUsers = comment.getLikedByUsers();
+                    Set<String> dislikedByUsers = comment.getDislikedByUsers();
+
+                    if (dislikedByUsers.contains(userId)) {
+                        comment.setDislikes(comment.getDislikes() - 1);
+                        dislikedByUsers.remove(userId);
+                    } else {
+                        comment.setDislikes(comment.getDislikes() + 1);
+                        dislikedByUsers.add(userId);
+
+                        if (likedByUsers.contains(userId)) {
+                            comment.setLikes(comment.getLikes() - 1);
+                            likedByUsers.remove(userId);
+                        }
+                    }
+
+                    return reviewRepository.save(comment);
+                })
+                .orElseThrow(() -> new RuntimeException("Review not found with ID: " + reviewId));
     }
 }

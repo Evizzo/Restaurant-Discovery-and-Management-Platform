@@ -40,6 +40,7 @@ public class SpotDto {
     private Boolean hasFitnessMenu;
     private Boolean hasTakeout;
     private Boolean hasPosnaFood;
+    private Boolean hasBreakfast;
     private int reviewsCount;
     private SpotTypes spotType;
     private Set<MusicTypes> musicTypes;

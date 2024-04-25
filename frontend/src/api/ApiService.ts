@@ -28,6 +28,7 @@ export interface Spot {
     hasPosnaFood: boolean;
     reviewsCount: number;
     spotType: string;
+    hasBreakfast: boolean;
     musicTypes: string[];
     ambianceTypes: string[];
     cuisineTypes: string[];
@@ -43,6 +44,10 @@ export interface Spot {
     isEdited: boolean;
     date: Date;
     reviewer: User;
+    likes: number;
+    dislikes: number;
+    likedByUsers: string[];
+    dislikedByUsers: string[];
 }
 
 export interface User {
@@ -78,4 +83,12 @@ export const getAllReviewsForSpot = (spotId: string) => {
 
 export const deleteReview = (reviewId: string) => {
     return apiClient.delete(`/review/${reviewId}`);
+};
+
+export const likeReview = (reviewId: string) => {
+    return apiClient.put(`/review/${reviewId}/like`);
+};
+
+export const dislikeReview = (reviewId: string) => {
+    return apiClient.put(`/review/${reviewId}/dislike`);
 };

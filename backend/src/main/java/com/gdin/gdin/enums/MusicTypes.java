@@ -15,5 +15,6 @@ public enum MusicTypes {
     NARODNJACI,
     DUBSTEP,
     OPUŠTAJUČE,
-    INSTRUMENTAL
+    INSTRUMENTAL,
+    DRUGO
 }

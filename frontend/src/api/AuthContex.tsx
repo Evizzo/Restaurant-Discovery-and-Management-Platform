@@ -32,7 +32,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                 setRole(response.data.role)
                 setFirstname(response.data.firstname)
                 setLastname(response.data.firstname)
-                
+
                 return true            
             } else {
                 console.log("failed at authcontext 47")

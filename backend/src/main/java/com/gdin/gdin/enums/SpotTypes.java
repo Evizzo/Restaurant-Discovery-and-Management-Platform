@@ -9,6 +9,7 @@ public enum SpotTypes {
     CAFE,
     POSLASTIČARNICA,
     KAFANA,
-    PEKARA
+    PEKARA,
+    DRUGO
 }
 

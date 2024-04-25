@@ -38,4 +38,14 @@ public class ReviewController {
                 })
                 .orElseThrow(() -> new RuntimeException("Review not found." + reviewId));
     }
+
+    @PutMapping("/{reviewId}/like")
+    public ResponseEntity<Review> likeComment(@PathVariable UUID reviewId) {
+        return ResponseEntity.ok(reviewService.likeReview(reviewId));
+    }
+
+    @PutMapping("/{reviewId}/dislike")
+    public ResponseEntity<Review> dislikeComment(@PathVariable UUID reviewId) {
+        return ResponseEntity.ok(reviewService.dislikeReview(reviewId));
+    }
 }

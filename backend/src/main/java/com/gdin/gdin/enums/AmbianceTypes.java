@@ -12,5 +12,6 @@ public enum AmbianceTypes {
     OPUŠTAJUĆE,
     PORODIČNO,
     PRIRODA,
-    ZA_RAD
+    ZA_RAD,
+    DRUGO
 }

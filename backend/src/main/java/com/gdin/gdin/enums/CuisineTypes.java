@@ -16,5 +16,6 @@ public enum CuisineTypes {
     JAPANSKA,
     GRČKA,
     INDIJSKA,
-    TAJLANDSKA
+    TAJLANDSKA,
+    DRUGO
 }

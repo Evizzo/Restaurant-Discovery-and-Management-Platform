@@ -3,6 +3,8 @@ package com.gdin.gdin.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.validation.constraints.Max;
@@ -40,4 +42,16 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "reviewer_id")
     private User reviewer;
+
+    private Integer likes;
+    private Integer dislikes;
+
+    @ElementCollection
+    @CollectionTable(name = "review_likes", joinColumns = @JoinColumn(name = "review_id"))
+    @Column(name = "user_id")
+    private Set<String> likedByUsers = new HashSet<>();
+    @ElementCollection
+    @CollectionTable(name = "review_dislikes", joinColumns = @JoinColumn(name = "review_id"))
+    @Column(name = "user_id")
+    private Set<String> dislikedByUsers = new HashSet<>();
 }

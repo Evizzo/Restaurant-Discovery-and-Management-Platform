@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { addReviewToSpot, deleteReview, retrieveSpotById, Spot } from "../api/ApiService.ts";
+import { addReviewToSpot, deleteReview, dislikeReview, likeReview, retrieveSpotById, Spot } from "../api/ApiService.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,8 @@ import StarRating from './StarRating.tsx';
 import { useAuth } from "../api/AuthContex";
 import { useMediaQuery } from "react-responsive";
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp as solidThumbsUp, faThumbsDown as solidThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp as regularThumbsUp, faThumbsDown as regularThumbsDown } from '@fortawesome/free-regular-svg-icons';
 
 interface SpotPageProps {}
 
@@ -109,6 +111,26 @@ const SpotPage: React.FC<SpotPageProps> = () => {
     }
   }
 
+  const handleLike = async (reviewId: string) => {
+    try {
+      await likeReview(reviewId);
+      const updatedSpotResponse = await retrieveSpotById(spot.spotId);
+      setSpot(updatedSpotResponse.data);
+    } catch (error) {
+      console.error("Error liking review:", error);
+    }
+  };
+
+  const handleDislike = async (reviewId: string) => {
+    try {
+      await dislikeReview(reviewId);
+      const updatedSpotResponse = await retrieveSpotById(spot.spotId);
+      setSpot(updatedSpotResponse.data);
+    } catch (error) {
+      console.error("Error disliking review:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col items-center justify-center px-5 py-10">
       <div className={`${isMobile ? 'max-w-4xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8' : 'max-w-9xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8'}`}>
@@ -186,6 +208,9 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             <p className="text-lg mb-4">
               Posna hrana: {spot.hasPosnaFood ? "Da" : "Ne"}
             </p>
+            <p className="text-lg mb-4">
+              Doručak: {spot.hasBreakfast ? "Da" : "Ne"}
+            </p>
           </div>
         </div>
         </div>
@@ -260,6 +285,16 @@ const SpotPage: React.FC<SpotPageProps> = () => {
               </div>
             </div>
             <p className="text-gray-700" style={{ wordWrap: 'break-word' }}>{review.comment}</p>
+            <div className="flex items-center mt-2">
+              <button className="mr-2" onClick={() => handleLike(review.id)}>
+                <FontAwesomeIcon icon={review.likedByUsers.includes(authContext.email) ? solidThumbsUp : regularThumbsUp} />
+              </button>
+              <span>{review.likes}</span>
+              <button className="ml-2" onClick={() => handleDislike(review.id)}>
+                <FontAwesomeIcon icon={review.dislikedByUsers.includes(authContext.email) ? solidThumbsDown : regularThumbsDown} />
+              </button>
+              <span className="ml-2">{review.dislikes}</span>
+            </div>
             <br></br>
             {authContext.isAuthenticated && authContext.email === review.reviewer.email && (
             <div className="btn-group">
