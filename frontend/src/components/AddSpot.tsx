@@ -27,10 +27,10 @@ const AddSpot = () => {
     hasPosnaFood: false,
     hasBreakfast: false,
     spotType: '',
-    musicTypes: [],
-    ambianceTypes: [],
+    musicTypes: [] as string[],
+    ambianceTypes: [] as string[],
     cuisineTypes: [] as string[],
-    availableActivities: [],
+    availableActivities: [] as string[],
     specialties: [],
   });
   const toNormalCase = (str: string) => {
@@ -54,11 +54,89 @@ const AddSpot = () => {
       }
   };
 
+  const musicTypes = [
+    "BEZ_MUZIKE",
+    "POP",
+    "FOLK",
+    "HOUSE",
+    "HIP_HOP",
+    "TREP",
+    "REP",
+    "DISKO",
+    "OPERA",
+    "TEHNO",
+    "ROK",
+    "NARODNJACI",
+    "DUBSTEP",
+    "OPUŠTAJUĆE",
+    "INSTRUMENTAL",
+    "DRUGO"
+  ];  
+
   const cuisineTypes = [
     "PEČENO", "POHOVANO", "NA_PARI", "KUVANO", "DIMNJENO", "DOMAĆE",
     "ROŠTILJ", "MORSKA_HRANA", "ITALIJANSKA", "KINESKA", "MEKSIČKA",
     "FRANCUSKA", "JAPANSKA", "GRČKA", "INDIJSKA", "TAJLANDSKA", "DRUGO"
   ];
+  
+  const ambianceTypes = [
+    "ELEGANTNO",
+    "BIZNIS",
+    "ROMANTIČNO",
+    "MODERNO",
+    "ETNO",
+    "TIHO",
+    "MINIMALISTIČKI",
+    "URBANO",
+    "OPUŠTAJUĆE",
+    "PORODIČNO",
+    "PRIRODA",
+    "ZA_RAD",
+    "DRUGO"
+  ];
+  
+  const availableActivities = [
+    "BILIJAR",
+    "STONI_TENIS",
+    "PIKADO",
+    "DRUŠTVENE_IGRE",
+    "DEČIJA_IGRAONICA",
+    "KUGLANJE",
+    "UŽIVO_ZABAVA",
+    "KARAOKE"
+  ];
+
+  const handleAvailableActivitiesSelect = (availableActivitie: any) => {
+    if (!spotData.availableActivities.includes(availableActivitie)) {
+      setSpotData(prevSpotData => ({
+        ...prevSpotData,
+        availableActivities: [...prevSpotData.availableActivities, availableActivitie]
+      }));
+    }
+  };
+
+  const handleRemoveMusicTypes = (musicType: any) => {
+    setSpotData(prevSpotData => ({
+      ...prevSpotData,
+      musicTypes: prevSpotData.musicTypes.filter(type => type !== musicType)
+    }));
+  };
+
+  const handleAvailableMusicTypes = (musicType: any) => {
+    if (!spotData.musicTypes.includes(musicType)) {
+      setSpotData(prevSpotData => ({
+        ...prevSpotData,
+        musicTypes: [...prevSpotData.musicTypes, musicType]
+      }));
+    }
+  };
+
+  const handleRemoveAvailableActivities = (availableActivitie: any) => {
+    setSpotData(prevSpotData => ({
+      ...prevSpotData,
+      availableActivities: prevSpotData.availableActivities.filter(type => type !== availableActivitie)
+    }));
+  };
 
   const handleCuisineTypeSelect = (cuisineType: any) => {
     if (!spotData.cuisineTypes.includes(cuisineType)) {
@@ -76,6 +154,22 @@ const AddSpot = () => {
     }));
   };
   
+  const handleAmbianceTypeSelect = (ambianceType: any) => {
+    if (!spotData.ambianceTypes.includes(ambianceType)) {
+      setSpotData(prevSpotData => ({
+        ...prevSpotData,
+        ambianceTypes: [...prevSpotData.ambianceTypes, ambianceType]
+      }));
+    }
+  };
+
+  const handleRemoveAmbianceType = (ambianceType: any) => {
+    setSpotData(prevSpotData => ({
+      ...prevSpotData,
+      ambianceTypes: prevSpotData.ambianceTypes.filter(type => type !== ambianceType)
+    }));
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
@@ -328,7 +422,10 @@ const AddSpot = () => {
             </div>
           </div>
           <div className="mb-4">
-            {/* <h2 className="text-xl font-semibold mb-2">Izaberite tipove kuhinje</h2> */}
+            <br></br>
+            <hr></hr>
+            <br></br>
+            <h2 className="text-xl font-semibold mb-2">Izaberite tipove kuhinje</h2>
             <select className="border border-gray-300 rounded px-3 py-2 w-full" onChange={(e) => handleCuisineTypeSelect(e.target.value)}>
               <option value="">Izaberite tipove kuhinje</option>
               {cuisineTypes.map((cuisineType, index) => (
@@ -337,7 +434,7 @@ const AddSpot = () => {
             </select>
           </div>
           <div>
-            <h2 className="text-xl font-semibold mb-2">Izabrani tipovi kuhinje</h2>
+            <h3 className="text-xl font-semibold mb-2">Izabrani tipovi kuhinje</h3>
             {spotData.cuisineTypes.length === 0 && <p>Niste izabrali tipove kuhinje</p>}
             {spotData.cuisineTypes.map((cuisineType, index) => (
               <div key={index} className="flex items-center justify-between bg-gray-100 rounded-md px-3 py-2 mb-2">
@@ -346,6 +443,79 @@ const AddSpot = () => {
               </div>
             ))}
           </div>
+
+          <div className="mb-4">
+            <br></br>
+            <hr></hr>
+            <br></br>
+            <h2 className="text-xl font-semibold mb-2">Izaberite tipove ambijenta</h2>
+            <select className="border border-gray-300 rounded px-3 py-2 w-full" onChange={(e) => handleAmbianceTypeSelect(e.target.value)}>
+              <option value="">Izaberite tipove ambijenta</option>
+              {ambianceTypes.map((ambianceTypes, index) => (
+                <option key={index} value={ambianceTypes}>{toNormalCase(ambianceTypes)}</option>
+              ))}
+            </select>
+          </div>
+          <br></br>
+          <div>
+            <h3 className="text-xl font-semibold mb-2">Izabrani tipovi ambijenta</h3>
+            {spotData.ambianceTypes.length === 0 && <p>Niste izabrali tipove ambijenta</p>}
+            {spotData.ambianceTypes.map((ambianceTypes, index) => (
+              <div key={index} className="flex items-center justify-between bg-gray-100 rounded-md px-3 py-2 mb-2">
+                <span>{toNormalCase(ambianceTypes)}</span>
+                <button type="button" onClick={() => handleRemoveAmbianceType(ambianceTypes)} className="text-red-500 hover:text-red-700">X</button>
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <br></br>
+            <hr></hr>
+            <br></br>
+            <h2 className="text-xl font-semibold mb-2">Izaberite aktivnosti</h2>
+            <select className="border border-gray-300 rounded px-3 py-2 w-full" onChange={(e) => handleAvailableActivitiesSelect(e.target.value)}>
+              <option value="">Izaberite aktivnosti</option>
+              {availableActivities.map((availableActivities, index) => (
+                <option key={index} value={availableActivities}>{toNormalCase(availableActivities)}</option>
+              ))}
+            </select>
+          </div>
+          <br></br>
+          <div>
+            <h3 className="text-xl font-semibold mb-2">Izabrane aktivnosti</h3>
+            {spotData.availableActivities.length === 0 && <p>Niste izabrali aktivnosti</p>}
+            {spotData.availableActivities.map((availableActivities, index) => (
+              <div key={index} className="flex items-center justify-between bg-gray-100 rounded-md px-3 py-2 mb-2">
+                <span>{toNormalCase(availableActivities)}</span>
+                <button type="button" onClick={() => handleRemoveAvailableActivities(availableActivities)} className="text-red-500 hover:text-red-700">X</button>
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-4">
+            <br></br>
+            <hr></hr>
+            <br></br>
+            <h2 className="text-xl font-semibold mb-2">Izaberite tip muzike</h2>
+            <select className="border border-gray-300 rounded px-3 py-2 w-full" onChange={(e) => handleAvailableMusicTypes(e.target.value)}>
+              <option value="">Izaberite tip muzike</option>
+              {musicTypes.map((musicTypes, index) => (
+                <option key={index} value={musicTypes}>{toNormalCase(musicTypes)}</option>
+              ))}
+            </select>
+          </div>
+          <br></br>
+          <div>
+            <h3 className="text-xl font-semibold mb-2">Izabrani tipovi muzike</h3>
+            {spotData.musicTypes.length === 0 && <p>Niste izabrali tipove muzike</p>}
+            {spotData.musicTypes.map((musicTypes, index) => (
+              <div key={index} className="flex items-center justify-between bg-gray-100 rounded-md px-3 py-2 mb-2">
+                <span>{toNormalCase(musicTypes)}</span>
+                <button type="button" onClick={() => handleRemoveMusicTypes(musicTypes)} className="text-red-500 hover:text-red-700">X</button>
+              </div>
+            ))}
+          </div>
+
           <br></br>
           <br></br>
           <br></br>
