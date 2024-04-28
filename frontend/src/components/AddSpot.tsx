@@ -29,11 +29,15 @@ const AddSpot = () => {
     spotType: '',
     musicTypes: [],
     ambianceTypes: [],
-    cuisineTypes: [],
+    cuisineTypes: [] as string[],
     availableActivities: [],
     specialties: [],
   });
-
+  const toNormalCase = (str: string) => {
+    return str.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  };
   const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
     setSpotData({ ...spotData, [name]: type === 'checkbox' ? checked : value });
@@ -50,15 +54,37 @@ const AddSpot = () => {
       }
   };
 
+  const cuisineTypes = [
+    "PEČENO", "POHOVANO", "NA_PARI", "KUVANO", "DIMNJENO", "DOMAĆE",
+    "ROŠTILJ", "MORSKA_HRANA", "ITALIJANSKA", "KINESKA", "MEKSIČKA",
+    "FRANCUSKA", "JAPANSKA", "GRČKA", "INDIJSKA", "TAJLANDSKA", "DRUGO"
+  ];
+
+  const handleCuisineTypeSelect = (cuisineType: any) => {
+    if (!spotData.cuisineTypes.includes(cuisineType)) {
+      setSpotData(prevSpotData => ({
+        ...prevSpotData,
+        cuisineTypes: [...prevSpotData.cuisineTypes, cuisineType]
+      }));
+    }
+  };
+
+  const handleRemoveCuisineType = (cuisineType: any) => {
+    setSpotData(prevSpotData => ({
+      ...prevSpotData,
+      cuisineTypes: prevSpotData.cuisineTypes.filter(type => type !== cuisineType)
+    }));
+  };
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-semibold mb-4">Add a New Spot</h1>
+        <h1 className="text-3xl font-semibold mb-4">Dodajte objekat</h1>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Naziv
-            </label>
+
+          {/* Basic Information */}
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Ime</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -68,11 +94,8 @@ const AddSpot = () => {
               onChange={handleChange}
             />
           </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-              Opis
-            </label>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">Opis</label>
             <textarea
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               id="description"
@@ -81,11 +104,8 @@ const AddSpot = () => {
               onChange={handleChange}
             ></textarea>
           </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Grad
-            </label>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">Grad</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -95,11 +115,8 @@ const AddSpot = () => {
               onChange={handleChange}
             />
           </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Adresa
-            </label>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">Adresa</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -110,10 +127,9 @@ const AddSpot = () => {
             />
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Broj telefona:
-            </label>
+          {/* Contact Information */}
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Broj telefona</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -123,11 +139,8 @@ const AddSpot = () => {
               onChange={handleChange}
             />
           </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Email
-            </label>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -138,39 +151,9 @@ const AddSpot = () => {
             />
           </div>
 
-          {/* Example: Working Hours */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="workingHours">
-              Working Hours
-            </label>
-            <input
-              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
-              type="text"
-              id="workingHours"
-              name="workingHours"
-              value={spotData.workingHours}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Website
-            </label>
-            <input
-              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
-              type="text"
-              id="websiteUrl"
-              name="websiteUrl"
-              value={spotData.websiteUrl}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Link ka instagramu
-            </label>
+          {/* Social Media Links */}
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="instagram">Instagram</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -180,11 +163,8 @@ const AddSpot = () => {
               onChange={handleChange}
             />
           </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Link ka tiktoku
-            </label>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="tiktok">TikTok</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -194,11 +174,8 @@ const AddSpot = () => {
               onChange={handleChange}
             />
           </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Link ka facebooku
-            </label>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="facebook">Facebook</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -208,10 +185,10 @@ const AddSpot = () => {
               onChange={handleChange}
             />
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">
-              Spot Type
-            </label>
+
+          {/* Spot Details */}
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip mesta</label>
             <select
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               id="spotType"
@@ -219,177 +196,164 @@ const AddSpot = () => {
               value={spotData.spotType}
               onChange={handleChange}
             >
-              <option value="">Select Spot Type</option>
-              <option value="RESTORAN ">Restoran</option>
+              <option value="">Odaberite tip mesta</option>
+              <option value="RESTORAN">Restoran</option>
               <option value="BRZA_HRANA">Brza hrana</option>
               <option value="BAR">Bar</option>
-              <option value="KAFIĆ">Kafić</option>
+              <option value="CAFE">Cafe</option>
               <option value="PUB">Pub</option>
-              <option value="CAFE">Kafe</option>
-              <option value="POSLASTIČARNICA">Poslastičarnica</option>
-              <option value="KAFANA">Kafana</option>
-              <option value="PEKARA">Pekara</option>
-              <option value="DRUGO">Drugo</option>
+              {/* Add other spot types */}
             </select>
           </div>
-          
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Dvorište
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="outdoorSeating"
-              name="outdoorSeating"
-              checked={spotData.outdoorSeating}
-              onChange={handleChange}
-            />
+
+          {/* Facilities */}
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Odlike</label>
+            <div className="space-y-2">
+              <label htmlFor="outdoorSeating" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="outdoorSeating"
+                  name="outdoorSeating"
+                  checked={spotData.outdoorSeating}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Dvorište</span>
+              </label>
+              <label htmlFor="wifiAvailable" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="wifiAvailable"
+                  name="wifiAvailable"
+                  checked={spotData.wifiAvailable}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Wi-Fi</span>
+              </label>
+              <label htmlFor="parking" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="parking"
+                  name="parking"
+                  checked={spotData.parking}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Parking</span>
+              </label>
+              <label htmlFor="petsAllowed" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="petsAllowed"
+                  name="petsAllowed"
+                  checked={spotData.petsAllowed}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Dozvoljeni ljubimci</span>
+              </label>
+            </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Dostupan wifi
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="wifiAvailable"
-              name="wifiAvailable"
-              checked={spotData.wifiAvailable}
-              onChange={handleChange}
-            />
+          {/* Special Dietary Options */}
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2">Poseban tip hrane</label>
+            <div className="space-y-2">
+              <label htmlFor="hasSpecialDietaryOptionVegetarian" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="hasSpecialDietaryOptionVegetarian"
+                  name="hasSpecialDietaryOptionVegetarian"
+                  checked={spotData.hasSpecialDietaryOptionVegetarian}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Vegeterianska</span>
+              </label>
+              <label htmlFor="hasSpecialDietaryOptionVegan" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="hasSpecialDietaryOptionVegan"
+                  name="hasSpecialDietaryOptionVegan"
+                  checked={spotData.hasSpecialDietaryOptionVegan}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Veganska</span>
+              </label>
+              <label htmlFor="hasSpecialDietaryOptionGlutenFree" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="hasSpecialDietaryOptionGlutenFree"
+                  name="hasSpecialDietaryOptionGlutenFree"
+                  checked={spotData.hasSpecialDietaryOptionGlutenFree}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Bez glutena</span>
+              </label>
+              <label htmlFor="hasPosnaFood" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="hasPosnaFood"
+                  name="hasPosnaFood"
+                  checked={spotData.hasPosnaFood}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Posna hrana</span>
+              </label>
+              <label htmlFor="hasBreakfast" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="hasBreakfast"
+                  name="hasBreakfast"
+                  checked={spotData.hasBreakfast}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Doručak</span>
+              </label>
+              <label htmlFor="hasFitnessMenu" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="hasFitnessMenu"
+                  name="hasFitnessMenu"
+                  checked={spotData.hasFitnessMenu}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Fitnes meni</span>
+              </label>
+            </div>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Parking
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="parking"
-              name="parking"
-              checked={spotData.parking}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Dozvoljeni ljubimci
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="petsAllowed"
-              name="petsAllowed"
-              checked={spotData.petsAllowed}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Vegeterianska hrana
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="hasSpecialDietaryOptionVegetarian"
-              name="hasSpecialDietaryOptionVegetarian"
-              checked={spotData.hasSpecialDietaryOptionVegetarian}
-              onChange={handleChange}
-            />
+          {/* Additional Options */}
+          <div className="mb-6">
+            {/* <label className="block text-gray-700 text-sm font-bold mb-2">Additional Options</label> */}
+            <div className="space-y-2">
+              {/* Add additional options here */}
+            </div>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Veganska hrana
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="hasSpecialDietaryOptionVegan"
-              name="hasSpecialDietaryOptionVegan"
-              checked={spotData.hasSpecialDietaryOptionVegan}
-              onChange={handleChange}
-            />
+            {/* <h2 className="text-xl font-semibold mb-2">Izaberite tipove kuhinje</h2> */}
+            <select className="border border-gray-300 rounded px-3 py-2 w-full" onChange={(e) => handleCuisineTypeSelect(e.target.value)}>
+              <option value="">Izaberite tipove kuhinje</option>
+              {cuisineTypes.map((cuisineType, index) => (
+                <option key={index} value={cuisineType}>{toNormalCase(cuisineType)}</option>
+              ))}
+            </select>
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Gluten free
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="hasSpecialDietaryOptionGlutenFree"
-              name="hasSpecialDietaryOptionGlutenFree"
-              checked={spotData.hasSpecialDietaryOptionGlutenFree}
-              onChange={handleChange}
-            />
+          <div>
+            <h2 className="text-xl font-semibold mb-2">Izabrani tipovi kuhinje</h2>
+            {spotData.cuisineTypes.length === 0 && <p>Niste izabrali tipove kuhinje</p>}
+            {spotData.cuisineTypes.map((cuisineType, index) => (
+              <div key={index} className="flex items-center justify-between bg-gray-100 rounded-md px-3 py-2 mb-2">
+                <span>{toNormalCase(cuisineType)}</span>
+                <button type="button" onClick={() => handleRemoveCuisineType(cuisineType)} className="text-red-500 hover:text-red-700">X</button>
+              </div>
+            ))}
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Fitnes meni
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="hasFitnessMenu"
-              name="hasFitnessMenu"
-              checked={spotData.hasFitnessMenu}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Posna hrana
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="hasPosnaFood"
-              name="hasPosnaFood"
-              checked={spotData.hasPosnaFood}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">
-              Doručak
-            </label>
-            <input
-              className="mr-2 leading-tight"
-              type="checkbox"
-              id="hasBreakfast"
-              name="hasBreakfast"
-              checked={spotData.hasBreakfast}
-              onChange={handleChange}
-            />
-          </div>
-
-          {/* Example: Reviews Count */}
-          {/* <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="reviewsCount">
-              Reviews Count
-            </label>
-            <input
-              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
-              type="number"
-              id="reviewsCount"
-              name="reviewsCount"
-              value={spotData.workingHours}
-              onChange={handleChange}
-            />
-          </div> */}
-
-          {/* Repeat similar blocks for other properties */}
-          
+          <br></br>
+          <br></br>
+          <br></br>
           <button
             className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Submit
+            Pošalji
           </button>
         </form>
       </div>
