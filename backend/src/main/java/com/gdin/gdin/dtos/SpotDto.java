@@ -23,7 +23,8 @@ public class SpotDto {
     private String address;
     private String googleMapsUrl;
     private String websiteUrl;
-    private String workingHours;
+    private int workingFrom;
+    private int workingTo;
     private Boolean alwaysOpen;
     private String phoneNumber;
     private String email;
@@ -46,7 +47,6 @@ public class SpotDto {
     private Set<AmbianceTypes> ambianceTypes;
     private Set<CuisineTypes> cuisineTypes;
     private Set<AvailableActivities> availableActivities;
-    private Set<String> specialties;
     private List<ReviewDto> reviews;
     private UserDto owner;
 }

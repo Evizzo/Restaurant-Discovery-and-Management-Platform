@@ -9,7 +9,8 @@ export interface Spot {
     address: string;
     googleMapsUrl: string;
     websiteUrl: string;
-    workingHours: string;
+    workingFrom: number;
+    workingTo: number;
     alwaysOpen: boolean;
     phoneNumber: string;
     email: string;
@@ -32,7 +33,6 @@ export interface Spot {
     ambianceTypes: string[];
     cuisineTypes: string[];
     availableActivities: string[];
-    specialties: string[];
     reviews: Review[];
   }
 
@@ -58,6 +58,30 @@ export interface User {
     provider: string;
     pictureUrl: string;
 }
+
+export interface SearchParams {
+    [key: string]: string | number | boolean | string[] | number[] | boolean[] | undefined;
+    name?: string;
+    city?: string;
+    workingFrom?: number;
+    workingTo?: number;
+    alwaysOpen?: boolean;
+    outdoorSeating?: boolean;
+    wifiAvailable?: boolean;
+    parking?: boolean;
+    petsAllowed?: boolean;
+    hasSpecialDietaryOptionVegetarian?: boolean;
+    hasSpecialDietaryOptionVegan?: boolean;
+    hasSpecialDietaryOptionGlutenFree?: boolean;
+    hasFitnessMenu?: boolean;
+    hasPosnaFood?: boolean;
+    hasBreakfast?: boolean;
+    spotType?: string;
+    musicTypes?: string[];
+    ambianceTypes?: string[];
+    cuisineTypes?: string[];
+    availableActivities?: string[];
+  }  
 
 export const retrieveAllSpots = () => 
     apiClient.get(`/spot`)
@@ -95,3 +119,8 @@ export const dislikeReview = (reviewId: string) => {
 export const addSpot = (spot: any) => {
     return apiClient.post(`/spot`, spot);
 }
+
+export const searchSpots = (params: SearchParams) => {
+    return apiClient.get('/spot/search', { params });
+  };
+  

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { addSpot } from '../api/ApiService';
 
 const AddSpot = () => {
+  const [message,setMessage] = useState("")
   const [spotData, setSpotData] = useState({
     name: '',
     description: '',
@@ -9,7 +10,8 @@ const AddSpot = () => {
     address: '',
     googleMapsUrl: '',
     websiteUrl: '',
-    workingHours: '',
+    workingFrom: '',
+    workingTo: '',
     alwaysOpen: false,
     phoneNumber: '',
     email: '',
@@ -31,7 +33,6 @@ const AddSpot = () => {
     ambianceTypes: [] as string[],
     cuisineTypes: [] as string[],
     availableActivities: [] as string[],
-    specialties: [],
   });
   const toNormalCase = (str: string) => {
     return str.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => {
@@ -48,9 +49,41 @@ const AddSpot = () => {
     console.log('Submitted data:', spotData);
     try {
         const response = await addSpot(spotData);
+        setMessage("Uspešno ste dodali Vaš objekat !")
+        setSpotData({
+          name: '',
+          description: '',
+          city: '',
+          address: '',
+          googleMapsUrl: '',
+          websiteUrl: '',
+          workingFrom: '',
+          workingTo: '',
+          alwaysOpen: false,
+          phoneNumber: '',
+          email: '',
+          instagram: '',
+          tiktok: '',
+          facebook: '',
+          outdoorSeating: false,
+          wifiAvailable: false,
+          parking: false,
+          petsAllowed: false,
+          hasSpecialDietaryOptionVegetarian: false,
+          hasSpecialDietaryOptionVegan: false,
+          hasSpecialDietaryOptionGlutenFree: false,
+          hasFitnessMenu: false,
+          hasPosnaFood: false,
+          hasBreakfast: false,
+          spotType: '',
+          musicTypes: [],
+          ambianceTypes: [],
+          cuisineTypes: [],
+          availableActivities: [],
+        });
         console.log('Add Spot response:', response); 
-      } catch (error) {
-        console.error('Error adding spot:', error);
+      } catch (error: any) {
+        setMessage(error.response.data.message)
       }
   };
 
@@ -176,7 +209,6 @@ const AddSpot = () => {
         <h1 className="text-3xl font-semibold mb-4">Dodajte objekat</h1>
         <form onSubmit={handleSubmit}>
 
-          {/* Basic Information */}
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Ime</label>
             <input
@@ -197,6 +229,37 @@ const AddSpot = () => {
               value={spotData.description}
               onChange={handleChange}
             ></textarea>
+          </div>
+          <input
+            className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+            type="text"
+            id="workingFrom"
+            name="workingFrom"
+            value={spotData.workingFrom}
+            onChange={handleChange}
+            disabled={spotData.alwaysOpen}
+            placeholder="HH:MM" 
+          />
+
+          <input
+            className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+            type="text"
+            id="workingTo"
+            name="workingTo"
+            value={spotData.workingTo}
+            onChange={handleChange}
+            disabled={spotData.alwaysOpen}
+            placeholder="HH:MM"
+          />
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">24/7</label>
+            <input
+              type="checkbox"
+              id="alwaysOpen"
+              name="alwaysOpen"
+              checked={spotData.alwaysOpen}
+              onChange={handleChange}
+            />
           </div>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">Grad</label>
@@ -221,7 +284,6 @@ const AddSpot = () => {
             />
           </div>
 
-          {/* Contact Information */}
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">Broj telefona</label>
             <input
@@ -245,7 +307,6 @@ const AddSpot = () => {
             />
           </div>
 
-          {/* Social Media Links */}
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="instagram">Instagram</label>
             <input
@@ -280,7 +341,6 @@ const AddSpot = () => {
             />
           </div>
 
-          {/* Spot Details */}
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip mesta</label>
             <select
@@ -296,11 +356,9 @@ const AddSpot = () => {
               <option value="BAR">Bar</option>
               <option value="CAFE">Cafe</option>
               <option value="PUB">Pub</option>
-              {/* Add other spot types */}
             </select>
           </div>
 
-          {/* Facilities */}
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2">Odlike</label>
             <div className="space-y-2">
@@ -347,7 +405,6 @@ const AddSpot = () => {
             </div>
           </div>
 
-          {/* Special Dietary Options */}
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2">Poseban tip hrane</label>
             <div className="space-y-2">
@@ -414,11 +471,9 @@ const AddSpot = () => {
             </div>
           </div>
 
-          {/* Additional Options */}
           <div className="mb-6">
             {/* <label className="block text-gray-700 text-sm font-bold mb-2">Additional Options</label> */}
             <div className="space-y-2">
-              {/* Add additional options here */}
             </div>
           </div>
           <div className="mb-4">
@@ -517,6 +572,19 @@ const AddSpot = () => {
           </div>
 
           <br></br>
+          {message && (
+          <div className="flex items-center bg-yellow-100 rounded-lg p-3 mb-4">
+            <div className="text-yellow-800">
+              <svg className="h-6 w-6 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 8v4m0 4h.01"></path>
+              </svg>
+            </div>
+            <div className="text-yellow-700">
+              <p className="font-bold">Obaveštenje:</p>
+              <p>{message}</p>
+            </div>
+          </div>
+        )}  
           <br></br>
           <br></br>
           <button

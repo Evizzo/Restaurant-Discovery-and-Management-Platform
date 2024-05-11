@@ -154,10 +154,11 @@ const SpotPage: React.FC<SpotPageProps> = () => {
               <strong>Lokacija:</strong> {spot.city}, {spot.address}
             </p>
             <p className="text-lg mb-4">
-              <strong>Telefon:</strong> {spot.phoneNumber}
+              <strong>Tpelefon:</strong> {spot.phoneNumber}
             </p>
             <p className="text-lg mb-4">
-              <strong>Radno vreme:</strong> {spot.workingHours}
+              <strong>Radno vreme:</strong>{" "}
+              {spot.alwaysOpen ? "24/7" : `${spot.workingFrom} - ${spot.workingTo}`}
             </p>
           </div>
           <div className={`${isMobile ? '' : 'border-r border-gray-300 pr-4'}`}>
@@ -172,9 +173,6 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             </p>
             <p className="text-lg mb-4">
               <strong>Dostupne aktivnosti:</strong> {toNormalCase(spot.availableActivities.join(", "))}
-            </p>
-            <p className="text-lg mb-4">
-              <strong>Specijaliteti:</strong> {spot.specialties.join(", ")}
             </p>
           </div>
           <div>

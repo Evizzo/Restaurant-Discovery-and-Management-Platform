@@ -1,13 +1,16 @@
 package com.gdin.gdin.services;
 
+import com.gdin.gdin.config.SpotSpecification;
 import com.gdin.gdin.dtos.ReviewDto;
 import com.gdin.gdin.dtos.SpotDto;
 import com.gdin.gdin.dtos.UserDto;
 import com.gdin.gdin.entities.Spot;
 import com.gdin.gdin.entities.User;
+import com.gdin.gdin.enums.*;
 import com.gdin.gdin.repositories.SpotRepository;
 import com.gdin.gdin.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -48,7 +52,8 @@ public class SpotService {
                 .address(spot.getAddress())
                 .googleMapsUrl(spot.getGoogleMapsUrl())
                 .websiteUrl(spot.getWebsiteUrl())
-                .workingHours(spot.getWorkingHours())
+                .workingFrom(spot.getWorkingFrom())
+                .workingTo(spot.getWorkingTo())
                 .alwaysOpen(spot.getAlwaysOpen())
                 .phoneNumber(spot.getPhoneNumber())
                 .email(spot.getEmail())
@@ -69,7 +74,6 @@ public class SpotService {
                 .ambianceTypes(spot.getAmbianceTypes())
                 .cuisineTypes(spot.getCuisineTypes())
                 .availableActivities(spot.getAvailableActivities())
-                .specialties(spot.getSpecialties())
                 .reviewsCount(spot.getReviewsCount())
                 .hasBreakfast(spot.getHasBreakfast())
                 .reviews(reviews)
@@ -93,5 +97,41 @@ public class SpotService {
         user.ifPresent(spot::setOwner);
 
         return spotRepository.save(spot);
+    }
+
+    public List<SpotDto> searchSpots(
+            String name,
+            String city,
+            Integer workingFrom,
+            Integer workingTo,
+            Boolean alwaysOpen,
+            Boolean outdoorSeating,
+            Boolean wifiAvailable,
+            Boolean parking,
+            Boolean petsAllowed,
+            Boolean hasSpecialDietaryOptionVegetarian,
+            Boolean hasSpecialDietaryOptionVegan,
+            Boolean hasSpecialDietaryOptionGlutenFree,
+            Boolean hasFitnessMenu,
+            Boolean hasPosnaFood,
+            Boolean hasBreakfast,
+            SpotTypes spotType,
+            Set<MusicTypes> musicTypes,
+            Set<AmbianceTypes> ambianceTypes,
+            Set<CuisineTypes> cuisineTypes,
+            Set<AvailableActivities> availableActivities) {
+
+        Specification<Spot> spec = SpotSpecification.searchSpot(
+                name, city, workingFrom, workingTo, alwaysOpen,
+                outdoorSeating, wifiAvailable, parking,
+                petsAllowed, hasSpecialDietaryOptionVegetarian, hasSpecialDietaryOptionVegan,
+                hasSpecialDietaryOptionGlutenFree, hasFitnessMenu, hasPosnaFood, hasBreakfast,
+                spotType, musicTypes, ambianceTypes, cuisineTypes, availableActivities);
+
+        List<Spot> spots = spotRepository.findAll(spec);
+
+        return spots.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 }

@@ -29,7 +29,8 @@ public class Spot {
     private String address;
     private String googleMapsUrl;
     private String websiteUrl;
-    private String workingHours;
+    private int workingFrom;
+    private int workingTo;
     private Boolean alwaysOpen;
     private String phoneNumber;
     private String email;
@@ -66,9 +67,6 @@ public class Spot {
     @ElementCollection(targetClass = AvailableActivities.class)
     @Enumerated(EnumType.STRING)
     private Set<AvailableActivities> availableActivities;
-
-    @ElementCollection(targetClass = String.class)
-    private Set<String> specialties;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "spot_id")
