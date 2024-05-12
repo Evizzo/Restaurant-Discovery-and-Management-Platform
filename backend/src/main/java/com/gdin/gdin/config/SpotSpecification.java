@@ -9,6 +9,10 @@ import java.util.Set;
 
 public class SpotSpecification {
 
+    private static boolean isNotBlank(String str) {
+        return str != null && !str.trim().isEmpty();
+    }
+
     public static Specification<Spot> searchSpot(
             String name,
             String city,
@@ -34,21 +38,21 @@ public class SpotSpecification {
         return (root, query, builder) -> {
             Predicate predicate = builder.conjunction();
 
-            if (name != null) {
+            if (isNotBlank(name)) {
                 predicate = builder.and(predicate, builder.like(root.get("name"), "%" + name + "%"));
             }
 
-            if (city != null) {
+            if (isNotBlank(city)) {
                 predicate = builder.and(predicate, builder.equal(root.get("city"), city));
             }
 
-            if (workingFrom != null) {
-                predicate = builder.and(predicate, builder.equal(root.get("workingFrom"), workingFrom));
-            }
-
-            if (workingTo != null) {
-                predicate = builder.and(predicate, builder.equal(root.get("workingTo"), workingTo));
-            }
+//            if (workingFrom != null) {
+//                predicate = builder.and(predicate, builder.equal(root.get("workingFrom"), workingFrom));
+//            }
+//
+//            if (workingTo != null) {
+//                predicate = builder.and(predicate, builder.equal(root.get("workingTo"), workingTo));
+//            }
 
             if (alwaysOpen != null && alwaysOpen) {
                 predicate = builder.and(predicate, builder.equal(root.get("alwaysOpen"), alwaysOpen));

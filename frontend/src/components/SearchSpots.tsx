@@ -3,6 +3,7 @@ import { SearchParams, searchSpots, Spot } from "../api/ApiService.ts";
 import Card from "../layouts/Card.tsx";
 
 const SearchSpots: React.FC = () => {
+  const [message,setMessage] = useState("")
   const [spots, setSpots] = useState<Spot[]>([]);
   const [searchParams, setSearchParams] = useState<SearchParams>({
     name: "",
@@ -36,8 +37,14 @@ const SearchSpots: React.FC = () => {
       const response = await searchSpots(searchParams);
       setSpots(response.data);
       console.log(response)
+      if (response.data.length === 0) {
+        setMessage("Mesta nisu pronadjena.");
+      } else {
+        setMessage("");
+      }
     } catch (error) {
       console.error("Error fetching spots:", error);
+      setMessage("Mesta nisu pronadjena.")
     }
   };
 
@@ -78,7 +85,7 @@ const SearchSpots: React.FC = () => {
               placeholder="City"
               className="input-field"
             />
-            <input
+            {/* <input
               type="text"
               name="workingFrom"
               value={searchParams.workingFrom}
@@ -93,7 +100,7 @@ const SearchSpots: React.FC = () => {
               onChange={handleInputChange}
               placeholder="Working To"
               className="input-field"
-            />
+            /> */}
             <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
@@ -118,6 +125,20 @@ const SearchSpots: React.FC = () => {
           <button type="submit" className="btn-primary w-full mt-6">Search</button>
         </form>
       </div>
+      <br></br>
+      {message && (
+          <div className="flex items-center bg-yellow-100 rounded-lg p-3 mb-4">
+            <div className="text-yellow-800">
+              <svg className="h-6 w-6 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 8v4m0 4h.01"></path>
+              </svg>
+            </div>
+            <div className="text-yellow-700">
+              <p className="font-bold">Obaveštenje:</p>
+              <p>{message}</p>
+            </div>
+          </div>
+        )} 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
         {spots.map((spot: Spot) => (
           <div key={spot.spotId}>
