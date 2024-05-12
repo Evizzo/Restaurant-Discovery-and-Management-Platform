@@ -9,7 +9,7 @@ interface StarRatingProps {
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ maxStars, initialRating = 0 }) => {
-  const [rating, setRating] = useState(initialRating || 0);
+  const [rating, _setRating] = useState(initialRating || 0);
 
   return (
     <div>
