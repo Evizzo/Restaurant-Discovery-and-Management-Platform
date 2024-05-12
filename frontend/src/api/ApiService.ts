@@ -34,6 +34,7 @@ export interface Spot {
     cuisineTypes: string[];
     availableActivities: string[];
     reviews: Review[];
+    totalReview: number;
   }
 
   export interface Review {

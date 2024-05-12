@@ -48,6 +48,7 @@ public class Spot {
     private Boolean hasPosnaFood;
     private Boolean hasBreakfast;
     private int reviewsCount;
+    private int totalReview;
 
     @Enumerated(EnumType.STRING)
     private SpotTypes spotType;

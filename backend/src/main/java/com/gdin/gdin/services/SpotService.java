@@ -78,6 +78,7 @@ public class SpotService {
                 .hasBreakfast(spot.getHasBreakfast())
                 .reviews(reviews)
                 .owner(owner)
+                .totalReview(spot.getTotalReview())
 //                .reviews(spot.getReviews().stream()
 //                        .map(reviewService::convertReviewToDto)
 //                        .collect(Collectors.toSet()))
@@ -94,6 +95,7 @@ public class SpotService {
         Optional<User> user = userRepository.findByEmail(userEmail);
 
         spot.setReviewsCount(0);
+        spot.setTotalReview(0);
         user.ifPresent(spot::setOwner);
 
         return spotRepository.save(spot);

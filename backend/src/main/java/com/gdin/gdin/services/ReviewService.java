@@ -25,6 +25,23 @@ public class ReviewService {
     private final SpotRepository spotRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+
+    public void calculateTotalReview(Spot spot) {
+        int totalReview = 0;
+        List<Review> reviews = spotRepository.findReviewsBySpotId(spot.getSpotId());
+
+        for (Review review : reviews) {
+            totalReview += review.getTotalRating();
+        }
+
+        if (!reviews.isEmpty()) {
+            totalReview /= reviews.size();
+        }
+
+        spot.setTotalReview(totalReview);
+        spotRepository.updateTotalReview(spot.getSpotId(), totalReview);
+    }
+
     public ReviewDto convertReviewToDto(Review review) {
         UserDto reviewerDto = userService.convertToDto(review.getReviewer());
 
@@ -71,9 +88,12 @@ public class ReviewService {
             review.setLikes(0);
             review.setDislikes(0);
 
+            Review newReview = reviewRepository.save(review);
+
+            calculateTotalReview(spot);
             spotRepository.incrementReviewCount(spotId);
 
-            return reviewRepository.save(review);
+            return newReview;
         } else {
             throw new RuntimeException("User or review not found");
         }
@@ -120,9 +140,11 @@ public class ReviewService {
             if (reviewerId.equals(userId)) {
                 Spot spot = review.getSpot();
 
-                spotRepository.decrementReviewCount(spot.getSpotId());
 
                 reviewRepository.deleteById(id);
+
+                spotRepository.decrementReviewCount(spot.getSpotId());
+                calculateTotalReview(spot);
             } else {
                 throw new RuntimeException("You are not authorized to delete this comment.");
             }

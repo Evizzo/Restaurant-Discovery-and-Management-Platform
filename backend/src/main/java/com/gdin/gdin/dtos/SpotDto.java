@@ -49,4 +49,5 @@ public class SpotDto {
     private Set<AvailableActivities> availableActivities;
     private List<ReviewDto> reviews;
     private UserDto owner;
+    private int totalReview;
 }

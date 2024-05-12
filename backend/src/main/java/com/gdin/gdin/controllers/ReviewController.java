@@ -19,6 +19,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/{spotId}")
+    @Transactional
     public ResponseEntity<Review> saveReview(@Valid @RequestBody Review review, @PathVariable UUID spotId){
         return ResponseEntity.ok(reviewService.saveReview(review, spotId));
     }

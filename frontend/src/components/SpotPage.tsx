@@ -13,6 +13,7 @@ import { useMediaQuery } from "react-responsive";
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as solidThumbsUp, faThumbsDown as solidThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as regularThumbsUp, faThumbsDown as regularThumbsDown } from '@fortawesome/free-regular-svg-icons';
+import ShowStarRating from "./ShowStarRating.tsx";
 
 interface SpotPageProps {}
 
@@ -76,7 +77,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
     setReviewForm({ ...reviewForm, [name]: value});
     setCharCount(value.length);
   };
-  // reviewForm.totalRating
+
   const submitReview = async () => {
     try {
       await addReviewToSpot(spot.spotId, reviewForm);
@@ -142,6 +143,11 @@ const SpotPage: React.FC<SpotPageProps> = () => {
           <div className="md:flex-grow">
             <h1 className="font-semibold text-4xl text-gray-800 mb-4">{spot.name} ({spot.reviewsCount})</h1>
             <p className="text-lg text-gray-700 mb-6">{spot.description}</p>
+            <p className="text-lg text-gray-700 mb-6">Rating: </p> <ShowStarRating
+              key={spot.totalReview}
+            maxStars={5}
+            initialRating={spot.totalReview}
+          />
           </div>
         </div>
         <div className="flex justify-center items-center mt-4">
@@ -222,6 +228,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             Ocenite:
           </label>
           <StarRating
+            key={reviewForm.totalRating}
             maxStars={5}
             initialRating={reviewForm.totalRating}
             onChange={(rating: any) => handleRatingChange(rating, 'totalRating')}
