@@ -213,4 +213,34 @@ public class ReviewService {
                 })
                 .orElseThrow(() -> new RuntimeException("Review not found with ID: " + reviewId));
     }
+
+    public Review updateReview(UUID reviewId, ReviewDto updatedReviewDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication != null && authentication.getPrincipal() instanceof DefaultOAuth2User oauth2User) {
+            userEmail = oauth2User.getAttribute("email");
+        }
+
+        String userId = userRepository.findByEmail(userEmail).get().getEmail();
+
+        return reviewRepository.findById(reviewId)
+                .map(review -> {
+                    if (review.getReviewer().getEmail().equals(userId)) {
+                        if (updatedReviewDto.getTotalRating() != null) {
+                            review.setTotalRating(updatedReviewDto.getTotalRating());
+                        }
+                        if (updatedReviewDto.getComment() != null) {
+                            review.setComment(updatedReviewDto.getComment());
+                        }
+                        review.setDate(LocalDateTime.now());
+                        review.setEdited(true);
+
+                        return reviewRepository.save(review);
+                    } else {
+                        throw new RuntimeException("You are not authorized to update this review.");
+                    }
+                })
+                .orElseThrow(() -> new RuntimeException("Review not found with ID: " + reviewId));
+    }
+
 }

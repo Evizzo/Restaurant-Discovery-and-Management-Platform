@@ -49,4 +49,11 @@ public class ReviewController {
     public ResponseEntity<Review> dislikeReview(@PathVariable UUID reviewId) {
         return ResponseEntity.ok(reviewService.dislikeReview(reviewId));
     }
+
+    @PutMapping("/{reviewId}")
+    public ResponseEntity<Review> updateReview(@PathVariable UUID reviewId, @Valid @RequestBody ReviewDto updatedReviewDto) {
+        Review updatedReview = reviewService.updateReview(reviewId, updatedReviewDto);
+        return ResponseEntity.ok(updatedReview);
+    }
+
 }

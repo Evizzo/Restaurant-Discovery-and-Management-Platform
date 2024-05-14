@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class ReviewDto {
     private UUID id;
 
-    private int totalRating;
+    private Integer totalRating;
     private String comment;
     private LocalDateTime date;
     private boolean isEdited;

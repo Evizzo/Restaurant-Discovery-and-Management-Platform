@@ -125,3 +125,7 @@ export const searchSpots = (params: SearchParams) => {
     return apiClient.get('/spot/search', { params });
   };
   
+export const updateReview = (reviewId: string, updatedReview: any) => {
+    return apiClient.put(`/review/${reviewId}`, updatedReview);
+};
+  

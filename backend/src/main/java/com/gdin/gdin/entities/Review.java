@@ -27,7 +27,7 @@ public class Review {
     private UUID id;
     @Max(value = 5, message = "Ocena ne sme da prelazi 5 !")
     @Min(value = 1, message = "Ocena ne sme da bude manja od 1 !")
-    private int totalRating;
+    private Integer totalRating;
 //    @Max(value = 5, message = "Ocena ne sme da prelazi 5 !")
 //    @Min(value = 1, message = "Ocena ne sme da bude manja od 1 !")
 //    private int hygieneRating;

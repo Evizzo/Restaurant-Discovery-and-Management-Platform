@@ -23,8 +23,8 @@ public class SpotDto {
     private String address;
     private String googleMapsUrl;
     private String websiteUrl;
-    private int workingFrom;
-    private int workingTo;
+    private Integer workingFrom;
+    private Integer workingTo;
     private Boolean alwaysOpen;
     private String phoneNumber;
     private String email;

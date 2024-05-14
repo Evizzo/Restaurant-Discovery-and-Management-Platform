@@ -70,4 +70,15 @@ public class SpotController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasAuthority('spot_owner:update')")
+    @PutMapping("/{spotId}")
+    public ResponseEntity<SpotDto> updateSpot(@PathVariable UUID spotId, @Valid @RequestBody SpotDto updatedSpotDto) {
+        SpotDto updatedSpot = spotService.updateSpot(spotId, updatedSpotDto);
+        if (updatedSpot != null) {
+            return ResponseEntity.ok(updatedSpot);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
