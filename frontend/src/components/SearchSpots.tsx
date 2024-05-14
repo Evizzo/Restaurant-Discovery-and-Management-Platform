@@ -150,6 +150,7 @@ const SearchSpots: React.FC = () => {
               spotId={spot.spotId}
               workingFrom={spot.workingFrom}
               workingTo={spot.workingTo}
+              rating={spot.totalReview}
             />
           </div>
         ))}

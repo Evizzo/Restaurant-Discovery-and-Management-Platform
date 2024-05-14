@@ -235,7 +235,11 @@ public class ReviewService {
                         review.setDate(LocalDateTime.now());
                         review.setEdited(true);
 
-                        return reviewRepository.save(review);
+                        Review updReview = reviewRepository.save(review);
+
+                        calculateTotalReview(review.getSpot());
+
+                        return updReview;
                     } else {
                         throw new RuntimeException("You are not authorized to update this review.");
                     }

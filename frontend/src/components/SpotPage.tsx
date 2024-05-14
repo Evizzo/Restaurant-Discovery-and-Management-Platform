@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { addReviewToSpot, deleteReview, dislikeReview, likeReview, retrieveSpotById, Spot } from "../api/ApiService.ts";
+import { addReviewToSpot, deleteReview, dislikeReview, likeReview, retrieveSpotById, Spot, updateReview } from "../api/ApiService.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
@@ -28,6 +28,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
   });
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [message,setMessage] = useState("")
+  const [editingReview, setEditingReview] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSpot = async () => {
@@ -48,7 +49,23 @@ const SpotPage: React.FC<SpotPageProps> = () => {
   if (!spot) {
     return <div>Učitavanje...</div>;
   }
-
+  const handleEditReview = (reviewId: string) => {
+    setEditingReview(reviewId);
+  };
+  const updateReviewHandler = async (reviewId: string) => {
+    try {
+      await updateReview(reviewId, {
+        totalRating: reviewForm.totalRating, 
+        comment: reviewForm.comment 
+      });
+      const updatedSpotResponse = await retrieveSpotById(spot.spotId);
+      setSpot(updatedSpotResponse.data);
+      setEditingReview(null);
+      setMessage("Recenzija je uspešno izmenjena.");
+    } catch (error: any) {
+      setMessage(error.response.data.message);
+    }
+  };
   const images = [
     {
       original: '../src/assets/unnamed.jpg',
@@ -287,6 +304,40 @@ const SpotPage: React.FC<SpotPageProps> = () => {
               </div>
             </div>
             <p className="text-gray-700" style={{ wordWrap: 'break-word' }}>{review.comment}</p>
+            {editingReview === review.id && (
+  <div>
+    <div className="mb-4">
+      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="totalRating">
+        Ocenite:
+      </label>
+      <StarRating
+        key={reviewForm.totalRating}
+        maxStars={5}
+        initialRating={reviewForm.totalRating}
+        onChange={(rating: any) => handleRatingChange(rating, 'totalRating')}
+      />
+    </div>
+    <div className="mb-4">
+      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="comment">
+        Komentar:
+      </label>
+      <textarea
+        id="comment"
+        name="comment"
+        value={reviewForm.comment}
+        onChange={handleReviewFormChange}
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      />
+      <div className="text-right mt-1">{charCount}/720</div>
+    </div>
+    <button
+      onClick={() => updateReviewHandler(review.id)}
+      className="bg-[#c29870] hover:bg-[#D2B48C] text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    >
+      Sačuvaj izmene
+    </button>
+  </div>
+)}
             <div className="flex items-center mt-2">
               <button className="mr-2" onClick={() => handleLike(review.id)}>
                 <FontAwesomeIcon icon={review.likedByUsers.includes(authContext.email) ? solidThumbsUp : regularThumbsUp} />
@@ -300,9 +351,10 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             <br></br>
             {authContext.isAuthenticated && authContext.email === review.reviewer.email && (
             <div className="btn-group">
-              {/* <button className="btn btn-sm btn-info" onClick={() => handleEditComment(comment.id)}>
-                Izmeni
-              </button> */}
+              <button className="mr-2 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                onClick={() => handleEditReview(review.id)}>
+                Izmenite
+              </button>
               <button className="ml-auto bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               onClick={() => handleDeleteReview(review.id)}>
                 Obriši
@@ -314,6 +366,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             <br></br>
           </div>
         ))}
+        
       </div>
     </div>
   );

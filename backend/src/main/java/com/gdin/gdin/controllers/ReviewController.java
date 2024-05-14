@@ -51,6 +51,7 @@ public class ReviewController {
     }
 
     @PutMapping("/{reviewId}")
+    @Transactional
     public ResponseEntity<Review> updateReview(@PathVariable UUID reviewId, @Valid @RequestBody ReviewDto updatedReviewDto) {
         Review updatedReview = reviewService.updateReview(reviewId, updatedReviewDto);
         return ResponseEntity.ok(updatedReview);
