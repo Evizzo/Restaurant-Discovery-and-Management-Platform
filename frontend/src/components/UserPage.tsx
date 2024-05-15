@@ -71,6 +71,11 @@ function UserPage() {
                     <Button title="Dodaj objekat"></Button>
                   </Link>
                 )}
+                {authContext.role === 'SPOT_OWNER' && (
+                  <Link to="/edit-spot">
+                    <Button title="Izmeni objekat"></Button>
+                  </Link>
+                )}
                 {/* <Link to={`/user-profile/${userData.email}`} className="text-blue-500 hover:underline"><strong>Public profile page</strong></Link> */}
               </Card.Text>
               <br />
