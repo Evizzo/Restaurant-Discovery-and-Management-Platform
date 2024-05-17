@@ -132,3 +132,7 @@ export const updateReview = (reviewId: string, updatedReview: any) => {
 export const updateSpot = (spotId: string, updatedSpot: any) => {
     return apiClient.put(`/spot/${spotId}`, updatedSpot);
   };
+
+export const retrieveAllOwnerSpots = () => {
+    return apiClient.get(`/spot/owned`);
+}

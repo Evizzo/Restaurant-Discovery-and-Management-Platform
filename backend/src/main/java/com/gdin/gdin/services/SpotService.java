@@ -243,6 +243,21 @@ public class SpotService {
         return convertToDto(updatedSpot);
     }
 
+    public List<SpotDto> getEventsByPublisherId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication != null && authentication.getPrincipal() instanceof DefaultOAuth2User oauth2User) {
+            userEmail = oauth2User.getAttribute("email");
+        }
+
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        List<Spot> spots = spotRepository.findByOwnerIdOrderByNameAsc(user.get().getId());
+
+        return spots.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
 
 }
 

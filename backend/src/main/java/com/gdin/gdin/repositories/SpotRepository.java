@@ -30,4 +30,6 @@ public interface SpotRepository extends JpaRepository<Spot, UUID>, JpaSpecificat
     @Query("SELECT s.reviews FROM Spot s WHERE s.spotId = :spotId")
     List<Review> findReviewsBySpotId(@Param("spotId") UUID spotId);
 
+    List<Spot> findByOwnerIdOrderByNameAsc(UUID ownerId);
+
 }

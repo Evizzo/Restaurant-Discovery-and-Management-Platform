@@ -81,4 +81,9 @@ public class SpotController {
         }
     }
 
+    @GetMapping("/owned")
+    public ResponseEntity<List<SpotDto>> retrieveAllOwnerSpots(){
+        return ResponseEntity.ok(spotService.getEventsByPublisherId());
+    }
+
 }

@@ -13,6 +13,7 @@ import { ReactNode } from "react";
 import NotFound from "./components/NotFound.tsx";
 import UserPage from "./components/UserPage.tsx";
 import AddSpot from "./components/AddSpot.tsx";
+import ChooseSpotToUpadte from "./components/ChooseSpotToUpdate.tsx";
 
 function App(){
   function AuthenticatedRoute({ children }: { children: ReactNode }) {
@@ -50,6 +51,12 @@ function App(){
             <Route path="/add-spot" element={
               <AuthenticatedRoute>
                 <AddSpot />
+              </AuthenticatedRoute>
+            } />
+
+            <Route path="/edit-spot" element={
+              <AuthenticatedRoute>
+                <ChooseSpotToUpadte />
               </AuthenticatedRoute>
             } />
 
