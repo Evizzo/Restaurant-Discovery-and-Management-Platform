@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { retrieveAllOwnerSpots, Spot } from "../api/ApiService.ts";
-import Card from "../layouts/Card.tsx";
+import UpdateSpotCard from "../layouts/UpdateSpotCard.tsx";
 
 const ChooseSpotToUpadte: React.FC = () => {
   const [message,setMessage] = useState("")
@@ -61,7 +61,7 @@ const ChooseSpotToUpadte: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
         {spots.map((spot: Spot) => (
           <div key={spot.spotId}>
-            <Card
+            <UpdateSpotCard
               key={spot.spotId}
               img={"../src/assets/unnamed.jpg"}
               nameOfSpot={spot.name}
