@@ -41,15 +41,17 @@ const AddSpot = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
-      setImages(prevImages => [...prevImages, ...Array.from(files)]);
+      const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+      setImages(prevImages => [...prevImages, ...imageFiles]);
       
       const imagePreviews: string[] = [];
-      for (let i = 0; i < files.length; i++) {
-        imagePreviews.push(URL.createObjectURL(files[i]));
+      for (let i = 0; i < imageFiles.length; i++) {
+        imagePreviews.push(URL.createObjectURL(imageFiles[i]));
       }
       setPreviewImages(prevPreviews => [...prevPreviews, ...imagePreviews]);
     }
   };
+  
   
   const removePreviewImage = (index: number) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));

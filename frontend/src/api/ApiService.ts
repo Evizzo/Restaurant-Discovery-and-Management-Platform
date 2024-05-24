@@ -35,6 +35,7 @@ export interface Spot {
     availableActivities: string[];
     reviews: Review[];
     totalReview: number;
+    images: string[];
   }
 
   export interface Review {

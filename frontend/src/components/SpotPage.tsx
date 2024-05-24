@@ -76,28 +76,12 @@ const SpotPage: React.FC<SpotPageProps> = () => {
       setMessage(error.response.data.message);
     }
   };
-  const images = [
-    {
-      original: '../src/assets/unnamed.jpg',
-      thumbnail: '../src/assets/unnamed.jpg',
-      description: spot.name
-    },
-    {
-      original: '../src/assets/unnamed.jpg',
-      thumbnail: '../src/assets/unnamed.jpg',
-      description: spot.name
-    },
-    {
-      original: '../src/assets/unnamed.jpg',
-      thumbnail: '../src/assets/unnamed.jpg',
-      description: spot.name
-    },
-    {
-      original: '../src/assets/unnamed.jpg',
-      thumbnail: '../src/assets/unnamed.jpg',
-      description: spot.name
-    },
-  ];
+
+  const images = spot.images.map(image => ({
+    original: image,
+    thumbnail: image,
+    description: spot.name
+  }));
 
   const handleReviewFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
