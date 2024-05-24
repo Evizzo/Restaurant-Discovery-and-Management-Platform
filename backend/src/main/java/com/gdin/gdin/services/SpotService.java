@@ -108,11 +108,8 @@ public class SpotService {
         Spot savedSpot = spotRepository.save(spot);
 
         for (MultipartFile file : imageFiles) {
-            String filePath = storageService.uploadImageToFileSystem(file);
-            FileData fileData = new FileData();
-            fileData.setName(file.getOriginalFilename());
-            fileData.setType(file.getContentType());
-            fileData.setFilePath(filePath);
+            FileData fileData = storageService.uploadImageToFileSystem(file, spot.getName(), spot.getAddress(), spot.getPhoneNumber());
+
             savedSpot.addImage(fileData);
         }
 

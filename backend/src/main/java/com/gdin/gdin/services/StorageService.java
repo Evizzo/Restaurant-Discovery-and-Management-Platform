@@ -19,15 +19,21 @@ import java.util.Optional;
 public class StorageService {
 
     private final FileDataRepository fileDataRepository;
-//    private final String FOLDER_PATH="/resources/";
 
-    public String uploadImageToFileSystem(MultipartFile file) throws IOException {
-//        String filePath=FOLDER_PATH+file.getOriginalFilename();
+    public FileData uploadImageToFileSystem(MultipartFile file, String spotName, String spotAddress, String spotPhone) throws IOException {
         String currentDir = System.getProperty("user.dir");
-        String folderPath = currentDir + "/src/main/resources/";
-        String filePath = folderPath + file.getOriginalFilename();
+        String baseFolderPath = currentDir + "/src/main/resources/";
+        String sanitizedAddress = spotAddress.replaceAll("[^a-zA-Z0-9]", "_");
+        String sanitizedPhone = spotPhone.replaceAll("[^a-zA-Z0-9]", "_");
+        String folderPath = baseFolderPath + spotName + "_" + sanitizedAddress + "_" + sanitizedPhone;
 
-        FileData fileData=fileDataRepository.save(FileData.builder()
+        File spotDirectory = new File(folderPath);
+        if (!spotDirectory.exists()) {
+            spotDirectory.mkdirs();
+        }
+
+        String filePath = folderPath + "/" + file.getOriginalFilename();
+        FileData fileData = fileDataRepository.save(FileData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
                 .filePath(filePath).build());
@@ -35,10 +41,11 @@ public class StorageService {
         file.transferTo(new File(filePath));
 
         if (fileData != null) {
-            return filePath;
+            return fileData;
         }
         return null;
     }
+
 
     public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
         Optional<FileData> fileData = fileDataRepository.findByName(fileName);

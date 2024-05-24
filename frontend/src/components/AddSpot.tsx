@@ -3,7 +3,8 @@ import { addSpot } from '../api/ApiService';
 
 const AddSpot = () => {
   const [message,setMessage] = useState("")
-  const [images, setImages] = useState([]);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
   const [spotData, setSpotData] = useState({
     name: '',
     description: '',
@@ -37,9 +38,22 @@ const AddSpot = () => {
     images: [] as any[],
   });
 
-  const handleFileUpload = (event: any) => {
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    setImages(files);
+    if (files) {
+      setImages(prevImages => [...prevImages, ...Array.from(files)]);
+      
+      const imagePreviews: string[] = [];
+      for (let i = 0; i < files.length; i++) {
+        imagePreviews.push(URL.createObjectURL(files[i]));
+      }
+      setPreviewImages(prevPreviews => [...prevPreviews, ...imagePreviews]);
+    }
+  };
+  
+  const removePreviewImage = (index: number) => {
+    setImages(prevImages => prevImages.filter((_, i) => i !== index));
+    setPreviewImages(prevPreviews => prevPreviews.filter((_, i) => i !== index));
   };
 
   const toNormalCase = (str: string) => {
@@ -220,16 +234,24 @@ const AddSpot = () => {
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Izaberite slike</label>
           <input
-            className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+            className="hidden"
             type="file"
             id="images"
             name="images"
             onChange={handleFileUpload}
             multiple
           />
+          <div className="grid grid-cols-3 gap-4">
+            {previewImages.map((preview, index) => (
+              <div key={index} className="relative w-full h-32 overflow-hidden rounded-md">
+                <img src={preview} alt={`Preview ${index}`} className="object-cover w-full h-full" />
+                <button onClick={() => removePreviewImage(index)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
+              </div>
+            ))}
+          </div>
+          <label htmlFor="images" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike</label>
         </div>
         <form onSubmit={handleSubmit}>
-
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Ime</label>
             <input

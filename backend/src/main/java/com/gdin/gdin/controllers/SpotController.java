@@ -37,7 +37,7 @@ public class SpotController {
     @PreAuthorize("hasAuthority('spot_owner:create')")
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Spot> addNewSpot(
-            @ModelAttribute Spot spot,
+            @Valid @ModelAttribute Spot spot,
             @RequestParam("imageFiles") List<MultipartFile> imageFiles) throws IOException {
         Spot savedSpot = spotService.saveSpot(spot, imageFiles);
         return ResponseEntity.ok(savedSpot);
