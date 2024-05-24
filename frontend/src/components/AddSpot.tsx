@@ -3,6 +3,7 @@ import { addSpot } from '../api/ApiService';
 
 const AddSpot = () => {
   const [message,setMessage] = useState("")
+  const [images, setImages] = useState([]);
   const [spotData, setSpotData] = useState({
     name: '',
     description: '',
@@ -33,7 +34,14 @@ const AddSpot = () => {
     ambianceTypes: [] as string[],
     cuisineTypes: [] as string[],
     availableActivities: [] as string[],
+    images: [] as any[],
   });
+
+  const handleFileUpload = (event: any) => {
+    const files = event.target.files;
+    setImages(files);
+  };
+
   const toNormalCase = (str: string) => {
     return str.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -48,8 +56,9 @@ const AddSpot = () => {
     e.preventDefault();
     console.log('Submitted data:', spotData);
     try {
-        const response = await addSpot(spotData);
+        const response = await addSpot(spotData, images);
         setMessage("Uspešno ste dodali Vaš objekat !")
+        setImages([])
         setSpotData({
           name: '',
           description: '',
@@ -80,13 +89,14 @@ const AddSpot = () => {
           ambianceTypes: [],
           cuisineTypes: [],
           availableActivities: [],
+          images: [],
         });
         console.log('Add Spot response:', response); 
       } catch (error: any) {
         setMessage(error.response.data.message)
       }
   };
-
+  
   const musicTypes = [
     "BEZ_MUZIKE",
     "POP",
@@ -207,6 +217,17 @@ const AddSpot = () => {
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-semibold mb-4">Dodajte objekat</h1>
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Izaberite slike</label>
+          <input
+            className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+            type="file"
+            id="images"
+            name="images"
+            onChange={handleFileUpload}
+            multiple
+          />
+        </div>
         <form onSubmit={handleSubmit}>
 
           <div className="mb-6">

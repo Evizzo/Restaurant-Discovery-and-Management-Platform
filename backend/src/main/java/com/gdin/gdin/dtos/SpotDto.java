@@ -1,5 +1,6 @@
 package com.gdin.gdin.dtos;
 
+import com.gdin.gdin.entities.FileData;
 import com.gdin.gdin.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,4 +51,5 @@ public class SpotDto {
     private List<ReviewDto> reviews;
     private UserDto owner;
     private int totalReview;
+    private List<String> images;
 }

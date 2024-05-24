@@ -15,8 +15,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import com.gdin.gdin.entities.FileData;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -26,6 +30,8 @@ public class SpotService {
     private final ReviewService reviewService;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final StorageService storageService;
+
     public List<SpotDto> retrieveAllSpots(){
         return spotRepository.findAll()
                 .stream()
@@ -40,6 +46,9 @@ public class SpotService {
     public SpotDto convertToDto(Spot spot) {
         List<ReviewDto> reviews = reviewService.getAllReviewsForSpot(spot.getSpotId(), null);
         UserDto owner = userService.convertToDto(spot.getOwner());
+        List<String> imageFilePaths = spot.getImages().stream()
+                .map(FileData::getFilePath)
+                .collect(Collectors.toList());
 
         return SpotDto.builder()
                 .spotId(spot.getSpotId())
@@ -76,13 +85,14 @@ public class SpotService {
                 .reviews(reviews)
                 .owner(owner)
                 .totalReview(spot.getTotalReview())
+                .images(imageFilePaths)
 //                .reviews(spot.getReviews().stream()
 //                        .map(reviewService::convertReviewToDto)
 //                        .collect(Collectors.toSet()))
                 .build();
     }
 
-    public Spot saveSpot(Spot spot){
+    public Spot saveSpot(Spot spot, List<MultipartFile> imageFiles) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = null;
         if (authentication != null && authentication.getPrincipal() instanceof DefaultOAuth2User oauth2User) {
@@ -95,7 +105,20 @@ public class SpotService {
         spot.setTotalReview(0);
         user.ifPresent(spot::setOwner);
 
-        return spotRepository.save(spot);
+        Spot savedSpot = spotRepository.save(spot);
+
+        for (MultipartFile file : imageFiles) {
+            String filePath = storageService.uploadImageToFileSystem(file);
+            FileData fileData = new FileData();
+            fileData.setName(file.getOriginalFilename());
+            fileData.setType(file.getContentType());
+            fileData.setFilePath(filePath);
+            savedSpot.addImage(fileData);
+        }
+
+        spotRepository.save(savedSpot);
+
+        return savedSpot;
     }
 
     public List<SpotDto> searchSpots(

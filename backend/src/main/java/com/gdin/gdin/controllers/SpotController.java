@@ -9,7 +9,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -33,9 +35,12 @@ public class SpotController {
     }
 
     @PreAuthorize("hasAuthority('spot_owner:create')")
-    @PostMapping
-    public ResponseEntity<Spot> addNewSpot(@Valid @RequestBody Spot spot){
-        return ResponseEntity.ok(spotService.saveSpot(spot));
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<Spot> addNewSpot(
+            @ModelAttribute Spot spot,
+            @RequestParam("imageFiles") List<MultipartFile> imageFiles) throws IOException {
+        Spot savedSpot = spotService.saveSpot(spot, imageFiles);
+        return ResponseEntity.ok(savedSpot);
     }
 
     @GetMapping("/search")

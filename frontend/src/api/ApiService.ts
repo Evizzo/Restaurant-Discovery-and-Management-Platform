@@ -117,10 +117,6 @@ export const dislikeReview = (reviewId: string) => {
     return apiClient.put(`/review/${reviewId}/dislike`);
 };
 
-export const addSpot = (spot: any) => {
-    return apiClient.post(`/spot`, spot);
-}
-
 export const searchSpots = (params: SearchParams) => {
     return apiClient.get('/spot/search', { params });
   };
@@ -136,3 +132,18 @@ export const updateSpot = (spotId: string, updatedSpot: any) => {
 export const retrieveAllOwnerSpots = () => {
     return apiClient.get(`/spot/owned`);
 }
+
+export const addSpot = (spot: any, imageFiles: any) => {
+    const formData = new FormData();
+    Object.keys(spot).forEach(key => {
+        formData.append(key, spot[key]);
+    });
+    for (let i = 0; i < imageFiles.length; i++) {
+        formData.append('imageFiles', imageFiles[i]);
+    }
+    return apiClient.post(`/spot`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+};

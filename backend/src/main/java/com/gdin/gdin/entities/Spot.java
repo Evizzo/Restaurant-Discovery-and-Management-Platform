@@ -3,6 +3,7 @@ package com.gdin.gdin.entities;
 import com.gdin.gdin.enums.*;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -50,6 +51,10 @@ public class Spot {
     private int reviewsCount;
     private int totalReview;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "spot_id")
+    private List<FileData> images = new ArrayList<>();;
+
     @Enumerated(EnumType.STRING)
     private SpotTypes spotType;
 
@@ -76,4 +81,8 @@ public class Spot {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
+
+    public void addImage(FileData fileData) {
+        this.images.add(fileData);
+    }
 }

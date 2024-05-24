@@ -114,8 +114,11 @@ const SpotPage: React.FC<SpotPageProps> = () => {
         setCharCount(0)
         setMessage("Uspešno ste postavili recenziju !")
     } catch (error: any) {
-      setMessage(error.response.data.message)
-    }
+      if (error.response && error.response.data) {
+        setMessage(error.response.data.message);
+      } else {
+        setMessage("Došlo je do greške.");
+      }    }
   };
 
   const handleRatingChange = (rating: any, field: any) => {
