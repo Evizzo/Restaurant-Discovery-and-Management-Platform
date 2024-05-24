@@ -63,6 +63,13 @@ const SearchSpots: React.FC = () => {
     fetchData();
   };
 
+  const getFirstImage = (spot: Spot): string => {
+    if (spot.images && spot.images.length > 0) {
+      return spot.images[0];
+    }
+    return "../src/assets/default-thumbnail.jpg";
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col justify-center items-center">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
@@ -144,7 +151,7 @@ const SearchSpots: React.FC = () => {
           <div key={spot.spotId}>
             <Card
               key={spot.spotId}
-              img={"../src/assets/unnamed.jpg"}
+              img={getFirstImage(spot)}
               nameOfSpot={spot.name}
               locationOfSpot={spot.city + ", " + spot.address}
               spotId={spot.spotId}
