@@ -25,6 +25,7 @@ public class Spot {
     private UUID spotId;
 
     private String name;
+    @Column(length = 1000)
     private String description;
     private String city;
     private String address;

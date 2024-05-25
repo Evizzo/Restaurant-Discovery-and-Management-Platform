@@ -158,24 +158,29 @@ const SpotPage: React.FC<SpotPageProps> = () => {
       <div className={`${isMobile ? 'max-w-4xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8' : 'max-w-9xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8'}`}>
         <div className="flex flex-col md:flex-row">
         <div className="container mt-4">
+        <div className={`container mt-4 ${isMobile ? 'flex justify-center' : ''}`}> 
           <div className="inline-block bg-white bg-opacity-50 rounded-lg shadow-md py-2 px-4 mb-4">
-            <span className={`cursor-pointer mr-4 ${viewMenu ? '' : 'underline'}`} onClick={() => setViewMenu(false)}>Meni</span>
-            <span className={`cursor-pointer ${viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(true)}>Slike</span>
+            <span className={`cursor-pointer mr-4 ${!viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(false)}>Slike</span>
+            <span className={`cursor-pointer ${viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(true)}>Meni</span> 
           </div>
+        </div>
           <div className="max-w-md mx-auto md:mx-0 md:mr-8 mb-8 md:mb-0">
             <ImageGallery items={viewMenu ? menuImages : images} showPlayButton={false} showFullscreenButton={true} />
           </div>
         </div>
           <br></br>
-          <div className="md:flex-grow">
-            <h1 className="font-semibold text-4xl text-gray-800 mb-4">{spot.name} ({spot.reviewsCount})</h1>
-            <p className="text-lg text-gray-700 mb-6">{spot.description}</p>
-            <p className="text-lg text-gray-700 mb-6">Rating: </p> <ShowStarRating
+        <div className="md:flex-grow">
+          <h1 className="font-semibold text-4xl text-gray-800 mb-4">{spot.name} ({spot.reviewsCount})</h1>
+          <p className="text-lg text-gray-700 mb-6">{spot.description}</p>
+          <div className="flex items-center mb-6">
+            <p className="text-lg text-gray-700 mr-2">Ocena:</p>
+            <ShowStarRating
               key={spot.totalReview}
-            maxStars={5}
-            initialRating={spot.totalReview}
-          />
+              maxStars={5}
+              initialRating={spot.totalReview}
+            />
           </div>
+        </div>
         </div>
         <div className="flex justify-center items-center mt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-gray-800">
