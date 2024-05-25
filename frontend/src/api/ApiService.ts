@@ -36,6 +36,7 @@ export interface Spot {
     reviews: Review[];
     totalReview: number;
     images: string[];
+    menuImages: string[];
   }
 
   export interface Review {
@@ -134,13 +135,16 @@ export const retrieveAllOwnerSpots = () => {
     return apiClient.get(`/spot/owned`);
 }
 
-export const addSpot = (spot: any, imageFiles: any) => {
+export const addSpot = (spot: any, imageFiles: any, menuImageFiles: any) => {
     const formData = new FormData();
     Object.keys(spot).forEach(key => {
         formData.append(key, spot[key]);
     });
     for (let i = 0; i < imageFiles.length; i++) {
         formData.append('imageFiles', imageFiles[i]);
+    }
+    for (let i = 0; i < menuImageFiles.length; i++) {
+        formData.append('menuImageFiles', menuImageFiles[i]);
     }
     return apiClient.post(`/spot`, formData, {
         headers: {

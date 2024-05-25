@@ -38,8 +38,10 @@ public class SpotController {
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Spot> addNewSpot(
             @Valid @ModelAttribute Spot spot,
-            @RequestParam("imageFiles") List<MultipartFile> imageFiles) throws IOException {
-        Spot savedSpot = spotService.saveSpot(spot, imageFiles);
+            @RequestParam("imageFiles") List<MultipartFile> imageFiles,
+            @RequestParam("menuImageFiles") List<MultipartFile> menuImageFiles
+    ) throws IOException {
+        Spot savedSpot = spotService.saveSpot(spot, imageFiles, menuImageFiles);
         return ResponseEntity.ok(savedSpot);
     }
 

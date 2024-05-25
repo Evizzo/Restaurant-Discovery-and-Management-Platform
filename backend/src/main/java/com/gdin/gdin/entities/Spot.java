@@ -53,7 +53,11 @@ public class Spot {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "spot_id")
-    private List<FileData> images = new ArrayList<>();;
+    private List<FileData> images = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "spot_id_for_menu")
+    private List<FileData> menuImages = new ArrayList<>();;
 
     @Enumerated(EnumType.STRING)
     private SpotTypes spotType;
@@ -84,5 +88,9 @@ public class Spot {
 
     public void addImage(FileData fileData) {
         this.images.add(fileData);
+    }
+
+    public void addMenuImage(FileData fileData) {
+        this.menuImages.add(fileData);
     }
 }

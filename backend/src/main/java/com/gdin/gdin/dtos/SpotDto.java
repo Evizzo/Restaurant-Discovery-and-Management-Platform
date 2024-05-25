@@ -52,4 +52,5 @@ public class SpotDto {
     private UserDto owner;
     private int totalReview;
     private List<String> images;
+    private List<String> menuImages;
 }

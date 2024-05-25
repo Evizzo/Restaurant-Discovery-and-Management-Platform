@@ -29,6 +29,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [message,setMessage] = useState("")
   const [editingReview, setEditingReview] = useState<string | null>(null);
+  const [viewMenu, setViewMenu] = useState(false);
 
   useEffect(() => {
     const fetchSpot = async () => {
@@ -81,6 +82,12 @@ const SpotPage: React.FC<SpotPageProps> = () => {
     original: image,
     thumbnail: image,
     description: spot.name
+  }));
+
+  const menuImages = spot.menuImages.map(image => ({
+    original: image,
+    thumbnail: image,
+    description: `${spot.name} menu`
   }));
 
   const handleReviewFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -150,9 +157,15 @@ const SpotPage: React.FC<SpotPageProps> = () => {
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col items-center justify-center px-5 py-10">
       <div className={`${isMobile ? 'max-w-4xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8' : 'max-w-9xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8'}`}>
         <div className="flex flex-col md:flex-row">
-        <div className={`${isMobile ? 'mt-8' : 'max-w-md mx-auto md:mx-0 md:mr-8 mb-8 md:mb-0'}`}>
-            <ImageGallery items={images} showPlayButton={false} showFullscreenButton={true} />
+        <div className="container mt-4">
+          <div className="inline-block bg-white bg-opacity-50 rounded-lg shadow-md py-2 px-4 mb-4">
+            <span className={`cursor-pointer mr-4 ${viewMenu ? '' : 'underline'}`} onClick={() => setViewMenu(false)}>Meni</span>
+            <span className={`cursor-pointer ${viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(true)}>Slike</span>
           </div>
+          <div className="max-w-md mx-auto md:mx-0 md:mr-8 mb-8 md:mb-0">
+            <ImageGallery items={viewMenu ? menuImages : images} showPlayButton={false} showFullscreenButton={true} />
+          </div>
+        </div>
           <br></br>
           <div className="md:flex-grow">
             <h1 className="font-semibold text-4xl text-gray-800 mb-4">{spot.name} ({spot.reviewsCount})</h1>

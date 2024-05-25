@@ -46,7 +46,12 @@ public class SpotService {
     public SpotDto convertToDto(Spot spot) {
         List<ReviewDto> reviews = reviewService.getAllReviewsForSpot(spot.getSpotId(), null);
         UserDto owner = userService.convertToDto(spot.getOwner());
+
         List<String> imageFilePaths = spot.getImages().stream()
+                .map(FileData::getFilePath)
+                .collect(Collectors.toList());
+
+        List<String> menuImageFilePaths = spot.getMenuImages().stream()
                 .map(FileData::getFilePath)
                 .collect(Collectors.toList());
 
@@ -86,13 +91,11 @@ public class SpotService {
                 .owner(owner)
                 .totalReview(spot.getTotalReview())
                 .images(imageFilePaths)
-//                .reviews(spot.getReviews().stream()
-//                        .map(reviewService::convertReviewToDto)
-//                        .collect(Collectors.toSet()))
+                .menuImages(menuImageFilePaths)
                 .build();
     }
 
-    public Spot saveSpot(Spot spot, List<MultipartFile> imageFiles) throws IOException {
+    public Spot saveSpot(Spot spot, List<MultipartFile> imageFiles, List<MultipartFile> menuImageFiles) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = null;
         if (authentication != null && authentication.getPrincipal() instanceof DefaultOAuth2User oauth2User) {
@@ -109,8 +112,12 @@ public class SpotService {
 
         for (MultipartFile file : imageFiles) {
             FileData fileData = storageService.uploadImageToFileSystem(file, spot.getName(), spot.getAddress(), spot.getPhoneNumber());
-
             savedSpot.addImage(fileData);
+        }
+
+        for (MultipartFile file : menuImageFiles) {
+            FileData fileData = storageService.uploadMenuImageToFileSystem(file, spot.getName(), spot.getAddress(), spot.getPhoneNumber());
+            savedSpot.addMenuImage(fileData);
         }
 
         spotRepository.save(savedSpot);

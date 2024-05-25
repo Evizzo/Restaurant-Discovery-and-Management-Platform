@@ -5,6 +5,10 @@ const AddSpot = () => {
   const [message,setMessage] = useState("")
   const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
+
+  const [previewImagesMenu, setPreviewImagesMenu] = useState<string[]>([]);
+  const [menuImages, setMenuImages] = useState<File[]>([]);
+
   const [spotData, setSpotData] = useState({
     name: '',
     description: '',
@@ -36,26 +40,39 @@ const AddSpot = () => {
     cuisineTypes: [] as string[],
     availableActivities: [] as string[],
     images: [] as any[],
+    menuImages: [] as any,
   });
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, isMenu: boolean) => {
     const files = event.target.files;
     if (files) {
-      const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
-      setImages(prevImages => [...prevImages, ...imageFiles]);
-      
-      const imagePreviews: string[] = [];
-      for (let i = 0; i < imageFiles.length; i++) {
-        imagePreviews.push(URL.createObjectURL(imageFiles[i]));
-      }
-      setPreviewImages(prevPreviews => [...prevPreviews, ...imagePreviews]);
+        const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+        if (isMenu) {
+            setMenuImages(prevImages => [...prevImages, ...imageFiles]);
+            const imagePreviews: string[] = [];
+            for (let i = 0; i < imageFiles.length; i++) {
+                imagePreviews.push(URL.createObjectURL(imageFiles[i]));
+            }
+            setPreviewImagesMenu(prevPreviews => [...prevPreviews, ...imagePreviews]);
+        } else {
+            setImages(prevImages => [...prevImages, ...imageFiles]);
+            const imagePreviews: string[] = [];
+            for (let i = 0; i < imageFiles.length; i++) {
+                imagePreviews.push(URL.createObjectURL(imageFiles[i]));
+            }
+            setPreviewImages(prevPreviews => [...prevPreviews, ...imagePreviews]);
+        }
     }
-  };
+};
   
-  
-  const removePreviewImage = (index: number) => {
-    setImages(prevImages => prevImages.filter((_, i) => i !== index));
-    setPreviewImages(prevPreviews => prevPreviews.filter((_, i) => i !== index));
+  const removePreviewImage = (index: number, isMenu: boolean) => {
+    if (isMenu) {
+      setMenuImages(prevImages => prevImages.filter((_, i) => i !== index));
+      setPreviewImagesMenu(prevPreviews => prevPreviews.filter((_, i) => i !== index));
+    } else {
+      setImages(prevImages => prevImages.filter((_, i) => i !== index));
+      setPreviewImages(prevPreviews => prevPreviews.filter((_, i) => i !== index));
+    }
   };
 
   const toNormalCase = (str: string) => {
@@ -72,7 +89,7 @@ const AddSpot = () => {
     e.preventDefault();
     console.log('Submitted data:', spotData);
     try {
-        const response = await addSpot(spotData, images);
+        const response = await addSpot(spotData, images, menuImages);
         setMessage("Uspešno ste dodali Vaš objekat !")
         setImages([])
         setSpotData({
@@ -106,6 +123,7 @@ const AddSpot = () => {
           cuisineTypes: [],
           availableActivities: [],
           images: [],
+          menuImages: [],
         });
         console.log('Add Spot response:', response); 
       } catch (error: any) {
@@ -233,6 +251,7 @@ const AddSpot = () => {
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-semibold mb-4">Dodajte objekat</h1>
+
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Izaberite slike</label>
           <input
@@ -240,19 +259,41 @@ const AddSpot = () => {
             type="file"
             id="images"
             name="images"
-            onChange={handleFileUpload}
+            onChange={(event) => handleFileUpload(event, false)}
             multiple
           />
           <div className="grid grid-cols-3 gap-4">
             {previewImages.map((preview, index) => (
               <div key={index} className="relative w-full h-32 overflow-hidden rounded-md">
                 <img src={preview} alt={`Preview ${index}`} className="object-cover w-full h-full" />
-                <button onClick={() => removePreviewImage(index)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
+                <button onClick={() => removePreviewImage(index, false)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
               </div>
             ))}
           </div>
           <label htmlFor="images" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike</label>
         </div>
+
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="menuImages">Izaberite slike jelovnika</label>
+          <input
+            className="hidden"
+            type="file"
+            id="menuImages"
+            name="menuImages"
+            onChange={(event) => handleFileUpload(event, true)}
+            multiple
+          />
+          <div className="grid grid-cols-3 gap-4">
+            {previewImagesMenu.map((preview, index) => (
+              <div key={index} className="relative w-full h-32 overflow-hidden rounded-md">
+                <img src={preview} alt={`Preview menu ${index}`} className="object-cover w-full h-full" />
+                <button onClick={() => removePreviewImage(index, true)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
+              </div>
+            ))}
+          </div>
+          <label htmlFor="menuImages" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike jelovnika</label>
+        </div>
+        
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Ime</label>
