@@ -3,25 +3,36 @@ package com.gdin.gdin.controllers;
 import com.gdin.gdin.dtos.SpotDto;
 import com.gdin.gdin.entities.Spot;
 import com.gdin.gdin.enums.*;
+import com.gdin.gdin.repositories.UserRepository;
 import com.gdin.gdin.services.SpotService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+
+import java.beans.PropertyDescriptor;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("spot")
 public class SpotController {
     private final SpotService spotService;
-
+    private static final Logger logger = LoggerFactory.getLogger(SpotController.class);
+    private final UserRepository userRepository;
     @GetMapping
     public ResponseEntity<List<SpotDto>> retrieveAllSpots(){
         return ResponseEntity.ok(spotService.retrieveAllSpots());
@@ -77,16 +88,34 @@ public class SpotController {
         return ResponseEntity.ok(result);
     }
 
-    @PreAuthorize("hasAuthority('spot_owner:update')")
-    @PutMapping("/{spotId}")
-    public ResponseEntity<SpotDto> updateSpot(@PathVariable UUID spotId, @Valid @RequestBody SpotDto updatedSpotDto) {
-        SpotDto updatedSpot = spotService.updateSpot(spotId, updatedSpotDto);
-        if (updatedSpot != null) {
-            return ResponseEntity.ok(updatedSpot);
-        } else {
+    //    @PreAuthorize("hasAuthority('spot_owner:update')")
+    @Transactional
+    @PutMapping(path = "/{spotId}", consumes = "multipart/form-data")
+    public ResponseEntity<SpotDto> updateSpot(
+            @PathVariable UUID spotId,
+            @Valid @ModelAttribute Spot updatedSpotAtr,
+            @RequestParam("newImageFiles") List<MultipartFile> newImageFiles,
+            @RequestParam("newMenuImageFiles") List<MultipartFile> newMenuImageFiles
+    ) throws IOException {
+    try {
+        Optional<SpotDto> existingSpot = spotService.findSpotById(spotId);
+
+        if (existingSpot == null) {
             return ResponseEntity.notFound().build();
         }
+
+        updatedSpotAtr.setOwner(userRepository.findByEmail(existingSpot.get().getOwner().getEmail()).get());
+        updatedSpotAtr.setImages(existingSpot.get().getImagesFD());
+        updatedSpotAtr.setMenuImages(existingSpot.get().getMenuImagesFD());
+
+        SpotDto updatedSpotDto = spotService.updateSpot(spotId, updatedSpotAtr, newImageFiles, newMenuImageFiles);
+        return ResponseEntity.ok(updatedSpotDto);
+    } catch (Exception e) {
+        logger.error("Exception while updating spot with ID: " + spotId, e);
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
+}
 
     @GetMapping("/owned")
     public ResponseEntity<List<SpotDto>> retrieveAllOwnerSpots(){

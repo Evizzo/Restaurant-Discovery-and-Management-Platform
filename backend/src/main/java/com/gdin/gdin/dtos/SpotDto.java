@@ -24,8 +24,8 @@ public class SpotDto {
     private String address;
     private String googleMapsUrl;
     private String websiteUrl;
-    private Integer workingFrom;
-    private Integer workingTo;
+    private String workingFrom;
+    private String workingTo;
     private Boolean alwaysOpen;
     private String phoneNumber;
     private String email;
@@ -53,4 +53,6 @@ public class SpotDto {
     private int totalReview;
     private List<String> images;
     private List<String> menuImages;
+    private List<FileData> imagesFD;
+    private List<FileData> menuImagesFD;
 }

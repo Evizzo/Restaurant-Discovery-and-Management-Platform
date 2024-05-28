@@ -82,7 +82,9 @@ public class StorageService {
         FileData fileData = fileDataRepository.save(FileData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
-                .filePath(filePathToDisplay).build());
+                .filePath(filePathToDisplay)
+                .absoluteFilePath(filePath)
+                .build());
 
         file.transferTo(new File(filePath));
 
@@ -92,6 +94,28 @@ public class StorageService {
         return null;
     }
 
+    public void deleteImageFromFileSystem(String fileName) throws IOException {
+        Optional<FileData> fileDataOptional = fileDataRepository.findByName(fileName);
+
+        if (fileDataOptional.isPresent()) {
+            FileData fileData = fileDataOptional.get();
+            String filePath = fileData.getAbsoluteFilePath();
+
+            File file = new File(filePath);
+            if (file.exists()) {
+                if (file.delete()) {
+                    fileDataRepository.delete(fileData);
+                    System.out.println("DELETING " + filePath);
+                } else {
+                    throw new IOException("Failed to delete the file");
+                }
+            } else {
+                throw new IOException("File not found in the file system");
+            }
+        } else {
+            throw new IOException("File data not found in the repository " + fileName);
+        }
+    }
 
     public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
         Optional<FileData> fileData = fileDataRepository.findByName(fileName);

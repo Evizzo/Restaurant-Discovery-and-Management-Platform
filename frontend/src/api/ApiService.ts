@@ -1,4 +1,3 @@
-
 import {apiClient} from './ApiClient.ts'; 
 
 export interface Spot {
@@ -9,8 +8,8 @@ export interface Spot {
     address: string;
     googleMapsUrl: string;
     websiteUrl: string;
-    workingFrom: number;
-    workingTo: number;
+    workingFrom: string;
+    workingTo: string;
     alwaysOpen: boolean;
     phoneNumber: string;
     email: string;
@@ -66,8 +65,8 @@ export interface SearchParams {
     [key: string]: string | number | boolean | string[] | number[] | boolean[] | undefined;
     name?: string;
     city?: string;
-    workingFrom?: number;
-    workingTo?: number;
+    workingFrom?: string;
+    workingTo?: string;
     alwaysOpen?: boolean;
     outdoorSeating?: boolean;
     wifiAvailable?: boolean;
@@ -126,11 +125,7 @@ export const searchSpots = (params: SearchParams) => {
 export const updateReview = (reviewId: string, updatedReview: any) => {
     return apiClient.put(`/review/${reviewId}`, updatedReview);
 };
-
-export const updateSpot = (spotId: string, updatedSpot: any) => {
-    return apiClient.put(`/spot/${spotId}`, updatedSpot);
-  };
-
+  
 export const retrieveAllOwnerSpots = () => {
     return apiClient.get(`/spot/owned`);
 }
@@ -152,3 +147,28 @@ export const addSpot = (spot: any, imageFiles: any, menuImageFiles: any) => {
         }
     });
 };
+
+export const updateSpot = (spotId: string, updatedSpot: any, newImageFiles: File[], newMenuImageFiles: File[]) => {
+    const formData = new FormData();
+    formData.append('updatedSpotAtr', new Blob([JSON.stringify(updatedSpot)], { type: 'application/json' }));
+    
+    newImageFiles.forEach((file, index) => {
+      formData.append(`newImageFiles`, file);
+    });
+  
+    newMenuImageFiles.forEach((file, index) => {
+      formData.append(`newMenuImageFiles`, file);
+    });
+    if (formData.has('newImageFiles')) {
+        console.log("Files added to FormData.");
+    } else {
+        console.error("No files found in FormData.");
+    }
+
+    return apiClient.put(`/spot/${spotId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  };
+  

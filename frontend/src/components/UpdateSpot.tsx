@@ -35,16 +35,21 @@ const UpdateSpot = () => {
     ambianceTypes: [] as string[],
     cuisineTypes: [] as string[],
     availableActivities: [] as string[],
+    imagesFD: [] as any,
+    menuImagesFD: [] as any,
   });
   const { spotId } = useParams();
-
+  const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
+  const [newMenuImageFiles, setNewMenuImageFiles] = useState<File[]>([]);
   useEffect(() => {
     const fetchSpot = async () => {
       try {
         if (spotId) {
           const response = await retrieveSpotById(spotId);
           console.log(response.data)
-          setSpotData(response.data);
+          setSpotData(response.data)
+          setNewImageFiles(spotData.imagesFD)
+          setNewMenuImageFiles(spotData.menuImagesFD)
         }
       } catch (error) {
         console.error("Greška pri dobavljanju lokala:", error);
@@ -53,7 +58,6 @@ const UpdateSpot = () => {
 
     fetchSpot();
   }, [spotId]);
-
 
   const toNormalCase = (str: string) => {
     return str.replace(/_/g, ' ').replace(/\w\S*/g, (txt) => {
@@ -70,7 +74,7 @@ const UpdateSpot = () => {
     e.preventDefault();
     console.log('Updated data:', spotData);
     try {
-        const response = await updateSpot(spotData.spotId , spotData);
+        const response = await updateSpot(spotData.spotId, spotData, newImageFiles, newMenuImageFiles);
         setMessage("Uspešno ste izmenili Vaš objekat !")
         setSpotData({
           spotId: '',
@@ -103,7 +107,11 @@ const UpdateSpot = () => {
           ambianceTypes: [],
           cuisineTypes: [],
           availableActivities: [],
+          imagesFD: [],
+          menuImagesFD: [],
         });
+        setNewImageFiles([]);
+        setNewMenuImageFiles([]);
         console.log('Add Spot response:', response); 
       } catch (error: any) {
         setMessage(error.response.data.message)
@@ -226,12 +234,42 @@ const UpdateSpot = () => {
     }));
   };
 
+  const handleFileChange = (e: any) => {
+    const { name, files } = e.target;
+    if (name === 'newImageFiles') {
+      setNewImageFiles(Array.from(files));
+    } else if (name === 'newMenuImageFiles') {
+      setNewMenuImageFiles(Array.from(files));
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-semibold mb-4">Izmenite objekat</h1>
         <form onSubmit={handleSubmit}>
-
+        <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="newImageFiles">Nova slika</label>
+            <input
+              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+              type="file"
+              id="newImageFiles"
+              name="newImageFiles"
+              onChange={handleFileChange}
+              multiple
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="newMenuImageFiles">Nova slika menija</label>
+            <input
+              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+              type="file"
+              id="newMenuImageFiles"
+              name="newMenuImageFiles"
+              onChange={handleFileChange}
+              multiple
+            />
+          </div>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Ime</label>
             <input

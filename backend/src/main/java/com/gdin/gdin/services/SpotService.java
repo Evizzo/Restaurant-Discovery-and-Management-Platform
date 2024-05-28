@@ -1,6 +1,7 @@
 package com.gdin.gdin.services;
 
 import com.gdin.gdin.config.SpotSpecification;
+import com.gdin.gdin.controllers.SpotController;
 import com.gdin.gdin.dtos.ReviewDto;
 import com.gdin.gdin.dtos.SpotDto;
 import com.gdin.gdin.dtos.UserDto;
@@ -23,6 +24,9 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @AllArgsConstructor
 @Service
 public class SpotService {
@@ -31,22 +35,17 @@ public class SpotService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final StorageService storageService;
-
-    public List<SpotDto> retrieveAllSpots(){
-        return spotRepository.findAll()
-                .stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-    public Optional<SpotDto> findSpotById(UUID spotId){
-        return spotRepository.findById(spotId)
-                .map(this::convertToDto);
-    }
+    private static final Logger logger = LoggerFactory.getLogger(SpotController.class);
 
     public SpotDto convertToDto(Spot spot) {
         List<ReviewDto> reviews = reviewService.getAllReviewsForSpot(spot.getSpotId(), null);
-        UserDto owner = userService.convertToDto(spot.getOwner());
 
+        UserDto owner = null;
+        if (spot.getOwner() != null) {
+            owner = userService.convertToDto(spot.getOwner());
+        } else {
+            logger.warn("Spot with ID " + spot.getSpotId() + " does not have an owner. ---- 0000" + spot);
+        }
         List<String> imageFilePaths = spot.getImages().stream()
                 .map(FileData::getFilePath)
                 .collect(Collectors.toList());
@@ -92,7 +91,21 @@ public class SpotService {
                 .totalReview(spot.getTotalReview())
                 .images(imageFilePaths)
                 .menuImages(menuImageFilePaths)
+                .imagesFD(spot.getImages())
+                .menuImagesFD(spot.getMenuImages())
                 .build();
+    }
+
+    public List<SpotDto> retrieveAllSpots(){
+        return spotRepository.findAll()
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<SpotDto> findSpotById(UUID spotId){
+        return spotRepository.findById(spotId)
+                .map(this::convertToDto);
     }
 
     public Spot saveSpot(Spot spot, List<MultipartFile> imageFiles, List<MultipartFile> menuImageFiles) throws IOException {
@@ -161,7 +174,7 @@ public class SpotService {
                 .collect(Collectors.toList());
     }
 
-    public SpotDto updateSpot(UUID spotId, SpotDto updatedSpotDto) {
+    public SpotDto updateSpot(UUID spotId, Spot updatedSpot, List<MultipartFile> newImageFiles, List<MultipartFile> newMenuImageFiles) throws IOException {
         Optional<Spot> optionalSpot = spotRepository.findById(spotId);
         if (optionalSpot.isEmpty()) {
             return null;
@@ -174,100 +187,149 @@ public class SpotService {
 
         Spot existingSpot = optionalSpot.get();
 
-        if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
-            throw new RuntimeException("Unauthorised access.");
+//        if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
+//            throw new RuntimeException("Unauthorised access.");
+//        }
+
+        if (updatedSpot.getName() != null) {
+            existingSpot.setName(updatedSpot.getName());
+        }
+        if (updatedSpot.getDescription() != null) {
+            existingSpot.setDescription(updatedSpot.getDescription());
+        }
+        if (updatedSpot.getCity() != null) {
+            existingSpot.setCity(updatedSpot.getCity());
+        }
+        if (updatedSpot.getAddress() != null) {
+            existingSpot.setAddress(updatedSpot.getAddress());
+        }
+        if (updatedSpot.getGoogleMapsUrl() != null) {
+            existingSpot.setGoogleMapsUrl(updatedSpot.getGoogleMapsUrl());
+        }
+        if (updatedSpot.getWebsiteUrl() != null) {
+            existingSpot.setWebsiteUrl(updatedSpot.getWebsiteUrl());
+        }
+        if (updatedSpot.getWorkingFrom() != null) {
+            existingSpot.setWorkingFrom(updatedSpot.getWorkingFrom());
+        }
+        if (updatedSpot.getWorkingTo() != null) {
+            existingSpot.setWorkingTo(updatedSpot.getWorkingTo());
+        }
+        if (updatedSpot.getAlwaysOpen() != null) {
+            existingSpot.setAlwaysOpen(updatedSpot.getAlwaysOpen());
+        }
+        if (updatedSpot.getPhoneNumber() != null) {
+            existingSpot.setPhoneNumber(updatedSpot.getPhoneNumber());
+        }
+        if (updatedSpot.getEmail() != null) {
+            existingSpot.setEmail(updatedSpot.getEmail());
+        }
+        if (updatedSpot.getInstagram() != null) {
+            existingSpot.setInstagram(updatedSpot.getInstagram());
+        }
+        if (updatedSpot.getTiktok() != null) {
+            existingSpot.setTiktok(updatedSpot.getTiktok());
+        }
+        if (updatedSpot.getFacebook() != null) {
+            existingSpot.setFacebook(updatedSpot.getFacebook());
+        }
+        if (updatedSpot.getOutdoorSeating() != null) {
+            existingSpot.setOutdoorSeating(updatedSpot.getOutdoorSeating());
+        }
+        if (updatedSpot.getWifiAvailable() != null) {
+            existingSpot.setWifiAvailable(updatedSpot.getWifiAvailable());
+        }
+        if (updatedSpot.getParking() != null) {
+            existingSpot.setParking(updatedSpot.getParking());
+        }
+        if (updatedSpot.getPetsAllowed() != null) {
+            existingSpot.setPetsAllowed(updatedSpot.getPetsAllowed());
+        }
+        if (updatedSpot.getHasSpecialDietaryOptionVegetarian() != null) {
+            existingSpot.setHasSpecialDietaryOptionVegetarian(updatedSpot.getHasSpecialDietaryOptionVegetarian());
+        }
+        if (updatedSpot.getHasSpecialDietaryOptionVegan() != null) {
+            existingSpot.setHasSpecialDietaryOptionVegan(updatedSpot.getHasSpecialDietaryOptionVegan());
+        }
+        if (updatedSpot.getHasSpecialDietaryOptionGlutenFree() != null) {
+            existingSpot.setHasSpecialDietaryOptionGlutenFree(updatedSpot.getHasSpecialDietaryOptionGlutenFree());
+        }
+        if (updatedSpot.getHasFitnessMenu() != null) {
+            existingSpot.setHasFitnessMenu(updatedSpot.getHasFitnessMenu());
+        }
+        if (updatedSpot.getHasPosnaFood() != null) {
+            existingSpot.setHasPosnaFood(updatedSpot.getHasPosnaFood());
+        }
+        if (updatedSpot.getHasBreakfast() != null) {
+            existingSpot.setHasBreakfast(updatedSpot.getHasBreakfast());
+        }
+        if (updatedSpot.getSpotType() != null) {
+            existingSpot.setSpotType(updatedSpot.getSpotType());
+        }
+        if (updatedSpot.getMusicTypes() != null) {
+            existingSpot.setMusicTypes(updatedSpot.getMusicTypes());
+        }
+        if (updatedSpot.getAmbianceTypes() != null) {
+            existingSpot.setAmbianceTypes(updatedSpot.getAmbianceTypes());
+        }
+        if (updatedSpot.getCuisineTypes() != null) {
+            existingSpot.setCuisineTypes(updatedSpot.getCuisineTypes());
+        }
+        if (updatedSpot.getAvailableActivities() != null) {
+            existingSpot.setAvailableActivities(updatedSpot.getAvailableActivities());
         }
 
-        if (updatedSpotDto.getName() != null) {
-            existingSpot.setName(updatedSpotDto.getName());
-        }
-        if (updatedSpotDto.getDescription() != null) {
-            existingSpot.setDescription(updatedSpotDto.getDescription());
-        }
-        if (updatedSpotDto.getCity() != null) {
-            existingSpot.setCity(updatedSpotDto.getCity());
-        }
-        if (updatedSpotDto.getAddress() != null) {
-            existingSpot.setAddress(updatedSpotDto.getAddress());
-        }
-        if (updatedSpotDto.getGoogleMapsUrl() != null) {
-            existingSpot.setGoogleMapsUrl(updatedSpotDto.getGoogleMapsUrl());
-        }
-        if (updatedSpotDto.getWebsiteUrl() != null) {
-            existingSpot.setWebsiteUrl(updatedSpotDto.getWebsiteUrl());
-        }
-        if (updatedSpotDto.getWorkingFrom() != null) {
-            existingSpot.setWorkingFrom(updatedSpotDto.getWorkingFrom());
-        }
-        if (updatedSpotDto.getWorkingTo() != null) {
-            existingSpot.setWorkingTo(updatedSpotDto.getWorkingTo());
-        }
-        if (updatedSpotDto.getAlwaysOpen() != null) {
-            existingSpot.setAlwaysOpen(updatedSpotDto.getAlwaysOpen());
-        }
-        if (updatedSpotDto.getPhoneNumber() != null) {
-            existingSpot.setPhoneNumber(updatedSpotDto.getPhoneNumber());
-        }
-        if (updatedSpotDto.getEmail() != null) {
-            existingSpot.setEmail(updatedSpotDto.getEmail());
-        }
-        if (updatedSpotDto.getInstagram() != null) {
-            existingSpot.setInstagram(updatedSpotDto.getInstagram());
-        }
-        if (updatedSpotDto.getTiktok() != null) {
-            existingSpot.setTiktok(updatedSpotDto.getTiktok());
-        }
-        if (updatedSpotDto.getFacebook() != null) {
-            existingSpot.setFacebook(updatedSpotDto.getFacebook());
-        }
-        if (updatedSpotDto.getOutdoorSeating() != null) {
-            existingSpot.setOutdoorSeating(updatedSpotDto.getOutdoorSeating());
-        }
-        if (updatedSpotDto.getWifiAvailable() != null) {
-            existingSpot.setWifiAvailable(updatedSpotDto.getWifiAvailable());
-        }
-        if (updatedSpotDto.getParking() != null) {
-            existingSpot.setParking(updatedSpotDto.getParking());
-        }
-        if (updatedSpotDto.getPetsAllowed() != null) {
-            existingSpot.setPetsAllowed(updatedSpotDto.getPetsAllowed());
-        }
-        if (updatedSpotDto.getHasSpecialDietaryOptionVegetarian() != null) {
-            existingSpot.setHasSpecialDietaryOptionVegetarian(updatedSpotDto.getHasSpecialDietaryOptionVegetarian());
-        }
-        if (updatedSpotDto.getHasSpecialDietaryOptionVegan() != null) {
-            existingSpot.setHasSpecialDietaryOptionVegan(updatedSpotDto.getHasSpecialDietaryOptionVegan());
-        }
-        if (updatedSpotDto.getHasSpecialDietaryOptionGlutenFree() != null) {
-            existingSpot.setHasSpecialDietaryOptionGlutenFree(updatedSpotDto.getHasSpecialDietaryOptionGlutenFree());
-        }
-        if (updatedSpotDto.getHasFitnessMenu() != null) {
-            existingSpot.setHasFitnessMenu(updatedSpotDto.getHasFitnessMenu());
-        }
-        if (updatedSpotDto.getHasPosnaFood() != null) {
-            existingSpot.setHasPosnaFood(updatedSpotDto.getHasPosnaFood());
-        }
-        if (updatedSpotDto.getHasBreakfast() != null) {
-            existingSpot.setHasBreakfast(updatedSpotDto.getHasBreakfast());
-        }
-        if (updatedSpotDto.getSpotType() != null) {
-            existingSpot.setSpotType(updatedSpotDto.getSpotType());
-        }
-        if (updatedSpotDto.getMusicTypes() != null) {
-            existingSpot.setMusicTypes(updatedSpotDto.getMusicTypes());
-        }
-        if (updatedSpotDto.getAmbianceTypes() != null) {
-            existingSpot.setAmbianceTypes(updatedSpotDto.getAmbianceTypes());
-        }
-        if (updatedSpotDto.getCuisineTypes() != null) {
-            existingSpot.setCuisineTypes(updatedSpotDto.getCuisineTypes());
-        }
-        if (updatedSpotDto.getAvailableActivities() != null) {
-            existingSpot.setAvailableActivities(updatedSpotDto.getAvailableActivities());
+        Set<String> existingImagePaths = existingSpot.getImages().stream()
+                .map(FileData::getFilePath)
+                .collect(Collectors.toSet());
+
+        Set<String> existingMenuImagePaths = existingSpot.getMenuImages().stream()
+                .map(FileData::getFilePath)
+                .collect(Collectors.toSet());
+
+        Set<String> updatedImagePaths = updatedSpot.getImages().stream()
+                .map(FileData::getFilePath)
+                .collect(Collectors.toSet());
+
+        Set<String> updatedMenuImagePaths = updatedSpot.getMenuImages().stream()
+                .map(FileData::getFilePath)
+                .collect(Collectors.toSet());
+        // Ovde je updatedMenunImagesPath i ovo iznad prazno, pa se slike ne brisu, proveri sto je prazno... updatedSpot sadrzi stare slike kao i existingSpot...
+        // NE zaboravi da obrises i iz baze slike, tj iz entiteta filedata
+        // Takodje na frontendu se updateaju samo slike, ali preko postmana radi, u sustini ne dodajes lepo na formu ostale atribute...
+        // Nadam se da si se lepo odmorio... :)))
+        for (FileData fileData : existingSpot.getImages()) {
+            if (!updatedImagePaths.contains(fileData.getFilePath())) {
+                storageService.deleteImageFromFileSystem(fileData.getFilePath());
+                System.out.println("DELETING WAAAAAAAAAAAAAAAAAAAAAAAA" + fileData.getFilePath());
+                existingSpot.removeImage(fileData);
+            }
         }
 
-        Spot updatedSpot = spotRepository.save(existingSpot);
-        return convertToDto(updatedSpot);
+        for (FileData fileData : existingSpot.getMenuImages()) {
+            if (!updatedMenuImagePaths.contains(fileData.getFilePath())) {
+                storageService.deleteImageFromFileSystem(fileData.getFilePath());
+                System.out.println("DELETING WAAAAAAAAAAAAAAAAAAAAAAAA" + fileData.getFilePath());
+                existingSpot.removeMenuImage(fileData);
+            }
+        }
+
+//        for (MultipartFile file : newImageFiles) {
+//            if (!existingImagePaths.contains(file.getOriginalFilename())) {
+//                FileData fileData = storageService.uploadImageToFileSystem(file, existingSpot.getName(), existingSpot.getAddress(), existingSpot.getPhoneNumber());
+//                existingSpot.addImage(fileData);
+//            }
+//        }
+//
+//        for (MultipartFile file : newMenuImageFiles) {
+//            if (!existingMenuImagePaths.contains(file.getOriginalFilename())) {
+//                FileData fileData = storageService.uploadMenuImageToFileSystem(file, existingSpot.getName(), existingSpot.getAddress(), existingSpot.getPhoneNumber());
+//                existingSpot.addMenuImage(fileData);
+//            }
+//        }
+
+        Spot updatedSpotReturned = spotRepository.save(existingSpot);
+        return convertToDto(updatedSpotReturned);
     }
 
     public List<SpotDto> getEventsByPublisherId() {
@@ -284,7 +346,4 @@ public class SpotService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
-
-
 }
-

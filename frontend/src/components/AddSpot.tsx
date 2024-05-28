@@ -92,6 +92,7 @@ const AddSpot = () => {
         const response = await addSpot(spotData, images, menuImages);
         setMessage("Uspešno ste dodali Vaš objekat !")
         setImages([])
+        setMenuImages([])
         setSpotData({
           name: '',
           description: '',

@@ -39,6 +39,13 @@ const ChooseSpotToUpadte: React.FC = () => {
       setMessage("Mesta nisu pronadjena.");
     }
   };
+
+  const getFirstImage = (spot: Spot): string => {
+    if (spot.images && spot.images.length > 0) {
+      return spot.images[0];
+    }
+    return "../src/assets/default-thumbnail.jpg";
+  };
   
 
   return (
@@ -63,7 +70,7 @@ const ChooseSpotToUpadte: React.FC = () => {
           <div key={spot.spotId}>
             <UpdateSpotCard
               key={spot.spotId}
-              img={"../src/assets/unnamed.jpg"}
+              img={getFirstImage(spot)}
               nameOfSpot={spot.name}
               locationOfSpot={spot.city + ", " + spot.address}
               spotId={spot.spotId}

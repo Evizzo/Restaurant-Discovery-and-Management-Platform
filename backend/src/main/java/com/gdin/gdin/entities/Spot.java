@@ -1,6 +1,7 @@
 package com.gdin.gdin.entities;
 
 import com.gdin.gdin.enums.*;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -31,8 +32,8 @@ public class Spot {
     private String address;
     private String googleMapsUrl;
     private String websiteUrl;
-    private Integer workingFrom;
-    private Integer workingTo;
+    private String workingFrom;
+    private String workingTo;
     private Boolean alwaysOpen;
     private String phoneNumber;
     private String email;
@@ -93,5 +94,13 @@ public class Spot {
 
     public void addMenuImage(FileData fileData) {
         this.menuImages.add(fileData);
+    }
+
+    public void removeImage(FileData fileData) {
+        this.images.remove(fileData);
+    }
+
+    public void removeMenuImage(FileData fileData) {
+        this.menuImages.remove(fileData);
     }
 }
