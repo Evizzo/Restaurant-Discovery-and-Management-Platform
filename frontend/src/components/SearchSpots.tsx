@@ -8,8 +8,8 @@ const SearchSpots: React.FC = () => {
   const [searchParams, setSearchParams] = useState<SearchParams>({
     name: "",
     city: "",
-    workingFrom: 0,
-    workingTo: 0,
+    workingFrom: "",
+    workingTo: "",
     alwaysOpen: false,
     outdoorSeating: false,
     wifiAvailable: false,
