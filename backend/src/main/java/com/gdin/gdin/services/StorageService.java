@@ -18,15 +18,11 @@ public class StorageService {
 
     private final FileDataRepository fileDataRepository;
 
-    public FileData uploadImageToFileSystem(MultipartFile file, String spotName, String spotAddress, String spotPhone) throws IOException {
+    public FileData uploadImageToFileSystem(MultipartFile file, String spotId) throws IOException {
         String currentDir = System.getProperty("user.dir");
         String baseFolderPath = currentDir + "/../frontend/src/assets/";
 
-        String sanitizedAddress = spotAddress.replaceAll("[^a-zA-Z0-9]", "_");
-        String sanitizedPhone = spotPhone.replaceAll("[^a-zA-Z0-9]", "_");
-        String sanitizedName = spotName.replaceAll("[^a-zA-Z0-9]", "_");
-
-        String folderPath = baseFolderPath + sanitizedName + "_" + sanitizedAddress + "_" + sanitizedPhone;
+        String folderPath = baseFolderPath + spotId;
 
         File spotDirectory = new File(folderPath);
         if (!spotDirectory.exists()) {
@@ -41,7 +37,7 @@ public class StorageService {
 
         String filePath = folderPath + "/" + file.getOriginalFilename();
 
-        String filePathToDisplay = "../src/assets/" + sanitizedName + "_" + sanitizedAddress + "_" + sanitizedPhone + "/" + file.getOriginalFilename();
+        String filePathToDisplay = "/assets/" + spotId + "/" + file.getOriginalFilename();
         FileData fileData = fileDataRepository.save(FileData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
@@ -57,15 +53,11 @@ public class StorageService {
         return null;
     }
 
-    public FileData uploadMenuImageToFileSystem(MultipartFile file, String spotName, String spotAddress, String spotPhone) throws IOException {
+    public FileData uploadMenuImageToFileSystem(MultipartFile file, String spotId) throws IOException {
         String currentDir = System.getProperty("user.dir");
         String baseFolderPath = currentDir + "/../frontend/src/assets/";
 
-        String sanitizedAddress = spotAddress.replaceAll("[^a-zA-Z0-9]", "_");
-        String sanitizedPhone = spotPhone.replaceAll("[^a-zA-Z0-9]", "_");
-        String sanitizedName = spotName.replaceAll("[^a-zA-Z0-9]", "_");
-
-        String folderPath = baseFolderPath + "MENU_" + sanitizedName + "_" + sanitizedAddress + "_" + sanitizedPhone;
+        String folderPath = baseFolderPath + "MENU_" + spotId;
 
         File spotDirectory = new File(folderPath);
         if (!spotDirectory.exists()) {
@@ -80,7 +72,7 @@ public class StorageService {
 
         String filePath = folderPath + "/" + file.getOriginalFilename();
 
-        String filePathToDisplay = "../src/assets/" + "MENU_" + sanitizedName + "_" + sanitizedAddress + "_" + sanitizedPhone + "/" + file.getOriginalFilename();
+        String filePathToDisplay = "/assets/" + "MENU_" + spotId + "/" + file.getOriginalFilename();
         FileData fileData = fileDataRepository.save(FileData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
@@ -106,6 +98,12 @@ public class StorageService {
             File file = new File(filePath);
             if (file.exists()) {
                 if (file.delete()) {
+                    File directory = file.getParentFile();
+                    if (directory.isDirectory() && directory.list().length == 0) {
+                        if (!directory.delete()) {
+                            throw new IOException("Failed to delete the directory");
+                        }
+                    }
                     fileDataRepository.delete(fileData);
                     System.out.println("DELETING " + filePath);
                 } else {

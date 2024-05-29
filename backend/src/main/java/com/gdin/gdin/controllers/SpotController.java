@@ -89,7 +89,7 @@ public class SpotController {
         return ResponseEntity.ok(result);
     }
 
-    @PreAuthorize("hasAuthority('spot_owner:update')")
+//    @PreAuthorize("hasAuthority('spot_owner:update')")
     @Transactional
     @PutMapping(path = "/{spotId}", consumes = "multipart/form-data")
     public ResponseEntity<SpotDto> updateSpot(

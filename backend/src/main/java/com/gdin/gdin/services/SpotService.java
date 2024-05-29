@@ -129,12 +129,12 @@ public class SpotService {
         Spot savedSpot = spotRepository.save(spot);
 
         for (MultipartFile file : imageFiles) {
-            FileData fileData = storageService.uploadImageToFileSystem(file, spot.getName(), spot.getAddress(), spot.getPhoneNumber());
+            FileData fileData = storageService.uploadImageToFileSystem(file, String.valueOf(spot.getSpotId()));
             savedSpot.addImage(fileData);
         }
 
         for (MultipartFile file : menuImageFiles) {
-            FileData fileData = storageService.uploadMenuImageToFileSystem(file, spot.getName(), spot.getAddress(), spot.getPhoneNumber());
+            FileData fileData = storageService.uploadMenuImageToFileSystem(file, String.valueOf(spot.getSpotId()));
             savedSpot.addMenuImage(fileData);
         }
 
@@ -192,9 +192,9 @@ public class SpotService {
 
         Spot existingSpot = optionalSpot.get();
 
-        if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
-            throw new RuntimeException("Unauthorised access.");
-        }
+//        if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
+//            throw new RuntimeException("Unauthorised access.");
+//        }
 
         if (updatedSpot.getName() != null) {
             existingSpot.setName(updatedSpot.getName());
@@ -320,14 +320,14 @@ public class SpotService {
 
         for (MultipartFile file : newImageFiles) {
             if (!existingImagePaths.contains(file.getOriginalFilename())) {
-                FileData fileData = storageService.uploadImageToFileSystem(file, existingSpot.getName(), existingSpot.getAddress(), existingSpot.getPhoneNumber());
+                FileData fileData = storageService.uploadImageToFileSystem(file, String.valueOf(spotId));
                 existingSpot.addImage(fileData);
             }
         }
 
         for (MultipartFile file : newMenuImageFiles) {
             if (!existingMenuImagePaths.contains(file.getOriginalFilename())) {
-                FileData fileData = storageService.uploadMenuImageToFileSystem(file, existingSpot.getName(), existingSpot.getAddress(), existingSpot.getPhoneNumber());
+                FileData fileData = storageService.uploadMenuImageToFileSystem(file, String.valueOf(spotId));
                 existingSpot.addMenuImage(fileData);
             }
         }
