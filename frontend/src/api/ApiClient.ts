@@ -6,6 +6,7 @@ export const apiClient = axios.create(
         withCredentials: true
     }
 );
+
 // apiClient.interceptors.request.use((config) => {
 //     const jsessionIdRow = document.cookie.split('; ').find(row => row.startsWith('JSESSIONID'));
 //     const jsessionId = jsessionIdRow ? jsessionIdRow.split('=')[1] : undefined;
