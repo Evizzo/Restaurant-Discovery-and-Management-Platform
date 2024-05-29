@@ -148,15 +148,19 @@ export const addSpot = (spot: any, imageFiles: any, menuImageFiles: any) => {
     });
 };
 
+export const deleteSpot = (spotId: string) => {
+    return apiClient.delete(`/spot/${spotId}`);
+};
+
 export const updateSpot = (spotId: string, updatedSpot: any, newImageFiles: File[], newMenuImageFiles: File[]) => {
     const formData = new FormData();
     formData.append('updatedSpotAtr', new Blob([JSON.stringify(updatedSpot)], { type: 'application/json' }));
     
-    newImageFiles.forEach((file, index) => {
+    newImageFiles.forEach((file) => {
       formData.append(`newImageFiles`, file);
     });
   
-    newMenuImageFiles.forEach((file, index) => {
+    newMenuImageFiles.forEach((file) => {
       formData.append(`newMenuImageFiles`, file);
     });
     if (formData.has('newImageFiles')) {

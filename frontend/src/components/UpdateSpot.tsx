@@ -37,10 +37,17 @@ const UpdateSpot = () => {
     availableActivities: [] as string[],
     imagesFD: [] as any,
     menuImagesFD: [] as any,
+    images: [] as string[],
+    menuImages: [] as string[],
   });
   const { spotId } = useParams();
+
   const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
   const [newMenuImageFiles, setNewMenuImageFiles] = useState<File[]>([]);
+
+  const [previewImagesMenu, setPreviewImagesMenu] = useState<string[]>([]);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+
   useEffect(() => {
     const fetchSpot = async () => {
       try {
@@ -50,6 +57,9 @@ const UpdateSpot = () => {
           setSpotData(response.data)
           setNewImageFiles(spotData.imagesFD)
           setNewMenuImageFiles(spotData.menuImagesFD)
+
+          setPreviewImages(spotData.images)
+          setPreviewImagesMenu(spotData.menuImages)
         }
       } catch (error) {
         console.error("Greška pri dobavljanju lokala:", error);
@@ -76,43 +86,7 @@ const UpdateSpot = () => {
     try {
         const response = await updateSpot(spotData.spotId, spotData, newImageFiles, newMenuImageFiles);
         setMessage("Uspešno ste izmenili Vaš objekat !")
-        setSpotData({
-          spotId: '',
-          name: '',
-          description: '',
-          city: '',
-          address: '',
-          googleMapsUrl: '',
-          websiteUrl: '',
-          workingFrom: '',
-          workingTo: '',
-          alwaysOpen: false,
-          phoneNumber: '',
-          email: '',
-          instagram: '',
-          tiktok: '',
-          facebook: '',
-          outdoorSeating: false,
-          wifiAvailable: false,
-          parking: false,
-          petsAllowed: false,
-          hasSpecialDietaryOptionVegetarian: false,
-          hasSpecialDietaryOptionVegan: false,
-          hasSpecialDietaryOptionGlutenFree: false,
-          hasFitnessMenu: false,
-          hasPosnaFood: false,
-          hasBreakfast: false,
-          spotType: '',
-          musicTypes: [],
-          ambianceTypes: [],
-          cuisineTypes: [],
-          availableActivities: [],
-          imagesFD: [],
-          menuImagesFD: [],
-        });
-        setNewImageFiles([]);
-        setNewMenuImageFiles([]);
-        console.log('Add Spot response:', response); 
+        console.log('EDIT Spot response:', response); 
       } catch (error: any) {
         setMessage(error.response.data.message)
       }
@@ -243,33 +217,63 @@ const UpdateSpot = () => {
     }
   };
 
+
+  const removePreviewImage = (index: number, isMenu: boolean) => {
+    if (isMenu) {
+      setNewMenuImageFiles(prevImages => prevImages.filter((_, i) => i !== index));
+      setPreviewImagesMenu(prevPreviews => prevPreviews.filter((_, i) => i !== index));
+    } else {
+      setNewImageFiles(prevImages => prevImages.filter((_, i) => i !== index));
+      setPreviewImages(prevPreviews => prevPreviews.filter((_, i) => i !== index));
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-semibold mb-4">Izmenite objekat</h1>
         <form onSubmit={handleSubmit}>
         <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="newImageFiles">Nova slika</label>
-            <input
-              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
-              type="file"
-              id="newImageFiles"
-              name="newImageFiles"
-              onChange={handleFileChange}
-              multiple
-            />
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Izaberite slike</label>
+          <input
+            className="hidden"
+            type="file"
+            id="images"
+            name="images"
+            onChange={handleFileChange}
+            multiple
+          />
+          <div className="grid grid-cols-3 gap-4">
+            {previewImages.map((preview, index) => (
+              <div key={index} className="relative w-full h-32 overflow-hidden rounded-md">
+                <img src={preview} alt={`Preview ${index}`} className="object-cover w-full h-full" />
+                <button onClick={() => removePreviewImage(index, false)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
+              </div>
+            ))}
           </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="newMenuImageFiles">Nova slika menija</label>
-            <input
-              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
-              type="file"
-              id="newMenuImageFiles"
-              name="newMenuImageFiles"
-              onChange={handleFileChange}
-              multiple
-            />
+          <label htmlFor="images" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike</label>
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="menuImages">Izaberite slike jelovnika</label>
+          <input
+            className="hidden"
+            type="file"
+            id="menuImages"
+            name="menuImages"
+            onChange={handleFileChange}
+            multiple
+          />
+          <div className="grid grid-cols-3 gap-4">
+            {previewImagesMenu.map((preview, index) => (
+              <div key={index} className="relative w-full h-32 overflow-hidden rounded-md">
+                <img src={preview} alt={`Preview menu ${index}`} className="object-cover w-full h-full" />
+                <button onClick={() => removePreviewImage(index, true)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
+              </div>
+            ))}
           </div>
+          <label htmlFor="menuImages" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike jelovnika</label>
+        </div>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Ime</label>
             <input

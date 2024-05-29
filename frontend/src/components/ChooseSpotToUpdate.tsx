@@ -77,6 +77,7 @@ const ChooseSpotToUpadte: React.FC = () => {
               workingFrom={spot.workingFrom}
               workingTo={spot.workingTo}
               rating={spot.totalReview}
+              reloadData={fetchData}
             />
           </div>
         ))}

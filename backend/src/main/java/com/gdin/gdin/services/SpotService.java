@@ -5,12 +5,15 @@ import com.gdin.gdin.controllers.SpotController;
 import com.gdin.gdin.dtos.ReviewDto;
 import com.gdin.gdin.dtos.SpotDto;
 import com.gdin.gdin.dtos.UserDto;
+import com.gdin.gdin.entities.Review;
 import com.gdin.gdin.entities.Spot;
 import com.gdin.gdin.entities.User;
 import com.gdin.gdin.enums.*;
+import com.gdin.gdin.repositories.ReviewRepository;
 import com.gdin.gdin.repositories.SpotRepository;
 import com.gdin.gdin.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +38,8 @@ public class SpotService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final StorageService storageService;
+    private final ReviewRepository reviewRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(SpotController.class);
 
     public SpotDto convertToDto(Spot spot) {
@@ -344,5 +349,28 @@ public class SpotService {
         return spots.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteSpot(UUID spotId) throws IOException, ChangeSetPersister.NotFoundException {
+        Optional<Spot> optionalSpot = spotRepository.findById(spotId);
+        if (optionalSpot.isPresent()) {
+            Spot spot = optionalSpot.get();
+
+            for (FileData image : spot.getImages()) {
+                storageService.deleteImageFromFileSystem(image.getName());
+            }
+
+            for (FileData menuImage : spot.getMenuImages()) {
+                storageService.deleteImageFromFileSystem(menuImage.getName());
+            }
+
+            for (Review review : spot.getReviews()) {
+                reviewRepository.delete(review);
+            }
+
+            spotRepository.delete(spot);
+        } else {
+            throw new ChangeSetPersister.NotFoundException();
+        }
     }
 }

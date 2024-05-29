@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -88,7 +89,7 @@ public class SpotController {
         return ResponseEntity.ok(result);
     }
 
-        @PreAuthorize("hasAuthority('spot_owner:update')")
+    @PreAuthorize("hasAuthority('spot_owner:update')")
     @Transactional
     @PutMapping(path = "/{spotId}", consumes = "multipart/form-data")
     public ResponseEntity<SpotDto> updateSpot(
@@ -120,6 +121,22 @@ public class SpotController {
     @GetMapping("/owned")
     public ResponseEntity<List<SpotDto>> retrieveAllOwnerSpots(){
         return ResponseEntity.ok(spotService.getEventsByPublisherId());
+    }
+
+    @PreAuthorize("hasAuthority('spot_owner:delete')")
+    @DeleteMapping("/{spotId}")
+    @Transactional
+    public ResponseEntity<Void> deleteSpot(@PathVariable UUID spotId) {
+        try {
+            spotService.deleteSpot(spotId);
+            return ResponseEntity.noContent().build();
+        } catch (ChangeSetPersister.NotFoundException e) {
+            logger.error("Spot not found with ID: " + spotId, e);
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            logger.error("Error deleting spot with ID: " + spotId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

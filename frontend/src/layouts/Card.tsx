@@ -6,8 +6,8 @@ const Card = (props: {
   nameOfSpot: string; 
   locationOfSpot: string; 
   spotId: string; 
-  workingFrom: number; 
-  workingTo: number;
+  workingFrom: string; 
+  workingTo: string;
   rating: number; 
 }) => {
   return (
