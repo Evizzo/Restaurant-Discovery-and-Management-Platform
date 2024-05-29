@@ -154,8 +154,9 @@ export const deleteSpot = (spotId: string) => {
 
 export const updateSpot = (spotId: string, updatedSpot: any, newImageFiles: File[], newMenuImageFiles: File[]) => {
     const formData = new FormData();
-    formData.append('updatedSpotAtr', new Blob([JSON.stringify(updatedSpot)], { type: 'application/json' }));
-    
+    Object.keys(updatedSpot).forEach(key => {
+        formData.append(key, updatedSpot[key]);
+    });    
     newImageFiles.forEach((file) => {
       formData.append(`newImageFiles`, file);
     });

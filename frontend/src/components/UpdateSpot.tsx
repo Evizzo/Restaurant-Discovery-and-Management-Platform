@@ -54,12 +54,13 @@ const UpdateSpot = () => {
         if (spotId) {
           const response = await retrieveSpotById(spotId);
           console.log(response.data)
-          setSpotData(response.data)
-          setNewImageFiles(spotData.imagesFD)
-          setNewMenuImageFiles(spotData.menuImagesFD)
-
-          setPreviewImages(spotData.images)
-          setPreviewImagesMenu(spotData.menuImages)
+          if (response.data) {
+            setSpotData(response.data);
+            setNewImageFiles(response.data.imagesFD);
+            setNewMenuImageFiles(response.data.menuImagesFD);
+            setPreviewImages(response.data.images);
+            setPreviewImagesMenu(response.data.menuImages);
+          }
         }
       } catch (error) {
         console.error("Greška pri dobavljanju lokala:", error);
@@ -144,6 +145,29 @@ const UpdateSpot = () => {
     "KARAOKE"
   ];
 
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, isMenu: boolean) => {
+    const files = event.target.files;
+    if (files) {
+        const imageFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+        if (isMenu) {
+            setNewMenuImageFiles(prevImages => [...prevImages, ...imageFiles]);
+            const imagePreviews: string[] = [];
+            for (let i = 0; i < imageFiles.length; i++) {
+                imagePreviews.push(URL.createObjectURL(imageFiles[i]));
+            }
+            setPreviewImagesMenu(prevPreviews => [...prevPreviews, ...imagePreviews]);
+        } else {
+            setNewImageFiles(prevImages => [...prevImages, ...imageFiles]);
+            const imagePreviews: string[] = [];
+            for (let i = 0; i < imageFiles.length; i++) {
+                imagePreviews.push(URL.createObjectURL(imageFiles[i]));
+            }
+            setPreviewImages(prevPreviews => [...prevPreviews, ...imagePreviews]);
+        }
+    }
+};
+
   const handleAvailableActivitiesSelect = (availableActivitie: any) => {
     if (!spotData.availableActivities.includes(availableActivitie)) {
       setSpotData(prevSpotData => ({
@@ -208,16 +232,6 @@ const UpdateSpot = () => {
     }));
   };
 
-  const handleFileChange = (e: any) => {
-    const { name, files } = e.target;
-    if (name === 'newImageFiles') {
-      setNewImageFiles(Array.from(files));
-    } else if (name === 'newMenuImageFiles') {
-      setNewMenuImageFiles(Array.from(files));
-    }
-  };
-
-
   const removePreviewImage = (index: number, isMenu: boolean) => {
     if (isMenu) {
       setNewMenuImageFiles(prevImages => prevImages.filter((_, i) => i !== index));
@@ -231,16 +245,18 @@ const UpdateSpot = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
+      <h1><strong>ne radi trenutno</strong></h1>
+      <br></br>
         <h1 className="text-3xl font-semibold mb-4">Izmenite objekat</h1>
         <form onSubmit={handleSubmit}>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Izaberite slike</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="newImageFiles">Izaberite slike</label>
           <input
             className="hidden"
             type="file"
-            id="images"
-            name="images"
-            onChange={handleFileChange}
+            id="newImageFiles"
+            name="newImageFiles"
+            onChange={(event) => handleFileUpload(event, false)}
             multiple
           />
           <div className="grid grid-cols-3 gap-4">
@@ -251,17 +267,17 @@ const UpdateSpot = () => {
               </div>
             ))}
           </div>
-          <label htmlFor="images" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike</label>
+          <label htmlFor="newImageFiles" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike</label>
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="menuImages">Izaberite slike jelovnika</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="newMenuImageFiles">Izaberite slike jelovnika</label>
           <input
             className="hidden"
             type="file"
-            id="menuImages"
-            name="menuImages"
-            onChange={handleFileChange}
+            id="newMenuImageFiles"
+            name="newMenuImageFiles"
+            onChange={(event) => handleFileUpload(event, true)}
             multiple
           />
           <div className="grid grid-cols-3 gap-4">
@@ -272,7 +288,8 @@ const UpdateSpot = () => {
               </div>
             ))}
           </div>
-          <label htmlFor="menuImages" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike jelovnika</label>
+          <label htmlFor="newMenuImageFiles" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike jelovnika</label>
+        
         </div>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">Ime</label>

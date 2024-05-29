@@ -109,7 +109,8 @@ const SpotPage: React.FC<SpotPageProps> = () => {
         setMessage(error.response.data.message);
       } else {
         setMessage("Došlo je do greške.");
-      }    }
+      }    
+    }
   };
 
   const handleRatingChange = (rating: any, field: any) => {

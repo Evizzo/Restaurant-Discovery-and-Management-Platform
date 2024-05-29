@@ -16,8 +16,10 @@ const Card = (props: {
         <img className="rounded-lg w-full h-48 object-cover" src={props.img} alt="img" />
       </div>
       <h3 className="font-semibold text-white">{props.nameOfSpot}</h3>
-      <p className="text-white">{props.locationOfSpot}</p>
-      <p className="text-white">Working hours: {props.workingFrom} - {props.workingTo}</p>
+      <div>
+        <p className="text-white">{props.locationOfSpot}</p>
+        <p className="text-white">Working hours: {props.workingFrom} - {props.workingTo}</p>
+      </div>
       <ShowStarRating
         key={props.rating}
         maxStars={5}

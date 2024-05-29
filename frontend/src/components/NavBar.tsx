@@ -28,7 +28,7 @@ const Navbar = () => {
           <div className="flex flex-row items-center cursor-pointer gap-2">
             <Link to="/">
               <img
-                src="/assets/logo.jpeg"
+                src="/assets/logo-removebg-preview.png"
                 alt="Logo"
                 className="h-8 w-auto sm:h-10"
               />

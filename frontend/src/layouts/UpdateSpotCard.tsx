@@ -11,7 +11,7 @@ const UpdateSpotCard = (props: {
   workingFrom: string; 
   workingTo: string;
   rating: number; 
-  reloadData: () => void; // Function to reload data
+  reloadData: () => void;
 }) => {
   const handleDeleteSpot = async (spotId: string) => {
     try {
@@ -29,8 +29,10 @@ const UpdateSpotCard = (props: {
           <img className="rounded-lg w-full h-48 object-cover" src={props.img} alt="img" />
         </div>
         <h3 className="font-semibold text-white">{props.nameOfSpot}</h3>
-        <p className="text-white">{props.locationOfSpot}</p>
-        <p className="text-white">Working hours: {props.workingFrom} - {props.workingTo}</p>
+        <div>
+          <p className="text-white">{props.locationOfSpot}</p>
+          <p className="text-white">Working hours: {props.workingFrom} - {props.workingTo}</p>
+        </div>
         <ShowStarRating
           key={props.rating}
           maxStars={5}
@@ -39,7 +41,7 @@ const UpdateSpotCard = (props: {
       </Link>
       <button
         onClick={() => handleDeleteSpot(props.spotId)}
-        className="absolute bottom-2 right-2 bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-full focus:outline-none"
+        className="absolute bottom-1 right-1 bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-full focus:outline-none"
       >
         Delete
       </button>

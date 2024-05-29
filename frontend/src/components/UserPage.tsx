@@ -61,7 +61,7 @@ function UserPage() {
           <Card className="w-full max-w-lg mx-auto">
             <Card.Body>
               {/* <Card.Title className="text-lg font-semibold">Vaši detalji</Card.Title> */}
-              <Card.Text>
+              <div> {/* Use a div or another suitable container */}
                 <img src={userData.pictureUrl} alt="Profile" className="mx-auto" />
                 <strong>Ime:</strong> {userData.firstname}<br />
                 <strong>Prezime:</strong> {userData.lastname}<br />
@@ -77,7 +77,7 @@ function UserPage() {
                   </Link>
                 )}
                 {/* <Link to={`/user-profile/${userData.email}`} className="text-blue-500 hover:underline"><strong>Public profile page</strong></Link> */}
-              </Card.Text>
+              </div>
               <br />
               {/* <Button variant="danger" onClick={handleDeleteAccount}>
                 Delete your account

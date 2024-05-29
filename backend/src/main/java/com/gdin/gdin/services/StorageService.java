@@ -112,7 +112,7 @@ public class StorageService {
                     throw new IOException("Failed to delete the file");
                 }
             } else {
-                throw new IOException("File not found in the file system");
+                throw new IOException("File not found in the file system " + file.getAbsoluteFile()); // Error occurs when 2 same image names exist, even if they are in 2 diff fol
             }
         } else {
             throw new IOException("File data not found in the repository " + fileName);
