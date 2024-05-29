@@ -45,7 +45,9 @@ public class StorageService {
         FileData fileData = fileDataRepository.save(FileData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
-                .filePath(filePathToDisplay).build());
+                .filePath(filePathToDisplay)
+                .absoluteFilePath(filePath)
+                .build());
 
         file.transferTo(new File(filePath));
 

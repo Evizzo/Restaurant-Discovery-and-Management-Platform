@@ -24,8 +24,7 @@ import static org.springframework.http.HttpMethod.*;
 public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {
             "/oauth2/authorization/google",
-            "/authenticate/**",
-            "/spot/**"
+            "/authenticate/**"
     };
     private CustomOAuth2UserService oauthUserService;
     private final AuthenticationProvider authenticationProvider;

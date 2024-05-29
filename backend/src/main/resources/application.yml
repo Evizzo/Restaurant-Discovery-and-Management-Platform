@@ -46,9 +46,9 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-logging:
-  level:
-    root: DEBUG
-    org.springframework.web: DEBUG
-    org.hibernate: TRACE
-    org.springframework.security: DEBUG
+#logging:
+#  level:
+#    root: DEBUG
+#    org.springframework.web: DEBUG
+#    org.hibernate: TRACE
+#    org.springframework.security: DEBUG

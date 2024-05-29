@@ -187,9 +187,9 @@ public class SpotService {
 
         Spot existingSpot = optionalSpot.get();
 
-//        if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
-//            throw new RuntimeException("Unauthorised access.");
-//        }
+        if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
+            throw new RuntimeException("Unauthorised access.");
+        }
 
         if (updatedSpot.getName() != null) {
             existingSpot.setName(updatedSpot.getName());
@@ -287,46 +287,45 @@ public class SpotService {
                 .map(FileData::getFilePath)
                 .collect(Collectors.toSet());
 
-        Set<String> updatedImagePaths = updatedSpot.getImages().stream()
-                .map(FileData::getFilePath)
+        Set<String> newImageFileNames = newImageFiles.stream()
+                .map(MultipartFile::getOriginalFilename)
                 .collect(Collectors.toSet());
 
-        Set<String> updatedMenuImagePaths = updatedSpot.getMenuImages().stream()
-                .map(FileData::getFilePath)
+        Set<String> newMenuImageFileNames = newMenuImageFiles.stream()
+                .map(MultipartFile::getOriginalFilename)
                 .collect(Collectors.toSet());
-        // Ovde je updatedMenunImagesPath i ovo iznad prazno, pa se slike ne brisu, proveri sto je prazno... updatedSpot sadrzi stare slike kao i existingSpot...
-        // NE zaboravi da obrises i iz baze slike, tj iz entiteta filedata
-        // Takodje na frontendu se updateaju samo slike, ali preko postmana radi, u sustini ne dodajes lepo na formu ostale atribute...
-        // Nadam se da si se lepo odmorio... :)))
-        for (FileData fileData : existingSpot.getImages()) {
-            if (!updatedImagePaths.contains(fileData.getFilePath())) {
-                storageService.deleteImageFromFileSystem(fileData.getFilePath());
-                System.out.println("DELETING WAAAAAAAAAAAAAAAAAAAAAAAA" + fileData.getFilePath());
-                existingSpot.removeImage(fileData);
+
+        Iterator<FileData> imageIterator = existingSpot.getImages().iterator();
+        while (imageIterator.hasNext()) {
+            FileData fileData = imageIterator.next();
+            if (!newImageFileNames.contains(fileData.getName())) {
+                storageService.deleteImageFromFileSystem(fileData.getName());
+                imageIterator.remove();
             }
         }
 
-        for (FileData fileData : existingSpot.getMenuImages()) {
-            if (!updatedMenuImagePaths.contains(fileData.getFilePath())) {
-                storageService.deleteImageFromFileSystem(fileData.getFilePath());
-                System.out.println("DELETING WAAAAAAAAAAAAAAAAAAAAAAAA" + fileData.getFilePath());
-                existingSpot.removeMenuImage(fileData);
+        Iterator<FileData> menuImageIterator = existingSpot.getMenuImages().iterator();
+        while (menuImageIterator.hasNext()) {
+            FileData fileData = menuImageIterator.next();
+            if (!newMenuImageFileNames.contains(fileData.getName())) {
+                storageService.deleteImageFromFileSystem(fileData.getName());
+                menuImageIterator.remove();
             }
         }
 
-//        for (MultipartFile file : newImageFiles) {
-//            if (!existingImagePaths.contains(file.getOriginalFilename())) {
-//                FileData fileData = storageService.uploadImageToFileSystem(file, existingSpot.getName(), existingSpot.getAddress(), existingSpot.getPhoneNumber());
-//                existingSpot.addImage(fileData);
-//            }
-//        }
-//
-//        for (MultipartFile file : newMenuImageFiles) {
-//            if (!existingMenuImagePaths.contains(file.getOriginalFilename())) {
-//                FileData fileData = storageService.uploadMenuImageToFileSystem(file, existingSpot.getName(), existingSpot.getAddress(), existingSpot.getPhoneNumber());
-//                existingSpot.addMenuImage(fileData);
-//            }
-//        }
+        for (MultipartFile file : newImageFiles) {
+            if (!existingImagePaths.contains(file.getOriginalFilename())) {
+                FileData fileData = storageService.uploadImageToFileSystem(file, existingSpot.getName(), existingSpot.getAddress(), existingSpot.getPhoneNumber());
+                existingSpot.addImage(fileData);
+            }
+        }
+
+        for (MultipartFile file : newMenuImageFiles) {
+            if (!existingMenuImagePaths.contains(file.getOriginalFilename())) {
+                FileData fileData = storageService.uploadMenuImageToFileSystem(file, existingSpot.getName(), existingSpot.getAddress(), existingSpot.getPhoneNumber());
+                existingSpot.addMenuImage(fileData);
+            }
+        }
 
         Spot updatedSpotReturned = spotRepository.save(existingSpot);
         return convertToDto(updatedSpotReturned);
