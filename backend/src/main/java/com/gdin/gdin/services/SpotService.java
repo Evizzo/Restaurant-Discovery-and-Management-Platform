@@ -192,9 +192,9 @@ public class SpotService {
 
         Spot existingSpot = optionalSpot.get();
 
-//        if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
-//            throw new RuntimeException("Unauthorised access.");
-//        }
+        if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
+            throw new RuntimeException("Unauthorised access.");
+        }
 
         if (updatedSpot.getName() != null) {
             existingSpot.setName(updatedSpot.getName());
