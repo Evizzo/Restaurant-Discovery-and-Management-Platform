@@ -42,7 +42,12 @@ function App(){
             <Route path="/events" element={<Events/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/spot/:spotId" element={<SpotPage />} />
-            <Route path="/edit-spot/:spotId" element={<UpdateSpot />} />
+            
+            <Route path="/edit-spot/:spotId" element={
+            <AuthenticatedRoute>
+              <UpdateSpot />
+            </AuthenticatedRoute>
+            } />
 
             <Route path="/current-user" element={
               <AuthenticatedRoute>

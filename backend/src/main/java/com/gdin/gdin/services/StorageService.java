@@ -37,7 +37,7 @@ public class StorageService {
 
         String filePath = folderPath + "/" + file.getOriginalFilename();
 
-        String filePathToDisplay = "/assets/" + spotId + "/" + file.getOriginalFilename();
+        String filePathToDisplay = "../src/assets/" + spotId + "/" + file.getOriginalFilename();
         FileData fileData = fileDataRepository.save(FileData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
@@ -72,7 +72,7 @@ public class StorageService {
 
         String filePath = folderPath + "/" + file.getOriginalFilename();
 
-        String filePathToDisplay = "/assets/" + "MENU_" + spotId + "/" + file.getOriginalFilename();
+        String filePathToDisplay = "../src/assets/" + "MENU_" + spotId + "/" + file.getOriginalFilename();
         FileData fileData = fileDataRepository.save(FileData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())

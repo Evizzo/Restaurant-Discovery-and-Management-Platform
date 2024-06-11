@@ -34,12 +34,7 @@ public class AuthenticationService {
             user.setFirstname(firstName);
             user.setLastname(lastName);
             user.setPictureUrl(pictureUrl);
-
-            if(email.equals("stefanmatic941@gmail.com")){
-                user.setRole(Role.SPOT_OWNER);
-            } else{
-                user.setRole(Role.USER);
-            }
+            user.setRole(Role.SPOT_OWNER);
 
             if(!userRepository.existsByEmail(user.getEmail())){
                 user.setProvider(Provider.GOOGLE);

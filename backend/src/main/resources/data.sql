@@ -48,9 +48,9 @@ INSERT INTO spot_available_activities (spot_spot_id, available_activities)
 VALUES
     (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'BILIJAR'),
     (UNHEX('c0f38b6789ec4b5280936e150bdc46f7'), 'PIKADO'),
-    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'DRUŠTVENE_IGRE'),
-    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'DEČIJA_IGRAONICA'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'BILIJAR'),
+    (UNHEX('e8d5a62a22e046818ab4447febc6e9c1'), 'PIKADO'),
     (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'KARAOKE'),
-    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'UŽIVO_ZABAVA'),
+    (UNHEX('f27d5d6bf01b4c83a90a5bece3ea8833'), 'KARAOKE'),
     (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'KUGLANJE'),
     (UNHEX('a73d54b0f78c4dfb9a17d9fb3f6b306f'), 'BILIJAR');

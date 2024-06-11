@@ -245,7 +245,6 @@ const UpdateSpot = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-      <h1><strong>ne radi trenutno</strong></h1>
       <br></br>
         <h1 className="text-3xl font-semibold mb-4">Izmenite objekat</h1>
         <form onSubmit={handleSubmit}>

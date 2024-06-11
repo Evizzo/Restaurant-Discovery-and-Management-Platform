@@ -152,28 +152,70 @@ export const deleteSpot = (spotId: string) => {
     return apiClient.delete(`/spot/${spotId}`);
 };
 
-export const updateSpot = (spotId: string, updatedSpot: any, newImageFiles: File[], newMenuImageFiles: File[]) => {
-    const formData = new FormData();
-    Object.keys(updatedSpot).forEach(key => {
-        formData.append(key, updatedSpot[key]);
-    });    
-    newImageFiles.forEach((file) => {
-      formData.append(`newImageFiles`, file);
-    });
-  
-    newMenuImageFiles.forEach((file) => {
-      formData.append(`newMenuImageFiles`, file);
-    });
-    if (formData.has('newImageFiles')) {
-        console.log("Files added to FormData.");
-    } else {
-        console.error("No files found in FormData.");
-    }
+export const updateSpot = async (spotId: string, updatedSpot: any, newImageFiles: File[], newMenuImageFiles: File[]) => {
+    try {
+        const existingSpotResponse = await retrieveSpotById(spotId);
+        const existingSpot = existingSpotResponse.data;
 
-    return apiClient.put(`/spot/${spotId}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-  };
-  
+        const formData = new FormData();
+
+        const excludedFields = ['owner', 'reviews', 'imagesFD', 'menuImagesFD'];
+
+        const areArraysEqual = (arr1: any[], arr2: any[]) => {
+            if (arr1.length !== arr2.length) return false;
+            return arr1.every((value, index) => value === arr2[index]);
+        };
+
+        Object.keys(updatedSpot).forEach(key => {
+            if (excludedFields.includes(key)) return; 
+
+            const newValue = updatedSpot[key];
+            const oldValue = existingSpot[key];
+
+            if (Array.isArray(newValue) && Array.isArray(oldValue)) {
+                if (!areArraysEqual(newValue, oldValue)) {
+                    formData.append(key, JSON.stringify(newValue));
+                }
+            } else if (newValue !== oldValue) {
+                formData.append(key, newValue);
+            }
+        });
+
+        if (newImageFiles && newImageFiles.length > 0) {
+            newImageFiles.forEach((file) => {
+                formData.append('newImageFiles', file);
+            });
+        } else {
+            if (existingSpot.imagesFD && existingSpot.imagesFD.length > 0) {
+                existingSpot.imagesFD.forEach((image: any) => {
+                    formData.append('newImageFiles', image);
+                });
+            }
+        }
+
+        if (newMenuImageFiles && newMenuImageFiles.length > 0) {
+            newMenuImageFiles.forEach((file) => {
+                formData.append('newMenuImageFiles', file);
+            });
+        } else {
+            if (existingSpot.menuImagesFD && existingSpot.menuImagesFD.length > 0) {
+                existingSpot.menuImagesFD.forEach((menuImage: any) => {
+                    formData.append('newMenuImageFiles', menuImage);
+                });
+            }
+        }
+
+        for (const pair of formData.entries()) {
+            console.log(`${pair[0]}, ${pair[1]}`);
+        }
+
+        return apiClient.put(`/spot/${spotId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    } catch (error) {
+        console.error("Error updating spot:", error);
+        throw error;
+    }
+};
