@@ -31,7 +31,7 @@ const UpdateSpotCard = (props: {
         <h3 className="font-semibold text-white">{props.nameOfSpot}</h3>
         <div>
           <p className="text-white">{props.locationOfSpot}</p>
-          <p className="text-white">Working hours: {props.workingFrom} - {props.workingTo}</p>
+          <p className="text-white">Radno vreme: {props.workingFrom} - {props.workingTo}</p>
         </div>
         <ShowStarRating
           key={props.rating}

@@ -77,8 +77,9 @@ const SearchSpots: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col justify-center items-center">
+    <br></br>
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-        <h1 className="text-3xl font-semibold mb-6 text-center">Find a Spot</h1>
+        <h1 className="text-3xl font-semibold mb-6 text-center">Pretražite mesta</h1>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4">
             <input
@@ -86,7 +87,7 @@ const SearchSpots: React.FC = () => {
               name="name"
               value={searchParams.name}
               onChange={handleInputChange}
-              placeholder="Name"
+              placeholder="Ime"
               className="input-field"
             />
             <input
@@ -94,7 +95,7 @@ const SearchSpots: React.FC = () => {
               name="city"
               value={searchParams.city}
               onChange={handleInputChange}
-              placeholder="City"
+              placeholder="Grad"
               className="input-field"
             />
             {/* <input
@@ -121,7 +122,7 @@ const SearchSpots: React.FC = () => {
                 onChange={handleCheckboxChange}
                 className="form-checkbox"
               />
-              <label className="text-sm">Always Open</label>
+              <label className="text-sm">Uvek otvoreno</label>
             </div>
             <div className="flex items-center space-x-2">
               <input
@@ -131,7 +132,7 @@ const SearchSpots: React.FC = () => {
                 onChange={handleCheckboxChange}
                 className="form-checkbox"
               />
-              <label className="text-sm">Outdoor Seating</label>
+              <label className="text-sm">Terasa</label>
             </div>
             <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip mesta</label>
@@ -156,7 +157,7 @@ const SearchSpots: React.FC = () => {
             </select>
       </div>
           </div>
-          <button type="submit" className="btn-primary w-full mt-6">Search</button>
+          <button type="submit" className="btn-primary w-full mt-6">Pretraži</button>
         </form>
       </div>
       <br></br>
