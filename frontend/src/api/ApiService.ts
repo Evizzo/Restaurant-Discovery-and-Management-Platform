@@ -167,7 +167,7 @@ export const updateSpot = async (spotId: string, updatedSpot: any, newImageFiles
         };
 
         Object.keys(updatedSpot).forEach(key => {
-            if (excludedFields.includes(key)) return; 
+            if (excludedFields.includes(key)) return;
 
             const newValue = updatedSpot[key];
             const oldValue = existingSpot[key];
@@ -181,32 +181,38 @@ export const updateSpot = async (spotId: string, updatedSpot: any, newImageFiles
             }
         });
 
-        if (newImageFiles && newImageFiles.length > 0) {
+        // const existingImagesAsFiles = existingSpot.imagesFD.map((image: any) => {
+        //     const file = new File([image.data], image.name, { type: image.type });
+        //     return file;
+        // });
+
+        // const existingMenuImagesAsFiles = existingSpot.menuImagesFD.map((menuImage: any) => {
+        //     const file = new File([menuImage.data], menuImage.name, { type: menuImage.type });
+        //     return file;
+        // });
+
+        // existingImagesAsFiles.forEach((file: any) => { // TODO Ovo prebaci u updatespot, da se tamo prebace objekti slika u file format
+        //     formData.append('newImageFiles', file);
+        // });
+
+        // existingMenuImagesAsFiles.forEach((file: any) => {
+        //     formData.append('newMenuImageFiles', file);
+        // });
+
+        if (newImageFiles && newImageFiles.length > 0) { // TODO Sad se 2x dodaju slike, ali se izbrisu IZGLEDA...
             newImageFiles.forEach((file) => {
                 formData.append('newImageFiles', file);
             });
-        } else {
-            if (existingSpot.imagesFD && existingSpot.imagesFD.length > 0) {
-                existingSpot.imagesFD.forEach((image: any) => {
-                    formData.append('newImageFiles', image);
-                });
-            }
         }
 
         if (newMenuImageFiles && newMenuImageFiles.length > 0) {
             newMenuImageFiles.forEach((file) => {
                 formData.append('newMenuImageFiles', file);
             });
-        } else {
-            if (existingSpot.menuImagesFD && existingSpot.menuImagesFD.length > 0) {
-                existingSpot.menuImagesFD.forEach((menuImage: any) => {
-                    formData.append('newMenuImageFiles', menuImage);
-                });
-            }
         }
 
         for (const pair of formData.entries()) {
-            console.log(`${pair[0]}, ${pair[1]}`);
+            console.log(`${pair[0]}, ${pair[1] instanceof Blob ? pair[1].name : pair[1]}`);
         }
 
         return apiClient.put(`/spot/${spotId}`, formData, {

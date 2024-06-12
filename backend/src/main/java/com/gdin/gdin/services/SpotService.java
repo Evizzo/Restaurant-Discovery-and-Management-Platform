@@ -184,6 +184,7 @@ public class SpotService {
         if (optionalSpot.isEmpty()) {
             return null;
         }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = null;
         if (authentication != null && authentication.getPrincipal() instanceof DefaultOAuth2User oauth2User) {
@@ -191,150 +192,101 @@ public class SpotService {
         }
 
         Spot existingSpot = optionalSpot.get();
-
         if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
-            throw new RuntimeException("Unauthorised access.");
+            throw new RuntimeException("Unauthorized access.");
         }
 
-        if (updatedSpot.getName() != null) {
-            existingSpot.setName(updatedSpot.getName());
-        }
-        if (updatedSpot.getDescription() != null) {
-            existingSpot.setDescription(updatedSpot.getDescription());
-        }
-        if (updatedSpot.getCity() != null) {
-            existingSpot.setCity(updatedSpot.getCity());
-        }
-        if (updatedSpot.getAddress() != null) {
-            existingSpot.setAddress(updatedSpot.getAddress());
-        }
-        if (updatedSpot.getGoogleMapsUrl() != null) {
-            existingSpot.setGoogleMapsUrl(updatedSpot.getGoogleMapsUrl());
-        }
-        if (updatedSpot.getWebsiteUrl() != null) {
-            existingSpot.setWebsiteUrl(updatedSpot.getWebsiteUrl());
-        }
-        if (updatedSpot.getWorkingFrom() != null) {
-            existingSpot.setWorkingFrom(updatedSpot.getWorkingFrom());
-        }
-        if (updatedSpot.getWorkingTo() != null) {
-            existingSpot.setWorkingTo(updatedSpot.getWorkingTo());
-        }
-        if (updatedSpot.getAlwaysOpen() != null) {
-            existingSpot.setAlwaysOpen(updatedSpot.getAlwaysOpen());
-        }
-        if (updatedSpot.getPhoneNumber() != null) {
-            existingSpot.setPhoneNumber(updatedSpot.getPhoneNumber());
-        }
-        if (updatedSpot.getEmail() != null) {
-            existingSpot.setEmail(updatedSpot.getEmail());
-        }
-        if (updatedSpot.getInstagram() != null) {
-            existingSpot.setInstagram(updatedSpot.getInstagram());
-        }
-        if (updatedSpot.getTiktok() != null) {
-            existingSpot.setTiktok(updatedSpot.getTiktok());
-        }
-        if (updatedSpot.getFacebook() != null) {
-            existingSpot.setFacebook(updatedSpot.getFacebook());
-        }
-        if (updatedSpot.getOutdoorSeating() != null) {
-            existingSpot.setOutdoorSeating(updatedSpot.getOutdoorSeating());
-        }
-        if (updatedSpot.getWifiAvailable() != null) {
-            existingSpot.setWifiAvailable(updatedSpot.getWifiAvailable());
-        }
-        if (updatedSpot.getParking() != null) {
-            existingSpot.setParking(updatedSpot.getParking());
-        }
-        if (updatedSpot.getPetsAllowed() != null) {
-            existingSpot.setPetsAllowed(updatedSpot.getPetsAllowed());
-        }
-        if (updatedSpot.getHasSpecialDietaryOptionVegetarian() != null) {
-            existingSpot.setHasSpecialDietaryOptionVegetarian(updatedSpot.getHasSpecialDietaryOptionVegetarian());
-        }
-        if (updatedSpot.getHasSpecialDietaryOptionVegan() != null) {
-            existingSpot.setHasSpecialDietaryOptionVegan(updatedSpot.getHasSpecialDietaryOptionVegan());
-        }
-        if (updatedSpot.getHasSpecialDietaryOptionGlutenFree() != null) {
-            existingSpot.setHasSpecialDietaryOptionGlutenFree(updatedSpot.getHasSpecialDietaryOptionGlutenFree());
-        }
-        if (updatedSpot.getHasFitnessMenu() != null) {
-            existingSpot.setHasFitnessMenu(updatedSpot.getHasFitnessMenu());
-        }
-        if (updatedSpot.getHasPosnaFood() != null) {
-            existingSpot.setHasPosnaFood(updatedSpot.getHasPosnaFood());
-        }
-        if (updatedSpot.getHasBreakfast() != null) {
-            existingSpot.setHasBreakfast(updatedSpot.getHasBreakfast());
-        }
-        if (updatedSpot.getSpotType() != null) {
-            existingSpot.setSpotType(updatedSpot.getSpotType());
-        }
-        if (updatedSpot.getMusicTypes() != null) {
-            existingSpot.setMusicTypes(updatedSpot.getMusicTypes());
-        }
-        if (updatedSpot.getAmbianceTypes() != null) {
-            existingSpot.setAmbianceTypes(updatedSpot.getAmbianceTypes());
-        }
-        if (updatedSpot.getCuisineTypes() != null) {
-            existingSpot.setCuisineTypes(updatedSpot.getCuisineTypes());
-        }
-        if (updatedSpot.getAvailableActivities() != null) {
-            existingSpot.setAvailableActivities(updatedSpot.getAvailableActivities());
-        }
-
-        Set<String> existingImagePaths = existingSpot.getImages().stream()
-                .map(FileData::getFilePath)
-                .collect(Collectors.toSet());
-
-        Set<String> existingMenuImagePaths = existingSpot.getMenuImages().stream()
-                .map(FileData::getFilePath)
-                .collect(Collectors.toSet());
-
-        Set<String> newImageFileNames = newImageFiles.stream()
-                .map(MultipartFile::getOriginalFilename)
-                .collect(Collectors.toSet());
-
-        Set<String> newMenuImageFileNames = newMenuImageFiles.stream()
-                .map(MultipartFile::getOriginalFilename)
-                .collect(Collectors.toSet());
-
-        Iterator<FileData> imageIterator = existingSpot.getImages().iterator();
-        while (imageIterator.hasNext()) {
-            FileData fileData = imageIterator.next();
-            if (!newImageFileNames.contains(fileData.getName())) {
-                storageService.deleteImageFromFileSystem(fileData.getName());
-                imageIterator.remove();
-            }
-        }
-
-        Iterator<FileData> menuImageIterator = existingSpot.getMenuImages().iterator();
-        while (menuImageIterator.hasNext()) {
-            FileData fileData = menuImageIterator.next();
-            if (!newMenuImageFileNames.contains(fileData.getName())) {
-                storageService.deleteImageFromFileSystem(fileData.getName());
-                menuImageIterator.remove();
-            }
-        }
-
-        for (MultipartFile file : newImageFiles) {
-            if (!existingImagePaths.contains(file.getOriginalFilename())) {
-                FileData fileData = storageService.uploadImageToFileSystem(file, String.valueOf(spotId));
-                existingSpot.addImage(fileData);
-            }
-        }
-
-        for (MultipartFile file : newMenuImageFiles) {
-            if (!existingMenuImagePaths.contains(file.getOriginalFilename())) {
-                FileData fileData = storageService.uploadMenuImageToFileSystem(file, String.valueOf(spotId));
-                existingSpot.addMenuImage(fileData);
-            }
-        }
+        updateSpotDetails(existingSpot, updatedSpot);
+        updateImages(existingSpot, newImageFiles);
+        updateMenuImages(existingSpot, newMenuImageFiles);
 
         Spot updatedSpotReturned = spotRepository.save(existingSpot);
         return convertToDto(updatedSpotReturned);
     }
+
+    private void updateSpotDetails(Spot existingSpot, Spot updatedSpot) {
+        // Update the spot details with non-null fields from the updated spot
+        if (updatedSpot.getName() != null) existingSpot.setName(updatedSpot.getName());
+        if (updatedSpot.getDescription() != null) existingSpot.setDescription(updatedSpot.getDescription());
+        if (updatedSpot.getCity() != null) existingSpot.setCity(updatedSpot.getCity());
+        if (updatedSpot.getAddress() != null) existingSpot.setAddress(updatedSpot.getAddress());
+        if (updatedSpot.getGoogleMapsUrl() != null) existingSpot.setGoogleMapsUrl(updatedSpot.getGoogleMapsUrl());
+        if (updatedSpot.getWebsiteUrl() != null) existingSpot.setWebsiteUrl(updatedSpot.getWebsiteUrl());
+        if (updatedSpot.getWorkingFrom() != null) existingSpot.setWorkingFrom(updatedSpot.getWorkingFrom());
+        if (updatedSpot.getWorkingTo() != null) existingSpot.setWorkingTo(updatedSpot.getWorkingTo());
+        if (updatedSpot.getAlwaysOpen() != null) existingSpot.setAlwaysOpen(updatedSpot.getAlwaysOpen());
+        if (updatedSpot.getPhoneNumber() != null) existingSpot.setPhoneNumber(updatedSpot.getPhoneNumber());
+        if (updatedSpot.getEmail() != null) existingSpot.setEmail(updatedSpot.getEmail());
+        if (updatedSpot.getInstagram() != null) existingSpot.setInstagram(updatedSpot.getInstagram());
+        if (updatedSpot.getTiktok() != null) existingSpot.setTiktok(updatedSpot.getTiktok());
+        if (updatedSpot.getFacebook() != null) existingSpot.setFacebook(updatedSpot.getFacebook());
+        if (updatedSpot.getOutdoorSeating() != null) existingSpot.setOutdoorSeating(updatedSpot.getOutdoorSeating());
+        if (updatedSpot.getWifiAvailable() != null) existingSpot.setWifiAvailable(updatedSpot.getWifiAvailable());
+        if (updatedSpot.getParking() != null) existingSpot.setParking(updatedSpot.getParking());
+        if (updatedSpot.getPetsAllowed() != null) existingSpot.setPetsAllowed(updatedSpot.getPetsAllowed());
+        if (updatedSpot.getHasSpecialDietaryOptionVegetarian() != null) existingSpot.setHasSpecialDietaryOptionVegetarian(updatedSpot.getHasSpecialDietaryOptionVegetarian());
+        if (updatedSpot.getHasSpecialDietaryOptionVegan() != null) existingSpot.setHasSpecialDietaryOptionVegan(updatedSpot.getHasSpecialDietaryOptionVegan());
+        if (updatedSpot.getHasSpecialDietaryOptionGlutenFree() != null) existingSpot.setHasSpecialDietaryOptionGlutenFree(updatedSpot.getHasSpecialDietaryOptionGlutenFree());
+        if (updatedSpot.getHasFitnessMenu() != null) existingSpot.setHasFitnessMenu(updatedSpot.getHasFitnessMenu());
+        if (updatedSpot.getHasPosnaFood() != null) existingSpot.setHasPosnaFood(updatedSpot.getHasPosnaFood());
+        if (updatedSpot.getHasBreakfast() != null) existingSpot.setHasBreakfast(updatedSpot.getHasBreakfast());
+        if (updatedSpot.getSpotType() != null) existingSpot.setSpotType(updatedSpot.getSpotType());
+        if (updatedSpot.getMusicTypes() != null) existingSpot.setMusicTypes(updatedSpot.getMusicTypes());
+        if (updatedSpot.getAmbianceTypes() != null) existingSpot.setAmbianceTypes(updatedSpot.getAmbianceTypes());
+        if (updatedSpot.getCuisineTypes() != null) existingSpot.setCuisineTypes(updatedSpot.getCuisineTypes());
+        if (updatedSpot.getAvailableActivities() != null) existingSpot.setAvailableActivities(updatedSpot.getAvailableActivities());
+    }
+
+    private void updateImages(Spot spot, List<MultipartFile> newImageFiles) throws IOException {
+        Set<String> newImageFileNames = newImageFiles.stream()
+                .map(MultipartFile::getOriginalFilename)
+                .collect(Collectors.toSet());
+
+        spot.getImages().removeIf(fileData -> {
+            boolean shouldRemove = !newImageFileNames.contains(fileData.getName());
+            if (shouldRemove) {
+                try {
+                    storageService.deleteImageFromFileSystem(fileData.getName());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return shouldRemove;
+        });
+
+        for (MultipartFile file : newImageFiles) {
+            if (spot.getImages().stream().noneMatch(image -> image.getName().equals(file.getOriginalFilename()))) {
+                FileData fileData = storageService.uploadImageToFileSystem(file, String.valueOf(spot.getSpotId()));
+                spot.addImage(fileData);
+            }
+        }
+    }
+
+    private void updateMenuImages(Spot spot, List<MultipartFile> newMenuImageFiles) throws IOException {
+        Set<String> newMenuImageFileNames = newMenuImageFiles.stream()
+                .map(MultipartFile::getOriginalFilename)
+                .collect(Collectors.toSet());
+
+        spot.getMenuImages().removeIf(fileData -> {
+            boolean shouldRemove = !newMenuImageFileNames.contains(fileData.getName());
+            if (shouldRemove) {
+                try {
+                    storageService.deleteImageFromFileSystem(fileData.getName());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            return shouldRemove;
+        });
+
+        for (MultipartFile file : newMenuImageFiles) {
+            if (spot.getMenuImages().stream().noneMatch(menuImage -> menuImage.getName().equals(file.getOriginalFilename()))) {
+                FileData fileData = storageService.uploadMenuImageToFileSystem(file, String.valueOf(spot.getSpotId()));
+                spot.addMenuImage(fileData);
+            }
+        }
+    }
+
 
     public List<SpotDto> getEventsByPublisherId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

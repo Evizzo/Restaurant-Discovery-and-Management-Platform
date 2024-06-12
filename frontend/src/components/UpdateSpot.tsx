@@ -35,8 +35,8 @@ const UpdateSpot = () => {
     ambianceTypes: [] as string[],
     cuisineTypes: [] as string[],
     availableActivities: [] as string[],
-    imagesFD: [] as any,
-    menuImagesFD: [] as any,
+    imagesFD: [] as File[],
+    menuImagesFD: [] as File[],
     images: [] as string[],
     menuImages: [] as string[],
   });
@@ -85,13 +85,16 @@ const UpdateSpot = () => {
     e.preventDefault();
     console.log('Updated data:', spotData);
     try {
-        const response = await updateSpot(spotData.spotId, spotData, newImageFiles, newMenuImageFiles);
-        setMessage("Uspešno ste izmenili Vaš objekat !")
-        console.log('EDIT Spot response:', response); 
-      } catch (error: any) {
-        setMessage(error.response.data.message)
-      }
-  };
+      const menuImageFiles = newMenuImageFiles.map(menuImage => new File([menuImage], menuImage.name));
+      const imageFiles = newImageFiles.map(image => new File([image], image.name));
+
+      const response = await updateSpot(spotData.spotId, spotData, imageFiles, menuImageFiles);
+      setMessage("Uspešno ste izmenili Vaš objekat !");
+      console.log('EDIT Spot response:', response); 
+    } catch (error: any) {
+      setMessage(error.response.data.message);
+    }
+  };  
 
   const musicTypes = [
     "BEZ_MUZIKE",
@@ -232,7 +235,8 @@ const UpdateSpot = () => {
     }));
   };
 
-  const removePreviewImage = (index: number, isMenu: boolean) => {
+  const removePreviewImage = (index: number, isMenu: boolean, event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (isMenu) {
       setNewMenuImageFiles(prevImages => prevImages.filter((_, i) => i !== index));
       setPreviewImagesMenu(prevPreviews => prevPreviews.filter((_, i) => i !== index));
@@ -262,7 +266,7 @@ const UpdateSpot = () => {
             {previewImages.map((preview, index) => (
               <div key={index} className="relative w-full h-32 overflow-hidden rounded-md">
                 <img src={preview} alt={`Preview ${index}`} className="object-cover w-full h-full" />
-                <button onClick={() => removePreviewImage(index, false)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
+                <button onClick={(event) => removePreviewImage(index, false, event)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
               </div>
             ))}
           </div>
@@ -283,7 +287,7 @@ const UpdateSpot = () => {
             {previewImagesMenu.map((preview, index) => (
               <div key={index} className="relative w-full h-32 overflow-hidden rounded-md">
                 <img src={preview} alt={`Preview menu ${index}`} className="object-cover w-full h-full" />
-                <button onClick={() => removePreviewImage(index, true)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
+                <button onClick={(event) => removePreviewImage(index, true, event)} className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full text-xs">X</button>
               </div>
             ))}
           </div>
