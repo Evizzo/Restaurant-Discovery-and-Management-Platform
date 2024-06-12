@@ -48,6 +48,11 @@ const SearchSpots: React.FC = () => {
     }
   };
 
+  const handleEnumChange = (e: any) => {
+    const { name, value } = e.target;
+    setSearchParams({ ...searchParams, [name]: value });
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSearchParams({ ...searchParams, [name]: value });
@@ -128,6 +133,28 @@ const SearchSpots: React.FC = () => {
               />
               <label className="text-sm">Outdoor Seating</label>
             </div>
+            <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip mesta</label>
+            <select
+              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+              id="spotType"
+              name="spotType"
+              value={searchParams.spotType}
+              onChange={handleEnumChange}
+            >
+              <option value="">Odaberite tip mesta</option>
+              <option value="RESTORAN">Restoran</option>
+              <option value="BRZA_HRANA">Brza hrana</option>
+              <option value="BAR">Bar</option>
+              <option value="CAFE">Cafe</option>
+              <option value="PUB">Pub</option>
+              <option value="KAFIĆ">Kafić</option>
+              <option value="POSLASTIČARNICA">Poslastičarnica</option>
+              <option value="KAFANA">Kafana</option>
+              <option value="PEKARA">Pekara</option>
+              <option value="DRUGO">Drugo</option>
+            </select>
+      </div>
           </div>
           <button type="submit" className="btn-primary w-full mt-6">Search</button>
         </form>

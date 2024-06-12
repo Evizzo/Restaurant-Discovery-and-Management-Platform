@@ -443,6 +443,11 @@ const AddSpot = () => {
               <option value="BAR">Bar</option>
               <option value="CAFE">Cafe</option>
               <option value="PUB">Pub</option>
+              <option value="KAFIĆ">Kafić</option>
+              <option value="POSLASTIČARNICA">Poslastičarnica</option>
+              <option value="KAFANA">Kafana</option>
+              <option value="PEKARA">Pekara</option>
+              <option value="DRUGO">Drugo</option>
             </select>
           </div>
 
