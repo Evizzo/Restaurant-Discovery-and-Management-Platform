@@ -174,32 +174,16 @@ export const updateSpot = async (spotId: string, updatedSpot: any, newImageFiles
 
             if (Array.isArray(newValue) && Array.isArray(oldValue)) {
                 if (!areArraysEqual(newValue, oldValue)) {
-                    formData.append(key, JSON.stringify(newValue));
+                    newValue.forEach(item => {
+                        formData.append(key, item);
+                    });
                 }
             } else if (newValue !== oldValue) {
                 formData.append(key, newValue);
             }
         });
 
-        // const existingImagesAsFiles = existingSpot.imagesFD.map((image: any) => {
-        //     const file = new File([image.data], image.name, { type: image.type });
-        //     return file;
-        // });
-
-        // const existingMenuImagesAsFiles = existingSpot.menuImagesFD.map((menuImage: any) => {
-        //     const file = new File([menuImage.data], menuImage.name, { type: menuImage.type });
-        //     return file;
-        // });
-
-        // existingImagesAsFiles.forEach((file: any) => { // TODO Ovo prebaci u updatespot, da se tamo prebace objekti slika u file format
-        //     formData.append('newImageFiles', file);
-        // });
-
-        // existingMenuImagesAsFiles.forEach((file: any) => {
-        //     formData.append('newMenuImageFiles', file);
-        // });
-
-        if (newImageFiles && newImageFiles.length > 0) { // TODO Sad se 2x dodaju slike, ali se izbrisu IZGLEDA...
+        if (newImageFiles && newImageFiles.length > 0) { 
             newImageFiles.forEach((file) => {
                 formData.append('newImageFiles', file);
             });

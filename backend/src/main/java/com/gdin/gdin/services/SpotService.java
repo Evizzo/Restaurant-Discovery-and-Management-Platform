@@ -205,7 +205,6 @@ public class SpotService {
     }
 
     private void updateSpotDetails(Spot existingSpot, Spot updatedSpot) {
-        // Update the spot details with non-null fields from the updated spot
         if (updatedSpot.getName() != null) existingSpot.setName(updatedSpot.getName());
         if (updatedSpot.getDescription() != null) existingSpot.setDescription(updatedSpot.getDescription());
         if (updatedSpot.getCity() != null) existingSpot.setCity(updatedSpot.getCity());
