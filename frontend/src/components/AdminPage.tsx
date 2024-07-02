@@ -175,6 +175,12 @@ const AdminSpots: React.FC = () => {
                             >
                                 View Menu Images
                             </button>
+                            <button
+                                onClick={() => handleDelete(spot.spotId)}
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg"
+                            >
+                                Delete
+                            </button>
                             <Link to={`/spot/${spot.spotId}`}>
                                 <button
                                     className="mt-2 ml-2 bg-blue-500 text-white py-2 px-4 rounded"
