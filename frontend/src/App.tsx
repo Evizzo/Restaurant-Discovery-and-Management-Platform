@@ -15,6 +15,7 @@ import UserPage from "./components/UserPage.tsx";
 import AddSpot from "./components/AddSpot.tsx";
 import ChooseSpotToUpadte from "./components/ChooseSpotToUpdate.tsx";
 import UpdateSpot from "./components/UpdateSpot.tsx";
+import AdminPage from "./components/AdminPage.tsx";
 
 function App(){
   function AuthenticatedRoute({ children }: { children: ReactNode }) {
@@ -42,6 +43,12 @@ function App(){
             <Route path="/events" element={<Events/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/spot/:spotId" element={<SpotPage />} />
+
+            <Route path="/admin" element={
+            <AuthenticatedRoute>
+              <AdminPage />
+            </AuthenticatedRoute>
+            } />
             
             <Route path="/edit-spot/:spotId" element={
             <AuthenticatedRoute>

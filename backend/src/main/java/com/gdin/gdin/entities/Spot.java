@@ -54,6 +54,7 @@ public class Spot {
     private Boolean hasBreakfast;
     private int reviewsCount;
     private int totalReview;
+    private Boolean approved;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "spot_id")

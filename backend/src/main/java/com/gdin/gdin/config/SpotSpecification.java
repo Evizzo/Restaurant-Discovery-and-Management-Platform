@@ -33,7 +33,9 @@ public class SpotSpecification {
             Set<MusicTypes> musicTypes,
             Set<AmbianceTypes> ambianceTypes,
             Set<CuisineTypes> cuisineTypes,
-            Set<AvailableActivities> availableActivities) {
+            Set<AvailableActivities> availableActivities,
+            boolean approved
+    ) {
 
         return (root, query, builder) -> {
             Predicate predicate = builder.conjunction();
@@ -46,13 +48,13 @@ public class SpotSpecification {
                 predicate = builder.and(predicate, builder.equal(root.get("city"), city));
             }
 
-//            if (workingFrom != null) {
-//                predicate = builder.and(predicate, builder.equal(root.get("workingFrom"), workingFrom));
-//            }
-//
-//            if (workingTo != null) {
-//                predicate = builder.and(predicate, builder.equal(root.get("workingTo"), workingTo));
-//            }
+            if (workingFrom != null) {
+                predicate = builder.and(predicate, builder.greaterThanOrEqualTo(root.get("workingFrom"), workingFrom));
+            }
+
+            if (workingTo != null) {
+                predicate = builder.and(predicate, builder.lessThanOrEqualTo(root.get("workingTo"), workingTo));
+            }
 
             if (alwaysOpen != null && alwaysOpen) {
                 predicate = builder.and(predicate, builder.equal(root.get("alwaysOpen"), alwaysOpen));
@@ -121,6 +123,8 @@ public class SpotSpecification {
                 Join<Spot, AvailableActivities> activitiesJoin = root.join("availableActivities");
                 predicate = builder.and(predicate, activitiesJoin.in(availableActivities));
             }
+
+            predicate = builder.and(predicate, builder.equal(root.get("approved"), approved));
 
             return predicate;
         };

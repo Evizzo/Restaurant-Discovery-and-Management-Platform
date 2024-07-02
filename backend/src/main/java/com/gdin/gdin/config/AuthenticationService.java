@@ -4,7 +4,6 @@ import com.gdin.gdin.entities.User;
 import com.gdin.gdin.enums.Provider;
 import com.gdin.gdin.enums.Role;
 import com.gdin.gdin.repositories.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,11 +33,13 @@ public class AuthenticationService {
             user.setFirstname(firstName);
             user.setLastname(lastName);
             user.setPictureUrl(pictureUrl);
-            user.setRole(Role.SPOT_OWNER);
 
             if(!userRepository.existsByEmail(user.getEmail())){
                 user.setProvider(Provider.GOOGLE);
+                user.setRole(Role.USER);
                 userRepository.save(user);
+            } else {
+                user.setRole(userRepository.findByEmail(email).get().getRole());
             }
 
             return Optional.of(user);

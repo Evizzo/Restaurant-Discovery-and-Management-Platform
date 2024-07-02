@@ -89,7 +89,7 @@ const UpdateSpot = () => {
       const imageFiles = newImageFiles.map(image => new File([image], image.name));
 
       const response = await updateSpot(spotData.spotId, spotData, imageFiles, menuImageFiles);
-      setMessage("Uspešno ste izmenili Vaš objekat !");
+      setMessage("Uspešno ste poslali Vaš objekat na pregled, nakon pregleda biće odobren ili odbijen !");
       console.log('EDIT Spot response:', response); 
     } catch (error: any) {
       setMessage(error.response.data.message);

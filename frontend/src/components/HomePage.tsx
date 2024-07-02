@@ -34,7 +34,7 @@ const HomePage = () => {
       <h1 className="font-semibold text-4xl leading-tight mb-2">Da li ste vlasnik mesta za izlazak ?</h1>
         <p className="text-sm mb-4">Lako dodajte svoje mesto za izlazak. Samo se registrujte i popunite formular. 
         Dobićete stranicu na našem sajtu gde možete postaviti slike, menije, opise, tagove i objavljivati razne događaje i ažuriranja !</p>
-        <Link to="/about">
+        <Link to="/add-spot">
           <Button title="Dodajte Vaš objekat" />
         </Link>
       </div>

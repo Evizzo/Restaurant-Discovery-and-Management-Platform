@@ -38,17 +38,6 @@ function UserPage() {
       });
   }, []);
 
-//   const handleDeleteAccount = () => {
-//     deleteCurrentUser()
-//       .then(() => {
-//         authContext.logout();
-//         alert('Account deleted successfully');
-//       })
-//       .catch((error) => {
-//         alert(error.response.data.message);
-//       });
-//   };
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
        <Container className="mt-4 text-center"> 
@@ -60,28 +49,29 @@ function UserPage() {
         ) : (
           <Card className="w-full max-w-lg mx-auto">
             <Card.Body>
-              {/* <Card.Title className="text-lg font-semibold">Vaši detalji</Card.Title> */}
-              <div> {/* Use a div or another suitable container */}
+              <div>
                 <img src={userData.pictureUrl} alt="Profile" className="mx-auto" />
                 <strong>Ime:</strong> {userData.firstname}<br />
                 <strong>Prezime:</strong> {userData.lastname}<br />
                 <strong>Email:</strong> {userData.email}<br />
-                {authContext.role === 'SPOT_OWNER' && (
-                  <Link to="/add-spot">
-                    <Button title="Dodaj objekat"></Button>
-                  </Link>
-                )}
+                <strong>Uloga:</strong> {authContext.role}<br />
+                <Link to="/add-spot">
+                  <Button title="Dodaj objekat"></Button>
+                </Link>
                 {authContext.role === 'SPOT_OWNER' && (
                   <Link to="/edit-spot">
                     <Button title="Izmeni objekat"></Button>
                   </Link>
                 )}
-                {/* <Link to={`/user-profile/${userData.email}`} className="text-blue-500 hover:underline"><strong>Public profile page</strong></Link> */}
+                {authContext.role === 'ADMIN' && (
+                  <Link to="/edit-spot">
+                    <Button title="Izmeni objekat"></Button>
+                  </Link>
+                )}
+                {authContext.role === 'ADMIN' && (                
+                  <Link to={`/admin`} className="text-blue-500 hover:underline"><strong>Admin page</strong></Link>
+                )}
               </div>
-              <br />
-              {/* <Button variant="danger" onClick={handleDeleteAccount}>
-                Delete your account
-              </Button> */}
             </Card.Body>
           </Card>
         )}

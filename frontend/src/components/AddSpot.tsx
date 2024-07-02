@@ -90,7 +90,7 @@ const AddSpot = () => {
     console.log('Submitted data:', spotData);
     try {
         const response = await addSpot(spotData, images, menuImages);
-        setMessage("Uspešno ste dodali Vaš objekat !")
+        setMessage("Uspešno ste poslali Vaš objekat na pregled, nakon pregleda biće odobren ili odbijen !")
         setImages([])
         setMenuImages([])
         setSpotData({

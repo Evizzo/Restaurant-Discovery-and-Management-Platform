@@ -55,4 +55,5 @@ public class SpotDto {
     private List<String> menuImages;
     private List<FileData> imagesFD;
     private List<FileData> menuImagesFD;
+    private Boolean approved;
 }

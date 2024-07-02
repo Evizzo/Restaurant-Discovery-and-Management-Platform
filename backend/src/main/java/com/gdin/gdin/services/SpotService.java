@@ -98,12 +98,14 @@ public class SpotService {
                 .menuImages(menuImageFilePaths)
                 .imagesFD(spot.getImages())
                 .menuImagesFD(spot.getMenuImages())
+                .approved(spot.getApproved())
                 .build();
     }
 
     public List<SpotDto> retrieveAllSpots(){
         return spotRepository.findAll()
                 .stream()
+                .filter(Spot::getApproved)
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
@@ -125,6 +127,7 @@ public class SpotService {
         spot.setReviewsCount(0);
         spot.setTotalReview(0);
         user.ifPresent(spot::setOwner);
+        spot.setApproved(false);
 
         Spot savedSpot = spotRepository.save(spot);
 
@@ -170,7 +173,7 @@ public class SpotService {
                 outdoorSeating, wifiAvailable, parking,
                 petsAllowed, hasSpecialDietaryOptionVegetarian, hasSpecialDietaryOptionVegan,
                 hasSpecialDietaryOptionGlutenFree, hasFitnessMenu, hasPosnaFood, hasBreakfast,
-                spotType, musicTypes, ambianceTypes, cuisineTypes, availableActivities);
+                spotType, musicTypes, ambianceTypes, cuisineTypes, availableActivities, true);
 
         List<Spot> spots = spotRepository.findAll(spec);
 
@@ -199,6 +202,8 @@ public class SpotService {
         updateSpotDetails(existingSpot, updatedSpot);
         updateImages(existingSpot, newImageFiles);
         updateMenuImages(existingSpot, newMenuImageFiles);
+
+        existingSpot.setApproved(false);
 
         Spot updatedSpotReturned = spotRepository.save(existingSpot);
         return convertToDto(updatedSpotReturned);
@@ -286,7 +291,6 @@ public class SpotService {
         }
     }
 
-
     public List<SpotDto> getEventsByPublisherId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = null;
@@ -304,6 +308,22 @@ public class SpotService {
 
     public void deleteSpot(UUID spotId) throws IOException, ChangeSetPersister.NotFoundException {
         Optional<Spot> optionalSpot = spotRepository.findById(spotId);
+
+        if (optionalSpot.isEmpty()) {
+            return;
+        }
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = null;
+        if (authentication != null && authentication.getPrincipal() instanceof DefaultOAuth2User oauth2User) {
+            userEmail = oauth2User.getAttribute("email");
+        }
+
+        Spot existingSpot = optionalSpot.get();
+        if (!Objects.equals(userEmail, existingSpot.getOwner().getEmail())){
+            throw new RuntimeException("Unauthorized access.");
+        }
+
         if (optionalSpot.isPresent()) {
             Spot spot = optionalSpot.get();
 

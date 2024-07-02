@@ -8,7 +8,6 @@ import com.gdin.gdin.services.SpotService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +21,6 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-
-import java.beans.PropertyDescriptor;
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("spot")
@@ -34,6 +28,7 @@ public class SpotController {
     private final SpotService spotService;
     private static final Logger logger = LoggerFactory.getLogger(SpotController.class);
     private final UserRepository userRepository;
+
     @GetMapping
     public ResponseEntity<List<SpotDto>> retrieveAllSpots(){
         return ResponseEntity.ok(spotService.retrieveAllSpots());

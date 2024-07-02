@@ -36,9 +36,10 @@ export interface Spot {
     totalReview: number;
     images: string[];
     menuImages: string[];
-  }
+    approved: boolean;
+}
 
-  export interface Review {
+export interface Review {
     id: string;
     totalRating: number;
     comment: string;
@@ -83,7 +84,7 @@ export interface SearchParams {
     ambianceTypes?: string[];
     cuisineTypes?: string[];
     availableActivities?: string[];
-  }  
+}  
 
 export const retrieveAllSpots = () => 
     apiClient.get(`/spot`)
@@ -208,4 +209,20 @@ export const updateSpot = async (spotId: string, updatedSpot: any, newImageFiles
         console.error("Error updating spot:", error);
         throw error;
     }
+};
+
+export const deleteSpotAdmin = (spotId: string) => {
+    return apiClient.delete(`/admin/spot/${spotId}`);
+};
+
+export const approveSpotAdmin = (spotId: string) => {
+    return apiClient.put(`/admin/spot/approve/${spotId}`);
+};
+
+export const retrieveUnapprovedSpotsAdmin = () => {
+    return apiClient.get(`/admin/spot/unapproved`);
+};
+
+export const retrieveAllSpotsAdmin = () => {
+    return apiClient.get(`/admin/spot/all`);
 };
