@@ -6,10 +6,20 @@ const Footer = () => {
           <div>
             <h1 className="font-medium text-xl pb-4 pt-5 md:pt-0">Društvene mreže</h1>
             <nav className="flex flex-col gap-2">
-              <a className="hover:text-backgroundColor transition-all cursor-pointer" href="/">
+              <a
+                className="hover:text-backgroundColor transition-all cursor-pointer"
+                href="https://www.tiktok.com/@gde_da_izadjem_na?_t=8njxE0CNGeE&_r=1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Tiktok
               </a>
-              <a className="hover:text-backgroundColor transition-all cursor-pointer" href="/">
+              <a
+                className="hover:text-backgroundColor transition-all cursor-pointer"
+                href="https://www.instagram.com/gdedaizadjemna?igsh=ZWZoOHNoZzZ1ZnNw&utm_source=qr"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Instagram
               </a>
             </nav>
@@ -17,7 +27,11 @@ const Footer = () => {
           <div>
             <h1 className="font-medium text-xl pb-4 pt-5 md:pt-0">Kontaktirajte nas</h1>
             <nav className="flex flex-col gap-2">
-              <a className="hover:text-backgroundColor transition-all cursor-pointer" href="/">
+              <a
+                className="hover:text-backgroundColor transition-all cursor-pointer"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 gdedaizadjemna@gmail.com
               </a>
             </nav>
