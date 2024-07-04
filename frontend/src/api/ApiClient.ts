@@ -7,21 +7,4 @@ export const apiClient = axios.create(
     }
 );
 
-// apiClient.interceptors.request.use((config) => {
-//     const jsessionIdRow = document.cookie.split('; ').find(row => row.startsWith('JSESSIONID'));
-//     const jsessionId = jsessionIdRow ? jsessionIdRow.split('=')[1] : undefined;
-//     console.log(jsessionId)
-
-//     if(jsessionId) {
-//         if (!config.headers) {
-//             config.headers = {};
-//         }
-//         config.headers['Cookie'] = `JSESSIONID=${jsessionId}`;
-//     }
-
-//     return config;
-// }, (error) => {
-//     return Promise.reject(error);
-// });
-
 export default apiClient;

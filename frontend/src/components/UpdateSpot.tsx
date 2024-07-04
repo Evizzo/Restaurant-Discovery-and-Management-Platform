@@ -82,9 +82,15 @@ const UpdateSpot = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (!spotData.alwaysOpen && (!spotData.workingFrom || !spotData.workingTo)) {
-      setMessage("Molimo unesite radno vreme ili označite da je lokal uvek otvoren.");
-      return;
+    if (!spotData.alwaysOpen) {
+      if (!spotData.workingFrom || !spotData.workingTo) {
+        setMessage("Molimo unesite radno vreme ili označite da je lokal uvek otvoren.");
+        return;
+      }
+      if (!validateTimeFormat(spotData.workingFrom) || !validateTimeFormat(spotData.workingTo)) {
+        setMessage("Radno vreme mora biti u formatu HH:MM.");
+        return;
+      }
     }
     
     try {
@@ -247,6 +253,11 @@ const UpdateSpot = () => {
     }
   };
 
+  const validateTimeFormat = (time: string) => {
+    const timeFormat = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    return timeFormat.test(time);
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
@@ -318,28 +329,32 @@ const UpdateSpot = () => {
               onChange={handleChange}
             ></textarea>
           </div>
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">Radno vreme</label>
-          <input
-            className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
-            type="text"
-            id="workingFrom"
-            name="workingFrom"
-            value={spotData.workingFrom}
-            onChange={handleChange}
-            disabled={spotData.alwaysOpen}
-            placeholder="HH:MM" 
-          />
-
-          <input
-            className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
-            type="text"
-            id="workingTo"
-            name="workingTo"
-            value={spotData.workingTo}
-            onChange={handleChange}
-            disabled={spotData.alwaysOpen}
-            placeholder="HH:MM"
-          />
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="workingFrom">Radno Vreme Od</label>
+            <input
+              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+              type="text"
+              id="workingFrom"
+              name="workingFrom"
+              value={spotData.workingFrom}
+              onChange={handleChange}
+              placeholder="HH:MM"
+              disabled={spotData.alwaysOpen}
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="workingTo">Radno Vreme Do</label>
+            <input
+              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+              type="text"
+              id="workingTo"
+              name="workingTo"
+              value={spotData.workingTo}
+              onChange={handleChange}
+              placeholder="HH:MM" 
+              disabled={spotData.alwaysOpen}
+            />
+          </div>
           <div className="mb-6 flex items-center">
           <input
             type="checkbox"
