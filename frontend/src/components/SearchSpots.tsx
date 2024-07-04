@@ -37,12 +37,12 @@ const SearchSpots: React.FC = () => {
       const response = await searchSpots(searchParams);
       setSpots(response.data);
       if (response.data.length === 0) {
-        setMessage("Mesta nisu pronadjena.");
+        setMessage("Lokali nisu pronadjeni.");
       } else {
         setMessage("");
       }
     } catch (error) {
-      setMessage("Mesta nisu pronadjena.")
+      setMessage("Lokali nisu pronadjeni.")
     }
   };
 
@@ -77,7 +77,7 @@ const SearchSpots: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col justify-center items-center">
     <br></br>
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-        <h1 className="text-3xl font-semibold mb-6 text-center">Pretražite mesta</h1>
+        <h1 className="text-3xl font-semibold mb-6 text-center">Pretražite lokale</h1>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4">
             <input
@@ -96,22 +96,130 @@ const SearchSpots: React.FC = () => {
               placeholder="Grad"
               className="input-field"
             />
-            {/* <input
-              type="text"
-              name="workingFrom"
-              value={searchParams.workingFrom}
-              onChange={handleInputChange}
-              placeholder="Working From"
-              className="input-field"
-            />
-            <input
-              type="text"
-              name="workingTo"
-              value={searchParams.workingTo}
-              onChange={handleInputChange}
-              placeholder="Working To"
-              className="input-field"
-            /> */}
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip lokala</label>
+              <select
+                className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+                id="spotType"
+                name="spotType"
+                value={searchParams.spotType}
+                onChange={handleEnumChange}
+              >
+                <option value="">Odaberite tip lokala</option>
+                <option value="RESTORAN">Restoran</option>
+                <option value="BRZA_HRANA">Brza hrana</option>
+                <option value="BAR">Bar</option>
+                <option value="CAFE">Cafe</option>
+                <option value="PUB">Pub</option>
+                <option value="KAFIĆ">Kafić</option>
+                <option value="POSLASTIČARNICA">Poslastičarnica</option>
+                <option value="KAFANA">Kafana</option>
+                <option value="PEKARA">Pekara</option>
+                <option value="DRUGO">Drugo</option>
+              </select>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="musicTypes">Tip muzike</label>
+              <select
+                className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+                id="musicTypes"
+                name="musicTypes"
+                value={searchParams.musicTypes}
+                onChange={handleEnumChange}
+              >
+                <option value="">Odaberite tip muzike</option>
+                <option value="BEZ_MUZIKE">Bez muzike</option>
+                <option value="POP">Pop</option>
+                <option value="FOLK">Folk</option>
+                <option value="HOUSE">House</option>
+                <option value="HIP_HOP">Hip-hop</option>
+                <option value="TREP">Trep</option>
+                <option value="REP">Rep</option>
+                <option value="DISKO">Disko</option>
+                <option value="OPERA">Opera</option>
+                <option value="TEHNO">Tehno</option>
+                <option value="ROK">Rok</option>
+                <option value="NARODNJACI">Narodnjaci</option>
+                <option value="DUBSTEP">Dubstep</option>
+                <option value="OPUŠTAJUĆE">Opuštajuće</option>
+                <option value="INSTRUMENTAL">Instrumental</option>
+                <option value="DRUGO">Drugo</option>
+              </select>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="cuisineTypes">Tip kuhinje</label>
+              <select
+                className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+                id="cuisineTypes"
+                name="cuisineTypes"
+                value={searchParams.cuisineTypes}
+                onChange={handleEnumChange}
+              >
+                <option value="">Odaberite tip kuhinje</option>
+                <option value="PEČENO">Pečeno</option>
+                <option value="POHOVANO">Pohovano</option>
+                <option value="NA_PARI">Na pari</option>
+                <option value="KUVANO">Kuvano</option>
+                <option value="DIMNJENO">Dimnjeno</option>
+                <option value="DOMAĆE">Domaće</option>
+                <option value="ROŠTILJ">Roštilj</option>
+                <option value="MORSKA_HRANA">Morska hrana</option>
+                <option value="ITALIJANSKA">Italijanska</option>
+                <option value="KINESKA">Kineska</option>
+                <option value="MEKSIČKA">Meksička</option>
+                <option value="FRANCUSKA">Francuska</option>
+                <option value="JAPANSKA">Japanska</option>
+                <option value="GRČKA">Grčka</option>
+                <option value="INDIJSKA">Indijska</option>
+                <option value="TAJLANDSKA">Tajlandska</option>
+                <option value="DRUGO">Drugo</option>
+              </select>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="ambianceTypes">Tip ambijenta</label>
+              <select
+                className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+                id="ambianceTypes"
+                name="ambianceTypes"
+                value={searchParams.ambianceTypes}
+                onChange={handleEnumChange}
+              >
+                <option value="">Odaberite tip ambijenta</option>
+                <option value="ELEGANTNO">Elegantno</option>
+                <option value="BIZNIS">Biznis</option>
+                <option value="ROMANTIČNO">Romantično</option>
+                <option value="MODERNO">Moderno</option>
+                <option value="ETNO">Etno</option>
+                <option value="TIHO">Tiho</option>
+                <option value="MINIMALISTIČKI">Minimalistički</option>
+                <option value="URBANO">Urbano</option>
+                <option value="OPUŠTAJUĆE">Opuštajuće</option>
+                <option value="PORODIČNO">Porodično</option>
+                <option value="PRIRODA">Priroda</option>
+                <option value="ZA_RAD">Za rad</option>
+                <option value="DRUGO">Drugo</option>
+              </select>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="availableActivities">Dostupne aktivnosti</label>
+              <select
+                className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+                id="availableActivities"
+                name="availableActivities"
+                value={searchParams.availableActivities}
+                onChange={handleEnumChange}
+              >
+                <option value="">Odaberite dostupnu aktivnost</option>
+                <option value="BILIJAR">Bilijar</option>
+                <option value="STONI_TENIS">Stoni tenis</option>
+                <option value="PIKADO">Pikado</option>
+                <option value="DRUŠTVENE_IGRE">Društvene igre</option>
+                <option value="DEČIJA_IGRAONICA">Dečija igraonica</option>
+                <option value="KUGLANJE">Kuglanje</option>
+                <option value="UŽIVO_ZABAVA">Uživo zabava</option>
+                <option value="KARAOKE">Karaoke</option>
+              </select>
+            </div>
             <div className="flex items-center space-x-2">
               <input
                 type="checkbox"
@@ -132,28 +240,87 @@ const SearchSpots: React.FC = () => {
               />
               <label className="text-sm">Terasa</label>
             </div>
-            <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip lokala</label>
-            <select
-              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
-              id="spotType"
-              name="spotType"
-              value={searchParams.spotType}
-              onChange={handleEnumChange}
-            >
-              <option value="">Odaberite tip lokala</option>
-              <option value="RESTORAN">Restoran</option>
-              <option value="BRZA_HRANA">Brza hrana</option>
-              <option value="BAR">Bar</option>
-              <option value="CAFE">Cafe</option>
-              <option value="PUB">Pub</option>
-              <option value="KAFIĆ">Kafić</option>
-              <option value="POSLASTIČARNICA">Poslastičarnica</option>
-              <option value="KAFANA">Kafana</option>
-              <option value="PEKARA">Pekara</option>
-              <option value="DRUGO">Drugo</option>
-            </select>
-      </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="petsAllowed"
+                checked={searchParams.petsAllowed}
+                onChange={handleCheckboxChange}
+                className="form-checkbox"
+              />
+              <label className="text-sm">Dozvoljeni ljubmici</label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="parking"
+                checked={searchParams.parking}
+                onChange={handleCheckboxChange}
+                className="form-checkbox"
+              />
+              <label className="text-sm">Parking</label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="hasSpecialDietaryOptionVegetarian"
+                checked={searchParams.hasSpecialDietaryOptionVegetarian}
+                onChange={handleCheckboxChange}
+                className="form-checkbox"
+              />
+              <label className="text-sm">Vegetarijanska hrana</label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="hasSpecialDietaryOptionVegan"
+                checked={searchParams.hasSpecialDietaryOptionVegan}
+                onChange={handleCheckboxChange}
+                className="form-checkbox"
+              />
+              <label className="text-sm">Veganska hrana</label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="hasSpecialDietaryOptionGlutenFree"
+                checked={searchParams.hasSpecialDietaryOptionGlutenFree}
+                onChange={handleCheckboxChange}
+                className="form-checkbox"
+              />
+              <label className="text-sm">Hrana bez glutena</label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="hasFitnessMenu"
+                checked={searchParams.hasFitnessMenu}
+                onChange={handleCheckboxChange}
+                className="form-checkbox"
+              />
+              <label className="text-sm">Fitnes meni</label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="hasPosnaFood"
+                checked={searchParams.hasPosnaFood}
+                onChange={handleCheckboxChange}
+                className="form-checkbox"
+              />
+              <label className="text-sm">Posne hrana</label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="hasBreakfast"
+                checked={searchParams.hasBreakfast}
+                onChange={handleCheckboxChange}
+                className="form-checkbox"
+              />
+              <label className="text-sm">Doručak</label>
+            </div>
+
           </div>
           <button type="submit" className="btn-primary w-full mt-6">Pretraži</button>
         </form>

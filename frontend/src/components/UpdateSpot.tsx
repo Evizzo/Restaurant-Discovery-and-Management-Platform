@@ -145,7 +145,6 @@ const UpdateSpot = () => {
     "KARAOKE"
   ];
 
-
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, isMenu: boolean) => {
     const files = event.target.files;
     if (files) {

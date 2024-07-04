@@ -217,16 +217,16 @@ const SpotPage: React.FC<SpotPageProps> = () => {
               Parking: {spot.parking ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Ljubimci dozvoljeni: {spot.petsAllowed ? "Da" : "Ne"}
+              Dozvoljeni ljubmici: {spot.petsAllowed ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Vegetarijanske opcije: {spot.hasSpecialDietaryOptionVegetarian ? "Da" : "Ne"}
+              Vegetarijanska hrana: {spot.hasSpecialDietaryOptionVegetarian ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Veganske opcije: {spot.hasSpecialDietaryOptionVegan ? "Da" : "Ne"}
+              Veganska hrana: {spot.hasSpecialDietaryOptionVegan ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Opcije bez glutena: {spot.hasSpecialDietaryOptionGlutenFree ? "Da" : "Ne"}
+              Hrana bez glutena: {spot.hasSpecialDietaryOptionGlutenFree ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
               Fitnes meni: {spot.hasFitnessMenu ? "Da" : "Ne"}
