@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import { addReviewToSpot, deleteReview, dislikeReview, likeReview, retrieveSpotById, Spot, updateReview } from "../api/ApiService.ts";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook, faTiktok } from '@fortawesome/free-brands-svg-icons';
-import { faLink } from '@fortawesome/free-solid-svg-icons';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
@@ -241,7 +240,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
         </div>
         </div>
         <div className="flex justify-center items-center mt-4">
-          <a href={spot.websiteUrl} className="text-4xl mx-2"><FontAwesomeIcon icon={faLink} /></a>
+          {/* <a href={spot.websiteUrl} className="text-4xl mx-2"><FontAwesomeIcon icon={faLink} /></a> */}
           <a href={spot.instagram} className="text-4xl mx-2"><FontAwesomeIcon icon={faInstagram} /></a>
           <a href={spot.facebook} className="text-4xl mx-2"><FontAwesomeIcon icon={faFacebook} /></a>
           <a href={spot.tiktok} className="text-4xl mx-2"><FontAwesomeIcon icon={faTiktok} /></a>

@@ -250,6 +250,8 @@ const AddSpot = () => {
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-semibold mb-4">Dodajte lokal</h1>
+        <p><i>*Fotografije moraju biti 1920x1080 rezolucije</i></p>
+        <br></br>
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Fotografije lokala</label>
           <input
@@ -393,7 +395,7 @@ const AddSpot = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="instagram">Instagram</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="instagram">Link do instagrama</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -404,7 +406,7 @@ const AddSpot = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="tiktok">TikTok</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="tiktok">Link do tiktoka</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -415,7 +417,7 @@ const AddSpot = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="facebook">Facebook</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="facebook">Link do facebooka</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -562,7 +564,6 @@ const AddSpot = () => {
           </div>
 
           <div className="mb-6">
-            {/* <label className="block text-gray-700 text-sm font-bold mb-2">Additional Options</label> */}
             <div className="space-y-2">
             </div>
           </div>

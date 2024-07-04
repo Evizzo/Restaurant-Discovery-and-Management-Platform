@@ -247,6 +247,8 @@ const UpdateSpot = () => {
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
       <br></br>
         <h1 className="text-3xl font-semibold mb-4">Izmenite lokal</h1>
+        <p><i>*Fotografije moraju biti 1920x1080 rezolucije</i></p>
+        <br></br>
         <form onSubmit={handleSubmit}>
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="newImageFiles">Fotografije lokala</label>
@@ -391,7 +393,7 @@ const UpdateSpot = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="instagram">Instagram</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="instagram">Link do instagrama</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -402,7 +404,7 @@ const UpdateSpot = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="tiktok">TikTok</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="tiktok">Link do tiktoka</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -413,7 +415,7 @@ const UpdateSpot = () => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="facebook">Facebook</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="facebook">Link do facebooka</label>
             <input
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               type="text"
@@ -423,7 +425,6 @@ const UpdateSpot = () => {
               onChange={handleChange}
             />
           </div>
-
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip lokala</label>
             <select
@@ -558,9 +559,7 @@ const UpdateSpot = () => {
               </label>
             </div>
           </div>
-
           <div className="mb-6">
-            {/* <label className="block text-gray-700 text-sm font-bold mb-2">Additional Options</label> */}
             <div className="space-y-2">
             </div>
           </div>
