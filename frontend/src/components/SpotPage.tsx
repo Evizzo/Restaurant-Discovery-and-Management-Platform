@@ -195,17 +195,17 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             </p>
           </div>
           <div className={`${isMobile ? '' : 'border-r border-gray-300 pr-4'}`}>
-            <p className="text-lg mb-4">
-              <strong>Tipovi muzike:</strong> {toNormalCase(spot.musicTypes.join(", "))}
+          <p className="text-lg mb-4">
+            <strong>Tipovi muzike:</strong> {spot.musicTypes.length > 0 ? toNormalCase(spot.musicTypes.join(", ")) : "Nema informacija"}
             </p>
             <p className="text-lg mb-4">
-              <strong>Tipovi ambijenta:</strong> {toNormalCase(spot.ambianceTypes.join(", "))}
+              <strong>Tipovi ambijenta:</strong> {spot.ambianceTypes.length > 0 ? toNormalCase(spot.ambianceTypes.join(", ")) : "Nema informacija"}
             </p>
             <p className="text-lg mb-4">
-              <strong>Tipovi kuhinje:</strong> {toNormalCase(spot.cuisineTypes.join(", "))}
+              <strong>Tipovi kuhinje:</strong> {spot.cuisineTypes.length > 0 ? toNormalCase(spot.cuisineTypes.join(", ")) : "Nema informacija"}
             </p>
             <p className="text-lg mb-4">
-              <strong>Dostupne aktivnosti:</strong> {toNormalCase(spot.availableActivities.join(", "))}
+              <strong>Dostupne aktivnosti:</strong> {spot.availableActivities.length > 0 ? toNormalCase(spot.availableActivities.join(", ")) : "Nema informacija"}
             </p>
           </div>
           <div>

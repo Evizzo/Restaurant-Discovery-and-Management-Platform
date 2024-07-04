@@ -87,6 +87,10 @@ const AddSpot = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (images.length === 0 || menuImages.length === 0) {
+      setMessage("Morate dodati barem jednu fotografiju lokala i jednu fotografiju menija.");
+      return;
+    }
     try {
         await addSpot(spotData, images, menuImages);
         setMessage("Uspešno ste poslali lokal na pregled, biće vidljiv nakon odobrenja !")

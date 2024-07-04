@@ -82,6 +82,7 @@ const UpdateSpot = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    
     try {
       const menuImageFiles = newMenuImageFiles.map(menuImage => new File([menuImage], menuImage.name));
       const imageFiles = newImageFiles.map(image => new File([image], image.name));
