@@ -65,7 +65,7 @@ const Navbar = () => {
             to="/about"
             className="hover:text-[#E2B97F] transition-all cursor-pointer"
           >
-            O nama
+            O sajtu
           </Link>
           </nav>
 

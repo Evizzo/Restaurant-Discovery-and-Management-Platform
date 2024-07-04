@@ -38,8 +38,9 @@ public class AdminService {
 
         spot.setApproved(true);
 
-        spot.getOwner().setRole(Role.SPOT_OWNER);
-
+        if (spot.getOwner().getRole() != Role.ADMIN && spot.getOwner().getRole() != Role.SPOT_OWNER) {
+            spot.getOwner().setRole(Role.SPOT_OWNER);
+        }
         Spot approvedSpot = spotRepository.save(spot);
 
         userRepository.save(spot.getOwner());

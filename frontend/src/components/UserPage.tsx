@@ -41,7 +41,6 @@ function UserPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
        <Container className="mt-4 text-center"> 
-        <h1 className="font-semibold text-4xl text-center mb-8">Vaši detalji.</h1>
         {isLoading ? (
           <Spinner animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
@@ -54,7 +53,6 @@ function UserPage() {
                 <strong>Ime:</strong> {userData.firstname}<br />
                 <strong>Prezime:</strong> {userData.lastname}<br />
                 <strong>Email:</strong> {userData.email}<br />
-                <strong>Uloga:</strong> {authContext.role}<br />
                 <Link to="/add-spot">
                   <Button title="Dodaj objekat"></Button>
                 </Link>

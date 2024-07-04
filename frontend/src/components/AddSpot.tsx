@@ -87,10 +87,9 @@ const AddSpot = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log('Submitted data:', spotData);
     try {
-        const response = await addSpot(spotData, images, menuImages);
-        setMessage("Uspešno ste poslali Vaš objekat na pregled, nakon pregleda biće odobren ili odbijen !")
+        await addSpot(spotData, images, menuImages);
+        setMessage("Uspešno ste poslali lokal na pregled, biće vidljiv nakon odobrenja !")
         setImages([])
         setMenuImages([])
         setSpotData({
@@ -126,7 +125,6 @@ const AddSpot = () => {
           images: [],
           menuImages: [],
         });
-        console.log('Add Spot response:', response); 
       } catch (error: any) {
         setMessage(error.response.data.message)
       }
@@ -251,10 +249,9 @@ const AddSpot = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-5 py-10 bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-semibold mb-4">Dodajte objekat</h1>
-
+        <h1 className="text-3xl font-semibold mb-4">Dodajte lokal</h1>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Izaberite slike</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Fotografije lokala</label>
           <input
             className="hidden"
             type="file"
@@ -271,11 +268,11 @@ const AddSpot = () => {
               </div>
             ))}
           </div>
-          <label htmlFor="images" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike</label>
+          <label htmlFor="images" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Dodajte fotografije lokala</label>
         </div>
 
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="menuImages">Izaberite slike jelovnika</label>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="menuImages">Fotografije menija</label>
           <input
             className="hidden"
             type="file"
@@ -292,7 +289,7 @@ const AddSpot = () => {
               </div>
             ))}
           </div>
-          <label htmlFor="menuImages" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Izaberite slike jelovnika</label>
+          <label htmlFor="menuImages" className="block mt-2 cursor-pointer text-indigo-600 hover:text-indigo-800">Dodajte fotografije menija</label>
         </div>
         
         <form onSubmit={handleSubmit}>
@@ -317,6 +314,7 @@ const AddSpot = () => {
               onChange={handleChange}
             ></textarea>
           </div>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">Radno vreme</label>
           <input
             className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
             type="text"
@@ -327,7 +325,6 @@ const AddSpot = () => {
             disabled={spotData.alwaysOpen}
             placeholder="HH:MM" 
           />
-
           <input
             className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
             type="text"
@@ -338,16 +335,17 @@ const AddSpot = () => {
             disabled={spotData.alwaysOpen}
             placeholder="HH:MM"
           />
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="alwaysOpen">24/7</label>
-            <input
-              type="checkbox"
-              id="alwaysOpen"
-              name="alwaysOpen"
-              checked={spotData.alwaysOpen}
-              onChange={handleChange}
-            />
-          </div>
+          <div className="mb-6 flex items-center">
+          <input
+            type="checkbox"
+            id="alwaysOpen"
+            name="alwaysOpen"
+            checked={spotData.alwaysOpen}
+            onChange={handleChange}
+            className="form-checkbox h-5 w-5 text-indigo-600"
+          />
+          <label htmlFor="alwaysOpen" className="ml-2 block text-gray-700 text-sm font-bold">24/7</label>
+        </div>        
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="city">Grad</label>
             <input
@@ -429,7 +427,7 @@ const AddSpot = () => {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip mesta</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip lokala</label>
             <select
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               id="spotType"
@@ -437,7 +435,7 @@ const AddSpot = () => {
               value={spotData.spotType}
               onChange={handleChange}
             >
-              <option value="">Odaberite tip mesta</option>
+              <option value="">Odaberite tip lokala</option>
               <option value="RESTORAN">Restoran</option>
               <option value="BRZA_HRANA">Brza hrana</option>
               <option value="BAR">Bar</option>

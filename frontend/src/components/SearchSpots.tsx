@@ -36,14 +36,12 @@ const SearchSpots: React.FC = () => {
     try {
       const response = await searchSpots(searchParams);
       setSpots(response.data);
-      console.log(response)
       if (response.data.length === 0) {
         setMessage("Mesta nisu pronadjena.");
       } else {
         setMessage("");
       }
     } catch (error) {
-      console.error("Error fetching spots:", error);
       setMessage("Mesta nisu pronadjena.")
     }
   };
@@ -135,7 +133,7 @@ const SearchSpots: React.FC = () => {
               <label className="text-sm">Terasa</label>
             </div>
             <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip mesta</label>
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="spotType">Tip lokala</label>
             <select
               className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
               id="spotType"
@@ -143,7 +141,7 @@ const SearchSpots: React.FC = () => {
               value={searchParams.spotType}
               onChange={handleEnumChange}
             >
-              <option value="">Odaberite tip mesta</option>
+              <option value="">Odaberite tip lokala</option>
               <option value="RESTORAN">Restoran</option>
               <option value="BRZA_HRANA">Brza hrana</option>
               <option value="BAR">Bar</option>

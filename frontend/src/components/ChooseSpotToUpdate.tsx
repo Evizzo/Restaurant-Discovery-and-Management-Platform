@@ -22,20 +22,16 @@ const ChooseSpotToUpadte: React.FC = () => {
       if (Array.isArray(data)) {
         setSpots(data);
       } else {
-        console.error("Unexpected data format:", data);
         setSpots([]);
         setMessage("Mesta nisu pronadjena.");
       }
-  
-      console.log(response);
-  
+    
       if (data.length === 0) {
         setMessage("Mesta nisu pronadjena.");
       } else {
         setMessage("");
       }
     } catch (error) {
-      console.error("Error fetching spots:", error);
       setMessage("Mesta nisu pronadjena.");
     }
   };

@@ -36,11 +36,10 @@ const SpotPage: React.FC<SpotPageProps> = () => {
       try {
         if (spotId) {
           const response = await retrieveSpotById(spotId);
-          console.log(response.data)
           setSpot(response.data);
         }
       } catch (error) {
-        console.error("Greška pri dobavljanju lokala:", error);
+        setMessage("Greška pri dobavljanju lokala")
       }
     };
 
@@ -81,13 +80,11 @@ const SpotPage: React.FC<SpotPageProps> = () => {
   const images = spot.images.map(image => ({
     original: image,
     thumbnail: image,
-    description: spot.name
   }));
 
   const menuImages = spot.menuImages.map(image => ({
     original: image,
     thumbnail: image,
-    description: `${spot.name} menu`
   }));
 
   const handleReviewFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -140,7 +137,6 @@ const SpotPage: React.FC<SpotPageProps> = () => {
       const updatedSpotResponse = await retrieveSpotById(spot.spotId);
       setSpot(updatedSpotResponse.data);
     } catch (error) {
-      console.error("Error liking review:", error);
     }
   };
 
@@ -150,7 +146,6 @@ const SpotPage: React.FC<SpotPageProps> = () => {
       const updatedSpotResponse = await retrieveSpotById(spot.spotId);
       setSpot(updatedSpotResponse.data);
     } catch (error) {
-      console.error("Error disliking review:", error);
     }
   };
 
@@ -161,7 +156,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
         <div className="container mt-4">
         <div className={`container mt-4 ${isMobile ? 'flex justify-center' : ''}`}> 
           <div className="inline-block bg-white bg-opacity-50 rounded-lg shadow-md py-2 px-4 mb-4">
-            <span className={`cursor-pointer mr-4 ${!viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(false)}>Slike</span>
+            <span className={`cursor-pointer mr-4 ${!viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(false)}>Lokal</span>
             <span className={`cursor-pointer ${viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(true)}>Meni</span> 
           </div>
         </div>
@@ -193,7 +188,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
               <strong>Lokacija:</strong> {spot.city}, {spot.address}
             </p>
             <p className="text-lg mb-4">
-              <strong>Tpelefon:</strong> {spot.phoneNumber}
+              <strong>Telefon:</strong> {spot.phoneNumber}
             </p>
             <p className="text-lg mb-4">
               <strong>Radno vreme:</strong>{" "}
@@ -218,9 +213,6 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             <p className="text-lg mb-4">
               <strong>Odlike:</strong>
             </p>
-            {/* <p className="text-lg mb-4">
-              Wi-Fi: {spot.wifiAvailable ? "Da" : "Ne"}
-            </p> */}
             <p className="text-lg mb-4">
               Parking: {spot.parking ? "Da" : "Ne"}
             </p>

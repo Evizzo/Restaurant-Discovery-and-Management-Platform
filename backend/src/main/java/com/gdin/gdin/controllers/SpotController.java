@@ -43,6 +43,7 @@ public class SpotController {
 
     @PreAuthorize("hasAuthority('spot_owner:create')")
     @PostMapping(consumes = "multipart/form-data")
+    @Transactional
     public ResponseEntity<Spot> addNewSpot(
             @Valid @ModelAttribute Spot spot,
             @RequestParam("imageFiles") List<MultipartFile> imageFiles,

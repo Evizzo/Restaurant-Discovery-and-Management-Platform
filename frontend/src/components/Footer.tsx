@@ -12,9 +12,6 @@ const Footer = () => {
               <a className="hover:text-backgroundColor transition-all cursor-pointer" href="/">
                 Instagram
               </a>
-              <a className="hover:text-backgroundColor transition-all cursor-pointer" href="/">
-                Facebook
-              </a>
             </nav>
           </div>
           <div>
@@ -23,19 +20,8 @@ const Footer = () => {
               <a className="hover:text-backgroundColor transition-all cursor-pointer" href="/">
                 gdedaizadjemna@gmail.com
               </a>
-              <a className="hover:text-backgroundColor transition-all cursor-pointer" href="/">
-                +63...
-              </a>
             </nav>
           </div>
-          {/* <div>
-            <h1 className="font-medium text-xl pb-4 pt-5 md:pt-0">Adresa</h1>
-            <nav className="flex flex-col gap-2">
-              <a className="hover:text-backgroundColor transition-all cursor-pointer" href="/">
-                Gde da izadjem na
-              </a>
-            </nav>
-          </div> */}
         </div>
       </div>
     </div>
