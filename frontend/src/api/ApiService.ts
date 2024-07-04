@@ -181,8 +181,14 @@ export const updateSpot = async (spotId: string, updatedSpot: any, newImageFiles
                 }
             } else if (newValue !== oldValue) {
                 formData.append(key, newValue);
+            } else if (key === 'spotType') {
+                formData.append(key, newValue);
             }
         });
+
+        if (!formData.has('spotType') && updatedSpot.spotType) {
+            formData.append('spotType', updatedSpot.spotType);
+        }
 
         if (newImageFiles && newImageFiles.length > 0) { 
             newImageFiles.forEach((file) => {
@@ -196,17 +202,12 @@ export const updateSpot = async (spotId: string, updatedSpot: any, newImageFiles
             });
         }
 
-        for (const pair of formData.entries()) {
-            console.log(`${pair[0]}, ${pair[1] instanceof Blob ? pair[1].name : pair[1]}`);
-        }
-
         return apiClient.put(`/spot/${spotId}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
     } catch (error) {
-        console.error("Error updating spot:", error);
         throw error;
     }
 };

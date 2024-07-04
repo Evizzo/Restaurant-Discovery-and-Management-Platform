@@ -26,17 +26,17 @@ public class Spot {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID spotId;
 
-    @Size(min = 1, message = "Naziv ne može biti prazan")
+    @Size(min = 1, max = 72,  message = "Naziv ne može biti prazan")
     private String name;
 
     @Column(length = 1000)
-    @Size(min = 1, message = "Opis ne može biti prazan")
+    @Size(min = 72, max = 720, message = "Opis mora imati između 72 i 720 karaktera")
     private String description;
 
-    @Size(min = 1, message = "Grad ne može biti prazan")
+    @Size(min = 1, max = 72, message = "Grad ne može biti prazan")
     private String city;
 
-    @Size(min = 1, message = "Adresa ne može biti prazna")
+    @Size(min = 1, max = 72, message = "Adresa ne može biti prazna")
     private String address;
 
     private String googleMapsUrl;
@@ -49,7 +49,7 @@ public class Spot {
 
     private Boolean alwaysOpen;
 
-    @Size(min = 1, message = "Broj telefona ne može biti prazan")
+    @Size(min = 1, max = 32, message = "Broj telefona ne može biti prazan")
     private String phoneNumber;
 
     private String email;

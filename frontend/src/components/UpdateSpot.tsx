@@ -82,6 +82,10 @@ const UpdateSpot = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (!spotData.alwaysOpen && (!spotData.workingFrom || !spotData.workingTo)) {
+      setMessage("Molimo unesite radno vreme ili označite da je lokal uvek otvoren.");
+      return;
+    }
     
     try {
       const menuImageFiles = newMenuImageFiles.map(menuImage => new File([menuImage], menuImage.name));

@@ -25,13 +25,11 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Max(value = 5, message = "Ocena ne sme da prelazi 5 !")
+    @Max(value = 6, message = "Ocena ne sme da prelazi 6 !")
     @Min(value = 1, message = "Ocena ne sme da bude manja od 1 !")
     private Integer totalRating;
-//    @Max(value = 5, message = "Ocena ne sme da prelazi 5 !")
-//    @Min(value = 1, message = "Ocena ne sme da bude manja od 1 !")
-//    private int hygieneRating;
-    @Size(max = 720, message = "Komentar ne sme da prelazi 720 araktera !")
+
+    @Size(max = 720, message = "Komentar ne sme da prelazi 720 karaktera !")
     private String comment;
     private LocalDateTime date;
     private boolean isEdited;

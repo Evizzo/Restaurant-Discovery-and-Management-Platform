@@ -25,8 +25,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         try {
             const response = await executeGoogleLogin()
             if(response.status === 200){
-                // console.log(response)
-                
                 setAuthenticated(true)
                 setEmail(response.data.email)
                 setRole(response.data.role)
@@ -35,12 +33,10 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
                 return true            
             } else {
-                console.log("failed at authcontext 47")
                 logout()
                 return false
             }    
         } catch(error) {
-            console.error(error)
             logout()
             return false
         }
@@ -50,7 +46,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         async function performLogout() {
           try {
             const response = await executeLogout();
-            console.log(response.status)
             if (response.status === 200) {
               setAuthenticated(false);
               setEmail('')
@@ -58,12 +53,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
               setFirstname('')
               setLastname('')
               
-              console.log('Logout successful');
             } else {
-              console.error('Logout failed');
             }
           } catch (error) {
-            console.error('Error during logout:', error);
           }
         }
       

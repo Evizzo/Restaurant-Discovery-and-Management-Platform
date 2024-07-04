@@ -87,6 +87,10 @@ const AddSpot = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (!spotData.alwaysOpen && (!spotData.workingFrom || !spotData.workingTo)) {
+      setMessage("Molimo unesite radno vreme ili označite da je lokal uvek otvoren.");
+      return;
+    }
     if (images.length === 0 || menuImages.length === 0) {
       setMessage("Morate dodati barem jednu fotografiju lokala i jednu fotografiju menija.");
       return;
