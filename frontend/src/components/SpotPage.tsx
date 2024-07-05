@@ -104,7 +104,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
       if (error.response && error.response.data) {
         setMessage(error.response.data.message);
       } else {
-        setMessage("Došlo je do greške.");
+        setMessage("Došlo je do greške, osvežite stranicu.");
       }    
     }
   };
@@ -210,34 +210,31 @@ const SpotPage: React.FC<SpotPageProps> = () => {
           </div>
           <div>
             <p className="text-lg mb-4">
-              <strong>Odlike:</strong>
+              <strong>Parking:</strong> {spot.parking ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Parking: {spot.parking ? "Da" : "Ne"}
+              <strong>Dozvoljeni ljubmici:</strong> {spot.petsAllowed ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Dozvoljeni ljubmici: {spot.petsAllowed ? "Da" : "Ne"}
+              <strong>Vegetarijanska hrana:</strong> {spot.hasSpecialDietaryOptionVegetarian ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Vegetarijanska hrana: {spot.hasSpecialDietaryOptionVegetarian ? "Da" : "Ne"}
+              <strong>Veganska hrana:</strong> {spot.hasSpecialDietaryOptionVegan ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Veganska hrana: {spot.hasSpecialDietaryOptionVegan ? "Da" : "Ne"}
+              <strong>Hrana bez glutena:</strong> {spot.hasSpecialDietaryOptionGlutenFree ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Hrana bez glutena: {spot.hasSpecialDietaryOptionGlutenFree ? "Da" : "Ne"}
+             <strong>Fitnes meni:</strong> {spot.hasFitnessMenu ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Fitnes meni: {spot.hasFitnessMenu ? "Da" : "Ne"}
+              <strong>Posna hrana:</strong> {spot.hasPosnaFood ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Posna hrana: {spot.hasPosnaFood ? "Da" : "Ne"}
+              <strong>Doručak:</strong> {spot.hasBreakfast ? "Da" : "Ne"}
             </p>
             <p className="text-lg mb-4">
-              Doručak: {spot.hasBreakfast ? "Da" : "Ne"}
-            </p>
-            <p className="text-lg mb-4">
-              Igralište za decu: {spot.childsPlayground ? "Da" : "Ne"}
+              <strong>Igralište za decu:</strong> {spot.childsPlayground ? "Da" : "Ne"}
             </p>
           </div>
         </div>

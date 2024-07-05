@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Optional;
 
 public interface SpotRepository extends JpaRepository<Spot, UUID>, JpaSpecificationExecutor<Spot> {
     @Modifying
@@ -32,4 +33,5 @@ public interface SpotRepository extends JpaRepository<Spot, UUID>, JpaSpecificat
 
     List<Spot> findByOwnerIdOrderByNameAsc(UUID ownerId);
 
+    Optional<Spot> findByNameAndAddressAndCity(String name, String address, String city);
 }
