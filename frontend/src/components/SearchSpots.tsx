@@ -78,7 +78,7 @@ const SearchSpots: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col justify-center items-center">
     <br></br>
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-        <h1 className="text-3xl font-semibold mb-6 text-center">Pretražite lokale</h1>
+        <h1 className="text-3xl font-semibold mb-6 text-center">Pretraga</h1>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4">
             <input

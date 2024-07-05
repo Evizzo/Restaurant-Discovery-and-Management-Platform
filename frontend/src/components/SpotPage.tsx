@@ -155,7 +155,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
         <div className="container mt-4">
         <div className={`container mt-4 ${isMobile ? 'flex justify-center' : ''}`}> 
           <div className="inline-block bg-white bg-opacity-50 rounded-lg shadow-md py-2 px-4 mb-4">
-            <span className={`cursor-pointer mr-4 ${!viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(false)}>Lokal</span>
+            <span className={`cursor-pointer mr-4 ${!viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(false)}>Ambijent</span>
             <span className={`cursor-pointer ${viewMenu ? 'underline' : ''}`} onClick={() => setViewMenu(true)}>Meni</span> 
           </div>
         </div>

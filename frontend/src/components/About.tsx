@@ -10,7 +10,7 @@ const About = () => {
           <p>
           <strong>Za korisnike: </strong>
           <br></br>
-          Na ovom sajtu, korisnici mogu jednostavno pretraživati lokale po lokaciji, vrsti kuhinje ili ambijentu. Svaki restoran ima detaljan profil sa slikama menija i ambijenta, što vam omogućava da unapred znate šta možete očekivati. Pored toga, dostupne su i recenzije prethodnih gostiju kako biste mogli doneti najbolju odluku.
+          Na ovom sajtu, korisnici mogu jednostavno pretraživati mesta po lokaciji, vrsti kuhinje ili ambijentu. Svako mesto ima detaljan profil sa slikama menija i ambijenta, što vam omogućava da unapred znate šta možete očekivati. Pored toga, dostupne su i recenzije prethodnih gostiju kako biste mogli doneti najbolju odluku.
           </p>
           <p>
           <strong>Za vlasnike lokala: </strong>
