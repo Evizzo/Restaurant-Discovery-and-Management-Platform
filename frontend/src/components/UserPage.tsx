@@ -54,16 +54,16 @@ function UserPage() {
                 <strong>Prezime:</strong> {userData.lastname}<br />
                 <strong>Email:</strong> {userData.email}<br />
                 <Link to="/add-spot">
-                  <Button title="Dodaj objekat"></Button>
+                  <Button title="Dodajte lokal"></Button>
                 </Link>
                 {authContext.role === 'SPOT_OWNER' && (
                   <Link to="/edit-spot">
-                    <Button title="Izmeni objekat"></Button>
+                    <Button title="Pregled lokala"></Button>
                   </Link>
                 )}
                 {authContext.role === 'ADMIN' && (
                   <Link to="/edit-spot">
-                    <Button title="Izmeni objekat"></Button>
+                    <Button title="Pregled lokala"></Button>
                   </Link>
                 )}
                 {authContext.role === 'ADMIN' && (                

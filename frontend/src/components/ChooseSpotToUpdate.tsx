@@ -47,7 +47,7 @@ const ChooseSpotToUpadte: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col justify-center items-center">
       <br></br>
-      <h1 className="text-3xl font-semibold mb-6 text-center">Vaša mesta</h1>
+      <h1 className="text-3xl font-semibold mb-6 text-center">Vaši lokali</h1>
       {message && (
           <div className="flex items-center bg-yellow-100 rounded-lg p-3 mb-4">
             <div className="text-yellow-800">
