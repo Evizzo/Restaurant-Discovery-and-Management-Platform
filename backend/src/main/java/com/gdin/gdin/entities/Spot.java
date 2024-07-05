@@ -66,6 +66,8 @@ public class Spot {
 
     private Boolean parking;
 
+    private Boolean childsPlayground;
+
     private Boolean petsAllowed;
 
     private Boolean hasSpecialDietaryOptionVegetarian;

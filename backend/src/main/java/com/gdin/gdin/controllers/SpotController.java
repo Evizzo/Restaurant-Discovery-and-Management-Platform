@@ -60,6 +60,7 @@ public class SpotController {
             @RequestParam(required = false) Integer workingFrom,
             @RequestParam(required = false) Integer workingTo,
             @RequestParam(required = false) Boolean alwaysOpen,
+            @RequestParam(required = false) Boolean childsPlayground,
             @RequestParam(required = false) Boolean outdoorSeating,
             @RequestParam(required = false) Boolean wifiAvailable,
             @RequestParam(required = false) Boolean parking,
@@ -80,7 +81,7 @@ public class SpotController {
                 outdoorSeating, wifiAvailable, parking,
                 petsAllowed, hasSpecialDietaryOptionVegetarian, hasSpecialDietaryOptionVegan,
                 hasSpecialDietaryOptionGlutenFree, hasFitnessMenu, hasPosnaFood, hasBreakfast,
-                spotType, musicTypes, ambianceTypes, cuisineTypes, availableActivities);
+                spotType, musicTypes, ambianceTypes, cuisineTypes, availableActivities, childsPlayground);
 
         return ResponseEntity.ok(result);
     }

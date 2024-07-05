@@ -75,6 +75,7 @@ public class SpotService {
                 .instagram(spot.getInstagram())
                 .tiktok(spot.getTiktok())
                 .facebook(spot.getFacebook())
+                .childsPlayground(spot.getChildsPlayground())
                 .outdoorSeating(spot.getOutdoorSeating())
                 .wifiAvailable(spot.getWifiAvailable())
                 .parking(spot.getParking())
@@ -166,14 +167,15 @@ public class SpotService {
             Set<MusicTypes> musicTypes,
             Set<AmbianceTypes> ambianceTypes,
             Set<CuisineTypes> cuisineTypes,
-            Set<AvailableActivities> availableActivities) {
+            Set<AvailableActivities> availableActivities,
+            Boolean childsPlayground) {
 
         Specification<Spot> spec = SpotSpecification.searchSpot(
                 name, city, workingFrom, workingTo, alwaysOpen,
                 outdoorSeating, wifiAvailable, parking,
                 petsAllowed, hasSpecialDietaryOptionVegetarian, hasSpecialDietaryOptionVegan,
                 hasSpecialDietaryOptionGlutenFree, hasFitnessMenu, hasPosnaFood, hasBreakfast,
-                spotType, musicTypes, ambianceTypes, cuisineTypes, availableActivities, true);
+                spotType, musicTypes, ambianceTypes, cuisineTypes, availableActivities, true, childsPlayground);
 
         List<Spot> spots = spotRepository.findAll(spec);
 
@@ -239,6 +241,7 @@ public class SpotService {
         if (updatedSpot.getAmbianceTypes() != null) existingSpot.setAmbianceTypes(updatedSpot.getAmbianceTypes());
         if (updatedSpot.getCuisineTypes() != null) existingSpot.setCuisineTypes(updatedSpot.getCuisineTypes());
         if (updatedSpot.getAvailableActivities() != null) existingSpot.setAvailableActivities(updatedSpot.getAvailableActivities());
+        if (updatedSpot.getChildsPlayground() != null) existingSpot.setChildsPlayground(updatedSpot.getChildsPlayground());
     }
 
     private void updateImages(Spot spot, List<MultipartFile> newImageFiles) throws IOException {

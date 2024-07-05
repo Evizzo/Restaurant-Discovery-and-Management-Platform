@@ -41,6 +41,7 @@ const AddSpot = () => {
     availableActivities: [] as string[],
     images: [] as any[],
     menuImages: [] as any,
+    childsPlayground: false,
   });
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, isMenu: boolean) => {
@@ -142,6 +143,7 @@ const AddSpot = () => {
           availableActivities: [],
           images: [],
           menuImages: [],
+          childsPlayground: false,
         });
       } catch (error: any) {
         setMessage(error.response.data.message)
@@ -521,6 +523,16 @@ const AddSpot = () => {
                   onChange={handleChange}
                 />
                 <span className="ml-2">Dozvoljeni ljubimci</span>
+              </label>
+              <label htmlFor="childsPlayground" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="childsPlayground"
+                  name="childsPlayground"
+                  checked={spotData.childsPlayground}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Igralište za decu</span>
               </label>
             </div>
           </div>

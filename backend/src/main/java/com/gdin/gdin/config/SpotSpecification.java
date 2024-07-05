@@ -34,7 +34,8 @@ public class SpotSpecification {
             Set<AmbianceTypes> ambianceTypes,
             Set<CuisineTypes> cuisineTypes,
             Set<AvailableActivities> availableActivities,
-            boolean approved
+            boolean approved,
+            Boolean childsPlayground
     ) {
 
         return (root, query, builder) -> {
@@ -58,6 +59,10 @@ public class SpotSpecification {
 
             if (alwaysOpen != null && alwaysOpen) {
                 predicate = builder.and(predicate, builder.equal(root.get("alwaysOpen"), alwaysOpen));
+            }
+
+            if (childsPlayground != null && childsPlayground) {
+                predicate = builder.and(predicate, builder.equal(root.get("childsPlayground"), childsPlayground));
             }
 
             if (outdoorSeating != null && outdoorSeating) {

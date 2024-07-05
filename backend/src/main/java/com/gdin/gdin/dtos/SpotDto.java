@@ -56,4 +56,5 @@ public class SpotDto {
     private List<FileData> imagesFD;
     private List<FileData> menuImagesFD;
     private Boolean approved;
+    private Boolean childsPlayground;
 }

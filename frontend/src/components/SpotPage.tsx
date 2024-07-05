@@ -236,14 +236,28 @@ const SpotPage: React.FC<SpotPageProps> = () => {
             <p className="text-lg mb-4">
               Doručak: {spot.hasBreakfast ? "Da" : "Ne"}
             </p>
+            <p className="text-lg mb-4">
+              Igralište za decu: {spot.childsPlayground ? "Da" : "Ne"}
+            </p>
           </div>
         </div>
         </div>
         <div className="flex justify-center items-center mt-4">
-          {/* <a href={spot.websiteUrl} className="text-4xl mx-2"><FontAwesomeIcon icon={faLink} /></a> */}
-          <a href={spot.instagram} className="text-4xl mx-2"><FontAwesomeIcon icon={faInstagram} /></a>
-          <a href={spot.facebook} className="text-4xl mx-2"><FontAwesomeIcon icon={faFacebook} /></a>
-          <a href={spot.tiktok} className="text-4xl mx-2"><FontAwesomeIcon icon={faTiktok} /></a>
+          {spot.instagram && (
+            <a href={spot.instagram} className="text-4xl mx-2" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faInstagram} />
+            </a>
+          )}
+          {spot.facebook && (
+            <a href={spot.facebook} className="text-4xl mx-2" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faFacebook} />
+            </a>
+          )}
+          {spot.tiktok && (
+            <a href={spot.tiktok} className="text-4xl mx-2" target="_blank" rel="noopener noreferrer">
+              <FontAwesomeIcon icon={faTiktok} />
+            </a>
+          )}
         </div>
         {authContext.isAuthenticated && <form onSubmit={(e) => { e.preventDefault(); submitReview(); }}>
           <br></br>

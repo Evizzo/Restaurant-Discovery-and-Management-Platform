@@ -37,6 +37,7 @@ export interface Spot {
     images: string[];
     menuImages: string[];
     approved: boolean;
+    childsPlayground: boolean;
 }
 
 export interface Review {
@@ -84,6 +85,7 @@ export interface SearchParams {
     ambianceTypes?: string[];
     cuisineTypes?: string[];
     availableActivities?: string[];
+    childsPlayground?: boolean;
 }  
 
 export const retrieveAllSpots = () => 

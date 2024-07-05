@@ -39,6 +39,7 @@ const UpdateSpot = () => {
     menuImagesFD: [] as File[],
     images: [] as string[],
     menuImages: [] as string[],
+    childsPlayground: false,
   });
   const { spotId } = useParams();
 
@@ -510,6 +511,16 @@ const UpdateSpot = () => {
                   onChange={handleChange}
                 />
                 <span className="ml-2">Dozvoljeni ljubimci</span>
+              </label>
+              <label htmlFor="childsPlayground" className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="childsPlayground"
+                  name="childsPlayground"
+                  checked={spotData.childsPlayground}
+                  onChange={handleChange}
+                />
+                <span className="ml-2">Igralište za decu</span>
               </label>
             </div>
           </div>

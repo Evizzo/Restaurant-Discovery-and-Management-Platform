@@ -26,6 +26,7 @@ const SearchSpots: React.FC = () => {
     ambianceTypes: [],
     cuisineTypes: [],
     availableActivities: [],
+    childsPlayground: false,
   });
 
   useEffect(() => {
@@ -319,6 +320,16 @@ const SearchSpots: React.FC = () => {
                 className="form-checkbox"
               />
               <label className="text-sm">Doručak</label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="childsPlayground"
+                checked={searchParams.childsPlayground}
+                onChange={handleCheckboxChange}
+                className="form-checkbox"
+              />
+              <label className="text-sm">Igralište za decu</label>
             </div>
 
           </div>
