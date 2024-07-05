@@ -70,6 +70,9 @@ function UserPage() {
                   <Link to={`/admin`} className="text-blue-500 hover:underline"><strong>Admin page</strong></Link>
                 )}
               </div>
+              <a href="https://www.the-qrcode-generator.com/" target="_blank" rel="noopener noreferrer">
+                <Button title="Eksterni sajt za kreiranje QR koda"></Button>
+              </a>
             </Card.Body>
           </Card>
         )}
