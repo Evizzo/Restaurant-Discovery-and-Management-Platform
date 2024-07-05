@@ -130,7 +130,7 @@ public class SpotService {
         user.ifPresent(spot::setOwner);
         spot.setApproved(false);
 
-        Optional<Spot> existingSpot = spotRepository.findByNameAndAddressAndCity(spot.getName(), spot.getAddress(), spot.getCity());
+        Optional<Spot> existingSpot = spotRepository.findByNameIgnoreCaseAndAddressIgnoreCaseAndCityIgnoreCase(spot.getName(), spot.getAddress(), spot.getCity());
         if (existingSpot.isPresent()) {
             throw new RuntimeException("Mesto sa istim imenom, adresom i gradom postoji !");
         }

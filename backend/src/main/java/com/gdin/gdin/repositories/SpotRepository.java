@@ -33,5 +33,5 @@ public interface SpotRepository extends JpaRepository<Spot, UUID>, JpaSpecificat
 
     List<Spot> findByOwnerIdOrderByNameAsc(UUID ownerId);
 
-    Optional<Spot> findByNameAndAddressAndCity(String name, String address, String city);
+    Optional<Spot> findByNameIgnoreCaseAndAddressIgnoreCaseAndCityIgnoreCase(String name, String address, String city);
 }
