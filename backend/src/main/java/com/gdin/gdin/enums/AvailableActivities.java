@@ -5,7 +5,6 @@ public enum AvailableActivities {
     STONI_TENIS,
     PIKADO,
     DRUŠTVENE_IGRE,
-    DEČIJA_IGRAONICA,
     KUGLANJE,
     UŽIVO_ZABAVA,
     KARAOKE

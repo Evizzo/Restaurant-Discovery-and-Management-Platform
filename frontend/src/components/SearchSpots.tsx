@@ -215,7 +215,6 @@ const SearchSpots: React.FC = () => {
                 <option value="STONI_TENIS">Stoni tenis</option>
                 <option value="PIKADO">Pikado</option>
                 <option value="DRUŠTVENE_IGRE">Društvene igre</option>
-                <option value="DEČIJA_IGRAONICA">Dečija igraonica</option>
                 <option value="KUGLANJE">Kuglanje</option>
                 <option value="UŽIVO_ZABAVA">Uživo zabava</option>
                 <option value="KARAOKE">Karaoke</option>
