@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => {
     };
 
     fetchData();
-  }, [authContext.login]);
+  }, [authContext.login, navigate]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-[#D1A373] to-[#8B5A2B]">
