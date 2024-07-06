@@ -29,7 +29,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                 setEmail(response.data.email)
                 setRole(response.data.role)
                 setFirstname(response.data.firstname)
-                setLastname(response.data.firstname)
+                setLastname(response.data.lastname)
 
                 return true            
             } else {
