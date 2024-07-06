@@ -166,7 +166,9 @@ const SpotPage: React.FC<SpotPageProps> = () => {
           <br></br>
         <div className="md:flex-grow">
           <h1 className="font-semibold text-4xl text-gray-800 mb-4">{spot.name} ({spot.reviewsCount})</h1>
-          <p className="text-lg text-gray-700 mb-6">{spot.description}</p>
+          <p style={{ maxWidth: '700px', wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>
+            {spot.description}
+          </p>
           <div className="flex items-center mb-6">
             <p className="text-lg text-gray-700 mr-2">Ocena:</p>
             <ShowStarRating

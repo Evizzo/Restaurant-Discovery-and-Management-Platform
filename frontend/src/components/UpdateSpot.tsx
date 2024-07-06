@@ -83,6 +83,7 @@ const UpdateSpot = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
     if (!spotData.alwaysOpen) {
       if (!spotData.workingFrom || !spotData.workingTo) {
         setMessage("Molimo unesite radno vreme ili označite da je lokal uvek otvoren.");

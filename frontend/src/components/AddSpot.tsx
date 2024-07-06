@@ -64,8 +64,8 @@ const AddSpot = () => {
             setPreviewImages(prevPreviews => [...prevPreviews, ...imagePreviews]);
         }
     }
-};
-  
+  };
+
   const removePreviewImage = (index: number, isMenu: boolean) => {
     if (isMenu) {
       setMenuImages(prevImages => prevImages.filter((_, i) => i !== index));

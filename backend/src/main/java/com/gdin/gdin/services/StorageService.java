@@ -15,7 +15,6 @@ import org.apache.commons.io.FilenameUtils;
 @Service
 @AllArgsConstructor
 public class StorageService {
-
     private final FileDataRepository fileDataRepository;
 
     public FileData uploadImageToFileSystem(MultipartFile file, String spotId) throws IOException {

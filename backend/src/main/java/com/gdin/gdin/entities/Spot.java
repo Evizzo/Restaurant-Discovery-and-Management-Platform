@@ -30,7 +30,7 @@ public class Spot {
     private String name;
 
     @Column(length = 1000)
-    @Size(min = 72, max = 720, message = "Opis mora imati između 72 i 720 karaktera")
+    @Size(max = 720, message = "Opis ne sme da prelazi 720 karaktera")
     private String description;
 
     @Size(min = 1, max = 72, message = "Grad ne može biti prazan")
