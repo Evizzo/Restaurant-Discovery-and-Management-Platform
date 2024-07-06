@@ -10,6 +10,6 @@ public enum SpotTypes {
     POSLASTIČARNICA,
     KAFANA,
     PEKARA,
+    PICERIJA,
     DRUGO
 }
-

@@ -476,6 +476,7 @@ const AddSpot = () => {
               <option value="POSLASTIČARNICA">Poslastičarnica</option>
               <option value="KAFANA">Kafana</option>
               <option value="PEKARA">Pekara</option>
+              <option value="PICERIJA">Picerija</option>
               <option value="DRUGO">Drugo</option>
             </select>
           </div>
