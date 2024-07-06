@@ -14,7 +14,6 @@ export const AuthContext = createContext({
 export const useAuth = () => useContext(AuthContext)
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-
     const [isAuthenticated, setAuthenticated] = useState(false)
     const [email, setEmail] = useState("")
     const [firstname, setFirstname] = useState("")

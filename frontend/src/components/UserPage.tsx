@@ -33,7 +33,7 @@ function UserPage() {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.error('Error fetching user data:', error);
+        alert(`Error fetching user data ${error}`);
         setIsLoading(false);
       });
   }, []);

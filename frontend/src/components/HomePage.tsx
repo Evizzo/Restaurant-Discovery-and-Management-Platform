@@ -3,22 +3,25 @@ import Button from '../layouts/Button';
 import { Spot, retrieveAllSpots } from "../api/ApiService.ts";
 import { useState, useEffect } from "react";
 import Card from '../layouts/Card.tsx';
+import { useAuth } from "../api/AuthContex";
 
 const HomePage = () => {
   const [spots, setSpots] = useState<Spot[]>([]);
+  const authContext = useAuth();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const initializePage = async () => {
+      try {
+        await authContext.login();
+        const response = await retrieveAllSpots();
+        setSpots(response.data);
+      } catch (error) {
+        console.error('Error fetching spots:', error);
+      }
+    };
 
-  const fetchData = async () => {
-    try {
-      const response = await retrieveAllSpots();
-      setSpots(response.data);
-    } catch (error) {
-      
-    }
-  };
+    initializePage();
+  }, [authContext]);
 
   const getFirstImage = (spot: Spot): string => {
     if (spot.images && spot.images.length > 0) {
