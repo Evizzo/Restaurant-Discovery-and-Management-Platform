@@ -44,8 +44,7 @@ const HomePage = () => {
           <Button title="Oglasi ga ovde" />
         </Link>
       </div>
-      <div className="w-full max-w-4xl mt-8 overflow-hidden">
-        <div className="flex">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
           {visibleSpots.map((spot: Spot) => (
             <div key={spot.spotId} className="flex-shrink-0 w-full sm:w-1/3 px-2">
               <Card
@@ -61,7 +60,6 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-      </div>
     </div>
   );
 };
