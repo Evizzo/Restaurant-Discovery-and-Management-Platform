@@ -26,6 +26,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final StorageService storageService;
     private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
 
     public SpotDto approveSpot(UUID spotId) {
         Optional<Spot> optionalSpot = spotRepository.findById(spotId);
@@ -84,5 +85,17 @@ public class AdminService {
         } else {
             throw new ChangeSetPersister.NotFoundException();
         }
+    }
+
+    public void deleteReviewById(UUID id) {
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+
+        optionalReview.ifPresent(review -> {
+            Spot spot = review.getSpot();
+
+            reviewRepository.deleteById(id);
+            spotRepository.decrementReviewCount(spot.getSpotId());
+            reviewService.calculateTotalReview(spot);
+        });
     }
 }

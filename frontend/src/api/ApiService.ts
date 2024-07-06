@@ -229,3 +229,7 @@ export const retrieveUnapprovedSpotsAdmin = () => {
 export const retrieveAllSpotsAdmin = () => {
     return apiClient.get(`/admin/spot/all`);
 };
+
+export const deleteReviewAdmin = (reviewId: string) => {
+    return apiClient.delete(`/admin/review/${reviewId}`);
+};

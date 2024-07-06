@@ -324,6 +324,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
               </div>
             </div>
             <p className="text-gray-700" style={{ wordWrap: 'break-word' }}>{review.comment}</p>
+            {authContext.role === 'ADMIN' && ( <p className="text-gray-700" style={{ wordWrap: 'break-word' }}><strong>{review.id}</strong></p>)}
             {editingReview === review.id && (
               <div>
                 <div className="mb-4">

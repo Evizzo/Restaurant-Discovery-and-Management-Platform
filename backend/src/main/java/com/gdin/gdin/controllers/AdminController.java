@@ -53,4 +53,13 @@ public class AdminController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/review/{reviewId}")
+    @Transactional
+    @PreAuthorize("hasAuthority('admin:delete')")
+    public ResponseEntity<String> deleteReview(@PathVariable UUID reviewId) {
+        adminService.deleteReviewById(reviewId);
+        return ResponseEntity.ok("Review successfully deleted.");
+    }
+
 }
