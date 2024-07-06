@@ -48,12 +48,6 @@ const Navbar = () => {
             >
               Pretraži
             </Link>
-            {/* <Link
-              to="/events"
-              className="hover:text-[#E2B97F] transition-all cursor-pointer"
-            >
-              Događaji
-            </Link> */}
             {authContext.isAuthenticated &&
             <Link
               to="/current-user"
@@ -113,13 +107,6 @@ const Navbar = () => {
           >
             Pretraži
           </Link>
-          {/* <Link
-            to="/events"
-            className="hover:text-[#E2B97F] transition-all cursor-pointer"
-            onClick={closeMenu}
-          >
-            Događaji
-          </Link> */}
           {authContext.isAuthenticated &&
           <Link
             to="/current-user"
