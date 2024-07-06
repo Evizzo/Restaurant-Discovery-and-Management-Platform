@@ -75,22 +75,22 @@ const AdminSpots: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-r from-[#D1A373] to-[#8B5A2B] flex flex-col items-center justify-center px-5 py-10">
-            <div className="mt-8">
-                    <h2 className="text-xl font-semibold mb-2">Delete Review by ID</h2>
-                    <input
-                        type="text"
-                        value={reviewIdInput}
-                        onChange={(e) => setReviewIdInput(e.target.value)}
-                        placeholder="Enter Review ID"
-                        className="border border-gray-300 rounded px-3 py-2 mr-2"
-                    />
-                    <button
-                        className="bg-red-500 text-white py-2 px-4 rounded"
-                        onClick={handleDeleteReview}
-                    >
-                        Delete Review
-                    </button>
-                </div>
+        <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-2">Delete Review by ID</h2>
+                <input
+                    type="text"
+                    value={reviewIdInput}
+                    onChange={(e) => setReviewIdInput(e.target.value)}
+                    placeholder="Enter Review ID"
+                    className="border border-gray-300 rounded px-3 py-2 mr-2"
+                />
+                <button
+                    className="bg-red-500 text-white py-2 px-4 rounded"
+                    onClick={handleDeleteReview}
+                >
+                    Delete Review
+                </button>
+            </div>
             <div className="max-w-9xl w-full bg-white bg-opacity-30 rounded-lg shadow-xl p-8">
                 {selectedMenuImages.length > 0 && (
                     <div className="w-full max-w-4xl mb-8">

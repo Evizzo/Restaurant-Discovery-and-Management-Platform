@@ -29,6 +29,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
   const [message,setMessage] = useState("")
   const [editingReview, setEditingReview] = useState<string | null>(null);
   const [viewMenu, setViewMenu] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchSpot = async () => {
@@ -36,6 +37,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
         if (spotId) {
           const response = await retrieveSpotById(spotId);
           setSpot(response.data);
+          setSubmitted(true)
         }
       } catch (error) {
         setMessage("Greška pri dobavljanju lokala")
@@ -43,7 +45,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
     };
 
     fetchSpot();
-  }, [spotId]);
+  }, [spotId, submitted]);
 
   if (!spot) {
     return <div>Učitavanje...</div>;
@@ -99,6 +101,7 @@ const SpotPage: React.FC<SpotPageProps> = () => {
         setSpot(updatedSpotResponse.data);
         setReviewForm({ totalRating: 0, comment: "" });
         setCharCount(0)
+        setSubmitted(false)
         setMessage("Uspešno ste postavili recenziju !")
     } catch (error: any) {
       if (error.response && error.response.data) {
