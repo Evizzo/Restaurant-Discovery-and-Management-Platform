@@ -275,6 +275,7 @@ const AddSpot = () => {
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-3xl font-semibold mb-4">Dodajte lokal</h1>
         <p><i>*Fotografije moraju biti 1920x1080 rezolucije</i></p>
+        <p><i>*Linkovi nisu obavezni</i></p>
         <br></br>
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="images">Fotografije lokala</label>
@@ -453,6 +454,17 @@ const AddSpot = () => {
               id="facebook"
               name="facebook"
               value={spotData.facebook}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="googleMapsUrl">Link do google mapi</label>
+            <input
+              className="border rounded-md py-2 px-3 w-full focus:outline-none focus:border-indigo-500"
+              type="text"
+              id="googleMapsUrl"
+              name="googleMapsUrl"
+              value={spotData.googleMapsUrl}
               onChange={handleChange}
             />
           </div>

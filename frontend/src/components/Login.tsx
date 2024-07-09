@@ -29,6 +29,15 @@ const LoginPage: React.FC = () => {
           </svg>
           Google
         </button></a>
+        <br></br>
+        <hr></hr>
+        <br></br>
+        <button
+          onClick={() => navigate('/terms-of-service')}
+          className="w-40 h-8 bg-white text-gray-700 rounded-md shadow-md mt-4 text-sm opacity-70 flex items-center justify-center mx-auto"
+        >
+          Uslovi korišćenja / TOS
+        </button>
       </div>
     </div>
   );

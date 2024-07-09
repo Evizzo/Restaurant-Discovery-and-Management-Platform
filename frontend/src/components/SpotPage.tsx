@@ -13,6 +13,7 @@ import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as solidThumbsUp, faThumbsDown as solidThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as regularThumbsUp, faThumbsDown as regularThumbsDown } from '@fortawesome/free-regular-svg-icons';
 import ShowStarRating from "./ShowStarRating.tsx";
+import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 interface SpotPageProps {}
 
@@ -260,6 +261,11 @@ const SpotPage: React.FC<SpotPageProps> = () => {
               <FontAwesomeIcon icon={faTiktok} />
             </a>
           )}
+          {spot.googleMapsUrl && (
+          <a href={spot.googleMapsUrl} className="text-4xl mx-2" target="_blank" rel="noopener noreferrer">
+            <FontAwesomeIcon icon={faMapMarkerAlt} />
+          </a>
+        )}
         </div>
         {authContext.isAuthenticated && <form onSubmit={(e) => { e.preventDefault(); submitReview(); }}>
           <br></br>

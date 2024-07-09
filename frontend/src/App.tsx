@@ -16,6 +16,7 @@ import AddSpot from "./components/AddSpot.tsx";
 import ChooseSpotToUpadte from "./components/ChooseSpotToUpdate.tsx";
 import UpdateSpot from "./components/UpdateSpot.tsx";
 import AdminPage from "./components/AdminPage.tsx";
+import TOS from "./components/TOS.tsx";
 
 function App(){
   function AuthenticatedRoute({ children }: { children: ReactNode }) {
@@ -39,6 +40,7 @@ function App(){
 
             <Route path="/" element={<HomePage/>}/>
             <Route path="/about" element={<About/>}/>
+            <Route path="/terms-of-service" element={<TOS/>}/>
             <Route path="/search" element={<SearchSpots/>}/>
             <Route path="/events" element={<Events/>}/>
             <Route path="/login" element={<Login/>}/>
