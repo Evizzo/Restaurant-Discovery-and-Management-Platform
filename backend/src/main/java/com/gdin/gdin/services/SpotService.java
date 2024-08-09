@@ -215,7 +215,7 @@ public class SpotService {
         Spot updatedSpotReturned = spotRepository.save(existingSpot);
         return convertToDto(updatedSpotReturned);
     }
-
+    
     private void updateSpotDetails(Spot existingSpot, Spot updatedSpot) {
         if (updatedSpot.getName() != null) existingSpot.setName(updatedSpot.getName());
         if (updatedSpot.getDescription() != null) existingSpot.setDescription(updatedSpot.getDescription());
