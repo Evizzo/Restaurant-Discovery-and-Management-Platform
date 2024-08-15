@@ -35,6 +35,15 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Retrieves user details from Google.
+     *
+     * This endpoint returns the user details retrieved from Google. It uses the
+     * {@link AuthenticationService} to fetch the necessary information.
+     *
+     * @return ResponseEntity containing an Optional<User> with the Google user details.
+     *         If no details are found, the Optional will be empty.
+     */
     @GetMapping("/google/userdetails")
     public ResponseEntity<Optional<User>> getUserDetailsGoogle() {
         return ResponseEntity.ok(authenticationService.getUserDetailsGoogle());

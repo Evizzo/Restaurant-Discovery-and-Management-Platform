@@ -132,7 +132,7 @@ public class SpotService {
 
         Optional<Spot> existingSpot = spotRepository.findByNameIgnoreCaseAndAddressIgnoreCaseAndCityIgnoreCase(spot.getName(), spot.getAddress(), spot.getCity());
         if (existingSpot.isPresent()) {
-            throw new RuntimeException("Mesto sa istim imenom, adresom i gradom postoji !");
+            throw new RuntimeException("Place with the same address, city and name already exists !");
         }
 
         Spot savedSpot = spotRepository.save(spot);

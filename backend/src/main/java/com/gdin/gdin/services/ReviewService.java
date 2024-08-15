@@ -78,7 +78,7 @@ public class ReviewService {
                     .anyMatch(existingReview -> existingReview.getReviewer().equals(reviewer));
 
             if (hasReviewed) {
-                throw new RuntimeException("Već ste postavili jednu recenziju !");
+                throw new RuntimeException("You already posted a review !");
             }
 
             review.setReviewer(reviewer);

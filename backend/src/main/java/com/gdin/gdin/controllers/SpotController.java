@@ -21,6 +21,9 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Controller class for managing spots.
+ */
 @AllArgsConstructor
 @RestController
 @RequestMapping("spot")
@@ -29,11 +32,22 @@ public class SpotController {
     private static final Logger logger = LoggerFactory.getLogger(SpotController.class);
     private final UserRepository userRepository;
 
+    /**
+     * Retrieves a list of all spots.
+     *
+     * @return ResponseEntity containing a list of SpotDto objects representing all spots.
+     */
     @GetMapping
     public ResponseEntity<List<SpotDto>> retrieveAllSpots(){
         return ResponseEntity.ok(spotService.retrieveAllSpots());
     }
 
+    /**
+     * Retrieves details of a specific spot by its ID.
+     *
+     * @param spotId The UUID of the spot to retrieve.
+     * @return ResponseEntity containing the SpotDto object if found, or throws a RuntimeException if not found.
+     */
     @GetMapping("/{spotId}")
     public ResponseEntity<SpotDto> retrieveSpot(@PathVariable UUID spotId){
         return spotService.findSpotById(spotId)
@@ -41,6 +55,17 @@ public class SpotController {
                 .orElseThrow(() -> new RuntimeException("Spot not found" + spotId));
     }
 
+    /**
+     * Adds a new spot with associated images.
+     *
+     * This endpoint requires multipart form data including spot details and images.
+     *
+     * @param spot The Spot object containing spot details.
+     * @param imageFiles List of images associated with the spot.
+     * @param menuImageFiles List of menu images associated with the spot.
+     * @return ResponseEntity containing the saved Spot object.
+     * @throws IOException if there's an error processing the image files.
+     */
     @PreAuthorize("hasAuthority('spot_owner:create')")
     @PostMapping(consumes = "multipart/form-data")
     @Transactional
@@ -53,6 +78,32 @@ public class SpotController {
         return ResponseEntity.ok(savedSpot);
     }
 
+    /**
+     * Searches for spots based on various criteria.
+     *
+     * @param name Name of the spot (optional).
+     * @param city City where the spot is located (optional).
+     * @param workingFrom Opening time (optional).
+     * @param workingTo Closing time (optional).
+     * @param alwaysOpen Whether the spot is always open (optional).
+     * @param childsPlayground Whether the spot has a children's playground (optional).
+     * @param outdoorSeating Whether outdoor seating is available (optional).
+     * @param wifiAvailable Whether WiFi is available (optional).
+     * @param parking Whether parking is available (optional).
+     * @param petsAllowed Whether pets are allowed (optional).
+     * @param hasSpecialDietaryOptionVegetarian Whether vegetarian options are available (optional).
+     * @param hasSpecialDietaryOptionVegan Whether vegan options are available (optional).
+     * @param hasSpecialDietaryOptionGlutenFree Whether gluten-free options are available (optional).
+     * @param hasFitnessMenu Whether a fitness menu is available (optional).
+     * @param hasPosnaFood Whether posna food is available (optional).
+     * @param hasBreakfast Whether breakfast is available (optional).
+     * @param spotType Type of the spot (optional).
+     * @param musicTypes Types of music available (optional).
+     * @param ambianceTypes Types of ambiance (optional).
+     * @param cuisineTypes Types of cuisine (optional).
+     * @param availableActivities Available activities (optional).
+     * @return ResponseEntity containing a list of SpotDto objects matching the search criteria.
+     */
     @GetMapping("/search")
     public ResponseEntity<List<SpotDto>> searchSpots(
             @RequestParam(required = false) String name,
@@ -86,6 +137,18 @@ public class SpotController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * Updates an existing spot with new details and images.
+     *
+     * This endpoint requires multipart form data including updated spot details and new images.
+     *
+     * @param spotId The UUID of the spot to be updated.
+     * @param updatedSpotAtr The Spot object containing updated spot details.
+     * @param newImageFiles List of new images to be associated with the spot.
+     * @param newMenuImageFiles List of new menu images to be associated with the spot.
+     * @return ResponseEntity containing the updated SpotDto object, or an INTERNAL_SERVER_ERROR status if an error occurs.
+     * @throws IOException if there's an error processing the image files.
+     */
     @PreAuthorize("hasAuthority('spot_owner:update')")
     @Transactional
     @PutMapping(path = "/{spotId}", consumes = "multipart/form-data")
@@ -112,14 +175,25 @@ public class SpotController {
         logger.error("Exception while updating spot with ID: " + spotId, e);
         e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
-}
 
+    /**
+     * Retrieves all spots owned by the currently authenticated user.
+     *
+     * @return ResponseEntity containing a list of SpotDto objects owned by the authenticated user.
+     */
     @GetMapping("/owned")
     public ResponseEntity<List<SpotDto>> retrieveAllOwnerSpots(){
         return ResponseEntity.ok(spotService.getEventsByPublisherId());
     }
 
+    /**
+     * Deletes a spot by its ID.
+     *
+     * @param spotId The UUID of the spot to be deleted.
+     * @return ResponseEntity indicating the result of the delete operation.
+     */
     @PreAuthorize("hasAuthority('spot_owner:delete')")
     @DeleteMapping("/{spotId}")
     @Transactional
