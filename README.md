@@ -18,7 +18,7 @@ Admin Approval: All restaurant profiles require approval from an admin before go
 
 ## Tools used
 
-**Frontend**: Html, Css, React, BootStrap.
+**Frontend**: HTML, CSS, React, BootStrap.
 
 **Backend**: Java, Spring Boot, Spring Security, Jpa/Hibernate, TypeScript.
 
