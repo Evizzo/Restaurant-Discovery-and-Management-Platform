@@ -1,7 +1,5 @@
 # **Restaurant Discovery and Management Platform**
 
-## Overview
-
 **For Users**
 
 Search: Find restaurants by various tags.
